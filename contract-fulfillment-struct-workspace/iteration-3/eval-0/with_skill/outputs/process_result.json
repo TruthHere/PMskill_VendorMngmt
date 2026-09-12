@@ -1,0 +1,11 @@
+{
+  "eml_path": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-0/with_skill/outputs/_mail/init.eml",
+  "subject": "[项目初始化] Sample Project - SAMPLE",
+  "step": "stage0",
+  "auto": false,
+  "intent": "project_init",
+  "from_classification": true,
+  "pending_id": "p-1T1742210800",
+  "reason": "routed_to_skill0",
+  "note": "项目初始化已迁出 Skill 1。请经 mail-inbox 分发到 Skill 0 `project-init/scripts/handle_init_email.py`，或手动运行 run_init.py。"
+}

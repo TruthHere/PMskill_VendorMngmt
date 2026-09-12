@@ -1,0 +1,25 @@
+{
+  "eval_type": "out_of_order",
+  "expectations": [
+    {
+      "text": "process result is pending out_of_order",
+      "passed": false,
+      "evidence": "auto=True reason=missing"
+    },
+    {
+      "text": "row status remains COD 已发出",
+      "passed": false,
+      "evidence": "商务确认"
+    },
+    {
+      "text": "procurement tracker unchanged",
+      "passed": false,
+      "evidence": "changed"
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "total": 3,
+    "pass_rate": 0.0
+  }
+}

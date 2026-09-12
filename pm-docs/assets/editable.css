@@ -1,0 +1,134 @@
+.edit-toolbar {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card, #242429);
+  border: 1px solid var(--border, #3a3a40);
+  border-radius: 12px;
+  padding: 8px 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  font-size: 12px;
+  color: var(--muted, #9898a8);
+}
+
+.edit-toggle,
+.save-now-btn,
+.reset-btn {
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.edit-toggle {
+  background: rgba(55, 138, 221, 0.15);
+  border: 1px solid rgba(55, 138, 221, 0.3);
+  color: var(--blue, #378add);
+}
+
+.edit-toggle:hover {
+  background: rgba(55, 138, 221, 0.25);
+}
+
+.edit-toggle.off {
+  background: rgba(98, 98, 108, 0.1);
+  border-color: var(--border, #3a3a40);
+  color: var(--muted, #9898a8);
+}
+
+.save-now-btn {
+  background: rgba(29, 158, 117, 0.2);
+  color: var(--teal, #1d9e75);
+  border: 1px solid rgba(29, 158, 117, 0.25);
+}
+
+.save-now-btn:hover {
+  background: rgba(29, 158, 117, 0.35);
+}
+
+.reset-btn {
+  background: rgba(226, 75, 74, 0.1);
+  border: 1px solid rgba(226, 75, 74, 0.25);
+  color: var(--red, #e24b4a);
+  font-size: 11px;
+  padding: 6px 12px;
+}
+
+.reset-btn:hover {
+  background: rgba(226, 75, 74, 0.2);
+}
+
+.edit-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.edit-status .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green, #639922);
+  transition: all 0.2s;
+}
+
+.edit-status.saving .dot {
+  background: var(--gold, #ef9f27);
+  animation: pm-pulse 0.8s infinite;
+}
+
+.edit-status.error .dot {
+  background: var(--red, #e24b4a);
+}
+
+.edit-status.offline .dot {
+  background: var(--amber, #ba7517);
+}
+
+@keyframes pm-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+body.edit-mode [contenteditable="true"] {
+  cursor: text;
+  border-radius: 4px;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+body.edit-mode [contenteditable="true"]:hover {
+  background: rgba(55, 138, 221, 0.08);
+  box-shadow: 0 0 0 1px rgba(55, 138, 221, 0.2);
+}
+
+body.edit-mode [contenteditable="true"]:focus {
+  background: rgba(55, 138, 221, 0.06);
+  box-shadow: 0 0 0 1.5px rgba(55, 138, 221, 0.4);
+  outline: none;
+}
+
+body:not(.edit-mode) [contenteditable="true"] {
+  cursor: default;
+}
+
+@media (max-width: 760px) {
+  .edit-toolbar {
+    bottom: 12px;
+    right: 12px;
+    padding: 6px 10px;
+    gap: 8px;
+  }
+}

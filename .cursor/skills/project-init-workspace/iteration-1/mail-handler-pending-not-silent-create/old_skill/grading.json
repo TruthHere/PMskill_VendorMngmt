@@ -1,0 +1,35 @@
+{
+  "expectations": [
+    {
+      "text": "handler result reason is project_not_initialized",
+      "passed": true,
+      "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+    },
+    {
+      "text": "result auto is false",
+      "passed": true,
+      "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+    },
+    {
+      "text": "pending.json has project_init item",
+      "passed": true,
+      "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+    },
+    {
+      "text": "did not create a complete initialized project via silent init",
+      "passed": true,
+      "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+    },
+    {
+      "text": "note or reply tells PM/Agent to use run_init / 入口 A",
+      "passed": true,
+      "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

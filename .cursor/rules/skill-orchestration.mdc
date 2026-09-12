@@ -1,0 +1,18 @@
+---
+description: 多 Skill 协作时必须先读项目级编排真源；区分功能 Skill 单独使用与供应商履约系统内调用。
+alwaysApply: true
+---
+
+# Skill 编排（项目级 Rule）
+
+本仓库有多套 Skill。跨 Skill「谁先谁后」、脚本已串完的事不要再手搓、功能 Skill 能否单独用——**唯一真源**：
+
+→ **先 Read** [`.cursor/skills/skill-orchestration/SKILL.md`](../skills/skill-orchestration/SKILL.md)
+
+## 硬规则
+
+1. **涉及 2 个及以上 Skill**、进度计划链路、合同 PDF 管线、邮件分发、建包后同步、请款/变更与履约交叉 → 必须先读上述编排 Skill，再执行。
+2. **单独使用**（用户只要转 MPP / 析关键节点 / 读 PDF，未提建包·请款·变更·Tracker）→ 只跑对应功能 Skill，**禁止**自动串联履约卡片或请款。
+3. **系统内协作** → 服从编排 Skill 的表 A（脚本）/ 表 B（Agent）；禁止双跑。
+4. 各功能 Skill（`schedule-mpp-excel`、`schedule-critical-nodes`、`pdf-read`）正文只描述自身能力；**系统挂钩以编排 Skill 为准**，不要在功能 Skill 里发明新的兄弟调用顺序。
+5. **读 PDF 正文**（「帮我看这份 PDF」、报价单、合同、扫描件认字）→ **只用** `pdf-read`。全局 `pdf` 伴侣只在用户明确要合并、拆分、旋转、填表、加水印时才用；本仓库不安装那份 Skill。

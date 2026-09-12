@@ -1,0 +1,35 @@
+{
+  "expectations": [
+    {
+      "text": "handler result auto is true",
+      "passed": true,
+      "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+    },
+    {
+      "text": "mailbox.address updated to HarborLab_AI@163.com",
+      "passed": true,
+      "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+    },
+    {
+      "text": "project_code remains HARBOR",
+      "passed": true,
+      "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+    },
+    {
+      "text": "no new procurement package folders",
+      "passed": true,
+      "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+    },
+    {
+      "text": "did not wipe or recreate tracker packages",
+      "passed": true,
+      "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

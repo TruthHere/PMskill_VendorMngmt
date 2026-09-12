@@ -1,0 +1,172 @@
+{
+  "skill_name": "mail-inbox",
+  "evals": [
+    {
+      "id": 0,
+      "name": "raise-po-faq-trap",
+      "prompt": "主题 [Raise PO] Initial Cleaning；正文含苹果采购 FAQ「If this PR is a change order, please provide the original PO #」。应判 fulfillment.raise_po，不得进 change.change_po。",
+      "subject": "[Raise PO] PO-TEST-001 Demo Campus Ph5_Initial Cleaning_CBRE",
+      "body": "Would you please help raise PO to CBRE for Initial cleaning.\n\nIf this PR is a change order, please provide the original PO #:\nReply: No.\n",
+      "expected": {
+        "intent": "fulfillment.raise_po",
+        "route_to": "contract-fulfillment-struct"
+      },
+      "assertions": [
+        "intent is fulfillment.raise_po",
+        "route_to is contract-fulfillment-struct",
+        "not change.change_po"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "change-po-real",
+      "prompt": "主题含 (change PO)，正文 raise Change PO + COT-003。应判 change.change_po → Skill 3。",
+      "subject": "[Raise PO] PO-TEST BMS（change PO）_Schneider",
+      "body": "Please raise Change PO for COT-003. Amount excl tax RMB 16800.",
+      "expected": {
+        "intent": "change.change_po",
+        "route_to": "change-archive",
+        "change_no": "COT003"
+      },
+      "assertions": [
+        "intent is change.change_po",
+        "route_to is change-archive",
+        "change_no is COT003"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "fulfillment-tech-not-change",
+      "prompt": "履约技术确认（无 COT/COD）：主题「BMS · 技术确认」。应判 fulfillment.tech_confirm，不得进 Skill 3。",
+      "subject": "BMS · 技术确认",
+      "body": "顾问确认图纸已批准 approved drawing，可下单。",
+      "expected": {
+        "intent": "fulfillment.tech_confirm",
+        "route_to": "contract-fulfillment-struct"
+      },
+      "assertions": [
+        "intent is fulfillment.tech_confirm",
+        "route_to is contract-fulfillment-struct",
+        "not change.*"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "change-tech-with-anchor",
+      "prompt": "变更技术提交：主题含 COT-003 + 技术文件。应判 change.tech_submit。",
+      "subject": "COT-003 技术文件提交",
+      "body": "供应商提交技术文件 submittal / shop drawing 供审核。",
+      "expected": {
+        "intent": "change.tech_submit",
+        "route_to": "change-archive",
+        "change_no": "COT003"
+      },
+      "assertions": [
+        "intent is change.tech_submit",
+        "route_to is change-archive",
+        "change_no is COT003"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "rfp-mentions-cod-process",
+      "prompt": "RFP 正文随口提 future COD process，无 COD 序号。应仍判 fulfillment.rfp。",
+      "subject": "RFP for Door Package (SupplierA)",
+      "body": "Please submit quotation. This RFP includes note about future COD process for variations.",
+      "expected": {
+        "intent": "fulfillment.rfp",
+        "route_to": "contract-fulfillment-struct",
+        "package_name": "Door Package"
+      },
+      "assertions": [
+        "intent is fulfillment.rfp",
+        "route_to is contract-fulfillment-struct",
+        "not change.cod",
+        "package_name extracted"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "cod-real",
+      "prompt": "真 COD：主题 SARL Ph5 - COD076。应判 change.cod。",
+      "subject": "SARL Ph5 - COD076 - GC work additional network ports",
+      "body": "Change Order Document issued for GC works.",
+      "expected": {
+        "intent": "change.cod",
+        "route_to": "change-archive",
+        "change_no": "COD076"
+      },
+      "assertions": [
+        "intent is change.cod",
+        "route_to is change-archive",
+        "change_no is COD076"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "payment-claim",
+      "prompt": "Payment Application No. 3 for BMS → payment_claim.inbound → Skill 2。",
+      "subject": "Payment Application No. 3 for BMS - Delivery",
+      "body": "PAYMENT NO: 3\nClaim node: Delivery\nAmount: CNY 100000",
+      "expected": {
+        "intent": "payment_claim.inbound",
+        "route_to": "payment-request",
+        "package_name": "BMS"
+      },
+      "assertions": [
+        "intent is payment_claim.inbound",
+        "route_to is payment-request",
+        "package_name is BMS"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "bare-invoice-not-claim",
+      "prompt": "裸 Invoice 附件闲聊，无请款语境 → unknown（不得高置信进 Skill 2）。",
+      "subject": "Invoice for July",
+      "body": "Please find invoice attached.",
+      "expected": {
+        "intent": "unknown",
+        "route_to": null
+      },
+      "assertions": [
+        "intent is unknown",
+        "route_to is null",
+        "not payment_claim"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "rfp-with-payment-terms-enrichment",
+      "prompt": "RFP 夹带付款条件：主意图仍 fulfillment.rfp，enrichment.payment_terms=true。",
+      "subject": "RFQ for BMS — Lab",
+      "body": "Please submit quotation. Payment terms: 30/40/30 on delivery/install/accept.",
+      "expected": {
+        "intent": "fulfillment.rfp",
+        "route_to": "contract-fulfillment-struct",
+        "enrichment_payment_terms": true,
+        "package_name": "BMS"
+      },
+      "assertions": [
+        "intent is fulfillment.rfp",
+        "enrichment.payment_terms is true",
+        "not payment_claim"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "project-init",
+      "prompt": "主题 [项目初始化] → project_init → Skill 0。",
+      "subject": "[项目初始化] SARL Lab Phase5",
+      "body": "项目名：SARL Lab\n绑定邮箱：x@163.com",
+      "expected": {
+        "intent": "project_init",
+        "route_to": "project-init"
+      },
+      "assertions": [
+        "intent is project_init",
+        "route_to is project-init"
+      ]
+    }
+  ]
+}

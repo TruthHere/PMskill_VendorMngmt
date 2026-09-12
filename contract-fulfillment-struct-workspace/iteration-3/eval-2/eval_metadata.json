@@ -1,0 +1,17 @@
+{
+  "eval_id": 2,
+  "eval_name": "po-payment",
+  "prompt": "工作目录（已有 BMS 采购包，技术方案已确认）：/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-2/with_skill/outputs\n请依次处理：\n1) Raise PO 邮件：/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-2/with_skill/outputs/_mail/raise_po.eml\n2) 付款指示邮件：/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-2/with_skill/outputs/_mail/payment.eml\n\n目标：更新 Tracker 的 PO 已发起，卡片写入 3 个付款节点（预付款30%/到货验收60%/尾款10%），金额含税写入。\n完成后状态留在工作目录，并写说明到 /Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-2/with_skill/outputs/agent_notes.md。",
+  "assertions": [
+    "process_result.json exists (pipeline evidence)",
+    "process_result records Raise PO via pipeline (step3 auto)",
+    "process_result records payment terms via pipeline",
+    "milestone PO 已发起 is set",
+    "next_payment_node is populated",
+    "card-data payment_nodes has 3 entries",
+    "PO amount written to tracker or card (含税)",
+    "card HTML passes fulfillment-card template validation",
+    "card HTML has payment-table (template fingerprint)",
+    "请款申请.html looks like claim-form template"
+  ]
+}

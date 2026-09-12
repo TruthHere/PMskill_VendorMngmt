@@ -1,0 +1,5 @@
+{
+  "eval_id": 4,
+  "eval_name": "rfp-mentions-cod-process",
+  "prompt": "RFP 正文随口提 future COD process，无 COD 序号。应仍判 fulfillment.rfp。"
+}

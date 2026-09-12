@@ -1,0 +1,6 @@
+pypdf>=4.0
+pdfplumber>=0.11
+# Optional OCR path for extract_contract_pdf.py (scan fallback when SoMark unavailable)
+pypdfium2>=4.0
+pytesseract>=0.3.10
+pdf2image>=1.17

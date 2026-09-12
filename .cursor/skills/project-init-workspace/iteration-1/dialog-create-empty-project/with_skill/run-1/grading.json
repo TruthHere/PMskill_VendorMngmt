@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "project.json exists with project_code HARBOR",
+      "passed": true,
+      "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/project-init-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+    },
+    {
+      "text": "tracker exists with empty packages",
+      "passed": true,
+      "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/project-init-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+    },
+    {
+      "text": "mailbox.address is HarborLab_AI@163.com",
+      "passed": true,
+      "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/project-init-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+    },
+    {
+      "text": "项目背景.md exists",
+      "passed": true,
+      "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/project-init-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+    },
+    {
+      "text": "no procurement package folders created",
+      "passed": true,
+      "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/project-init-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+    },
+    {
+      "text": "used run_init or init_project CLI (not hand-written project.json only)",
+      "passed": true,
+      "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/project-init-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "total": 6,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "skill_name": "fulfillment-card",
+  "grading_rules": "evals/GRADING_RULES.md",
+  "evals": [
+    {
+      "id": 0,
+      "name": "supply-good",
+      "prompt": "用 fulfillment-card 渲染夹具 supply-good.json：合格纯供应采购包，含 3 个中英付款节点、请款附件与计划时间区间。",
+      "expected_output": "标准履约卡片：供应商作主标题、付款表格、页脚数据来源；无变更章节；内容质量（中英、比例 100%、含税）均达标。",
+      "files": ["evals/fixtures/supply-good.json"],
+      "eval_kind": "standard",
+      "assertions": [
+        "card HTML exists",
+        "card-data.json exists",
+        "card-title is supplier_name",
+        "package-name appears in subtitle",
+        "payment nodes render as payment-table",
+        "card has no change section",
+        "data_sources live in footer-meta",
+        "claim link points to 请款申请.html",
+        "no unresolved template placeholders",
+        "validate_rendered_card passes",
+        "non-GC hides 约束条款 section",
+        "payment_attachments appear in table",
+        "supplier_name is non-empty",
+        "payment node names are bilingual",
+        "payment pct sum is about 100%",
+        "total_amount marks 含税 or 不含税",
+        "each payment node has attachments after enrich",
+        "schedule_window column when windows present",
+        "quality_ok is true",
+        "no quality warnings when data is good"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "gc-constraint",
+      "prompt": "渲染夹具 gc-constraint.json：总包卡片，constraint_clauses 非空。",
+      "expected_output": "出现「约束条款」章节且正文含约束文字；付款表仍规范。",
+      "files": ["evals/fixtures/gc-constraint.json"],
+      "eval_kind": "standard",
+      "assertions": [
+        "card HTML exists",
+        "card-title is supplier_name",
+        "payment nodes render as payment-table",
+        "validate_rendered_card passes",
+        "GC shows 约束条款 section",
+        "supplier_name is non-empty",
+        "payment node names are bilingual",
+        "payment pct sum is about 100%",
+        "total_amount marks 含税 or 不含税",
+        "each payment node has attachments after enrich",
+        "quality_ok is true",
+        "no quality warnings when data is good"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "non-gc-hides-constraint",
+      "prompt": "渲染夹具 non-gc-hides-constraint.json：纯供应，但 card-data 里写了 constraint_clauses。",
+      "expected_output": "HTML 不得出现「约束条款」章节（非总包隐藏）。",
+      "files": ["evals/fixtures/non-gc-hides-constraint.json"],
+      "eval_kind": "standard",
+      "assertions": [
+        "card HTML exists",
+        "validate_rendered_card passes",
+        "non-GC hides 约束条款 section",
+        "payment nodes render as payment-table",
+        "supplier_name is non-empty",
+        "payment node names are bilingual",
+        "payment pct sum is about 100%",
+        "total_amount marks 含税 or 不含税",
+        "quality_ok is true",
+        "no quality warnings when data is good"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "attachments-infer",
+      "prompt": "渲染夹具 attachments-infer.json：付款节点未手写 payment_attachments。",
+      "expected_output": "enrich 后每个节点有请款附件，且出现在付款表中。",
+      "files": ["evals/fixtures/attachments-infer.json"],
+      "eval_kind": "standard",
+      "assertions": [
+        "card HTML exists",
+        "validate_rendered_card passes",
+        "payment_attachments appear in table",
+        "each payment node has attachments after enrich",
+        "payment node names are bilingual",
+        "payment pct sum is about 100%",
+        "total_amount marks 含税 or 不含税",
+        "quality_ok is true",
+        "no quality warnings when data is good"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "no-change-on-card",
+      "prompt": "渲染夹具 change-items.json：card-data 里仍有旧 change_items，确认卡片不再展示变更章节。",
+      "expected_output": "HTML 无「变更内容」/ change-table；变更只看 Change Log。",
+      "files": ["evals/fixtures/change-items.json"],
+      "eval_kind": "standard",
+      "assertions": [
+        "card HTML exists",
+        "card has no change section",
+        "validate_rendered_card passes",
+        "supplier_name is non-empty",
+        "payment node names are bilingual",
+        "payment pct sum is about 100%",
+        "quality_ok is true",
+        "no quality warnings when data is good"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "quality-gap",
+      "prompt": "渲染夹具 quality-gap.json：故意残缺（空供应商、无中英节点名、比例合计非 100%、金额无含税标注）。系统仍应出卡，但必须识别并提示数据质量问题。",
+      "expected_output": "仍能出卡（format 过）；quality_ok=false；card-data 写入 quality_warnings；卡片显示「数据质量提醒」横幅。",
+      "files": ["evals/fixtures/quality-gap.json"],
+      "eval_kind": "diagnostic",
+      "assertions": [
+        "card HTML exists",
+        "card-data.json exists",
+        "payment nodes render as payment-table",
+        "card has no change section",
+        "data_sources live in footer-meta",
+        "no unresolved template placeholders",
+        "validate_rendered_card passes",
+        "quality_ok is false when data is poor",
+        "quality warnings recorded when data is poor",
+        "quality banner visible when warnings present",
+        "quality banner sits above card header"
+      ]
+    }
+  ]
+}

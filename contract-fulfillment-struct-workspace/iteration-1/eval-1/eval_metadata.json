@@ -1,0 +1,10 @@
+{
+  "eval_id": 1,
+  "eval_name": "rfp-forward",
+  "prompt": "项目 /tmp/eval-sample-rfp 已完成阶段 0。请处理以下 RFP 转发邮件，初始化采购包 BMS。\n\n主题：SAMPLE · BMS · BOSCH — RFP\n\n项目：SAMPLE\n采购包：BMS（楼宇自控系统）\n供应商：BOSCH Building Technologies\n对接人邮箱：procurement@bosch-build.example.com\n类型：纯供应\n\n附件：tech_spec.txt（技术要求：DDC 控制器型号 FX-160）",
+  "assertions": [
+    "milestone RFP 发出",
+    "01~07 subfolders",
+    "履约条件卡片.html"
+  ]
+}

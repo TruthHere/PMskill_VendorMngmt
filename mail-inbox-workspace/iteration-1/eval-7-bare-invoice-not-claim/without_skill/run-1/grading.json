@@ -1,0 +1,24 @@
+{
+  "expectations": [
+    {
+      "text": "intent is unknown",
+      "passed": false,
+      "evidence": "got 'payment_claim.inbound'"
+    },
+    {
+      "text": "route_to is None",
+      "passed": false,
+      "evidence": "got 'payment-request'"
+    },
+    {
+      "text": "not payment_claim",
+      "passed": false,
+      "evidence": "got 'payment_claim.inbound'"
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "total": 3,
+    "pass_rate": 0.0
+  }
+}

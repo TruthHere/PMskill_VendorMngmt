@@ -1,0 +1,6 @@
+samples/mini/out/
+scripts/.mppjs/
+scripts/vendor/
+__pycache__/
+*.pyc
+.DS_Store

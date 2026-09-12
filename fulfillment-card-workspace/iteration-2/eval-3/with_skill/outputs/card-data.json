@@ -1,0 +1,41 @@
+{
+  "package_name": "EPMS",
+  "supplier_name": "Schneider Electric",
+  "package_type": "供应+安装",
+  "package_type_label": "供应+安装",
+  "project_name": "Sample Project",
+  "contact_email": "bid@schneider.example.com",
+  "total_amount": "¥560,000 CNY 不含税",
+  "scope_summary": "电力监控系统供货及安装",
+  "delivery_schedule": "2026-10-01 前安装完成",
+  "payment_nodes": [
+    {
+      "name": "预付款 / Advance",
+      "pct": "20%",
+      "condition": "PO 后",
+      "payment_attachments": "请款单；PO/合同复印件；发票（如适用）；预付款保函（如合同要求）"
+    },
+    {
+      "name": "到货 / Delivery",
+      "pct": "50%",
+      "condition": "设备到场验收",
+      "payment_attachments": "请款单；到货签认单；送货单/装箱单；发票",
+      "schedule_window": "≤ 2026-10-01",
+      "milestone": "2026-10-01"
+    },
+    {
+      "name": "安装验收 / Installation Acceptance",
+      "pct": "30%",
+      "condition": "安装调试完成",
+      "payment_attachments": "请款单；安装/调试完成确认单；测试记录；发票"
+    }
+  ],
+  "change_items": [],
+  "acceptance_items": [
+    "联调通过"
+  ],
+  "constraint_clauses": "",
+  "data_sources": "Raise PO 邮件",
+  "quality_warnings": [],
+  "quality_ok": true
+}

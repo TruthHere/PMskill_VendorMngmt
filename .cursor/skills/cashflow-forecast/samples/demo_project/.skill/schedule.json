@@ -1,0 +1,22 @@
+{
+  "critical_nodes": [
+    {
+      "package_name": "BMS",
+      "name": "预付款 / Advance",
+      "name_zh": "预付款",
+      "window_end": "2026-01-01"
+    },
+    {
+      "package_name": "BMS",
+      "name": "到货 / Delivery",
+      "name_zh": "到货",
+      "window_end": "2026-08-13"
+    },
+    {
+      "package_name": "BMS",
+      "name": "验收 / Acceptance",
+      "name_zh": "验收",
+      "window_end": "2026-12-01"
+    }
+  ]
+}

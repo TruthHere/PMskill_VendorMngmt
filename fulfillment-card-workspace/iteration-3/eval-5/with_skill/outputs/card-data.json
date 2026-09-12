@@ -1,0 +1,77 @@
+{
+  "package_name": "CDA",
+  "supplier_name": "",
+  "package_type": "供应",
+  "package_type_label": "纯供应",
+  "project_name": "Sample Project",
+  "contact_email": "x@y.com",
+  "total_amount": "¥99,000",
+  "scope_summary": "压缩空气集成",
+  "delivery_schedule": "待定",
+  "payment_nodes": [
+    {
+      "name": "预付款",
+      "pct": "40%",
+      "condition": "签约后",
+      "payment_attachments": "请款单；PO/合同复印件；发票（如适用）；预付款保函（如合同要求）"
+    },
+    {
+      "name": "尾款",
+      "pct": "40%",
+      "condition": "验收后",
+      "payment_attachments": "请款单；验收签认单；测试/调试报告；发票"
+    }
+  ],
+  "change_items": [],
+  "acceptance_items": [],
+  "constraint_clauses": "",
+  "data_sources": "残缺测试夹具",
+  "quality_warnings": [
+    {
+      "code": "supplier_name_empty",
+      "field": "supplier_name",
+      "message": "供应商名称不够清晰：页眉主标题会空白，请补全供应商全称。"
+    },
+    {
+      "code": "contract_or_quote_no_empty",
+      "field": "contract_or_quote_no",
+      "message": "合同/报价单编号未填：有合同填合同号，无合同填报价单号。"
+    },
+    {
+      "code": "contract_or_quote_date_empty",
+      "field": "contract_or_quote_date",
+      "message": "签约/报价日期未填：影响质保期起算核对，请补日期。"
+    },
+    {
+      "code": "total_amount_tax_unclear",
+      "field": "total_amount",
+      "message": "总金额未标明含税/不含税（当前：¥99,000），请核对后补注。"
+    },
+    {
+      "code": "delivery_schedule_unclear",
+      "field": "delivery_schedule",
+      "message": "交期/服务周期不够清晰：请填写到货或完工节点（勿只写「待定」）。"
+    },
+    {
+      "code": "acceptance_items_empty",
+      "field": "acceptance_items",
+      "message": "验收标准为空：请补充可勾选的验收要点。"
+    },
+    {
+      "code": "payment_node_not_bilingual",
+      "field": "payment_nodes[0].name",
+      "message": "付款节点「预付款」建议中英对照（例：预付款 / Advance）。"
+    },
+    {
+      "code": "payment_node_not_bilingual",
+      "field": "payment_nodes[1].name",
+      "message": "付款节点「尾款」建议中英对照（例：预付款 / Advance）。"
+    },
+    {
+      "code": "payment_pct_sum_not_100",
+      "field": "payment_nodes.pct",
+      "message": "付款比例合计为 80%，不是约 100%，请核对节点是否齐全或比例是否有误。"
+    }
+  ],
+  "quality_ok": false
+}

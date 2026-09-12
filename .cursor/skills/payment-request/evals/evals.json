@@ -1,0 +1,23 @@
+{
+  "skill_name": "payment-request",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "项目根目录在 .cursor/skills/payment-request/samples/demo_project。请扫描未来 14 天内到期的请款提醒，写出机器人提醒话术（不要直接联系供应商），并说明每包下一笔待请与 PAYMENT NO。",
+      "expected_output": "运行 scan_due_payments；读 Tracker 下一笔待请；产出临期项 + bot-reminders 话术；先问 PM。不读 payment_ledger。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "供应商已填完请款申请。客户已批复：到货节点、不含税 30 万。请按请款五步记到客户已批复，并更新 Tracker。不要生成请款申请页，不要写 payment_ledger。",
+      "expected_output": "推进 Tracker 请款进度至客户批复；已请金额累加；下一付款节点前进；进度=无在办；03 可归档材料；无 payment_ledger。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "用 samples/fixtures/payment_claim.eml：供应商邮件称第 2 次请款到货节点 30 万不含税。这只是五步的第 1 步（已收到），不要当成客户已批复。",
+      "expected_output": "Tracker 请款进度=供应商请款已收到；不改已请金额；eml 拷进 03_请款记录；后续 QS/发客户/批复另走。",
+      "files": ["samples/fixtures/payment_claim.eml"]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "expectations": [
+    {
+      "text": "card HTML exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/fulfillment-card-workspace/iteration-3/eval-4/without_skill/outputs/履约条件卡片.html",
+      "tier": "format"
+    },
+    {
+      "text": "card has no change section",
+      "passed": true,
+      "evidence": "clean",
+      "tier": "format"
+    },
+    {
+      "text": "validate_rendered_card passes",
+      "passed": false,
+      "evidence": "card-title must be supplier_name (not package_name); package_name must appear in subtitle package-name span; legacy header: package_name used as card-title",
+      "tier": "format"
+    },
+    {
+      "text": "supplier_name is non-empty",
+      "passed": true,
+      "evidence": "JEB Facade",
+      "tier": "quality"
+    },
+    {
+      "text": "payment node names are bilingual",
+      "passed": true,
+      "evidence": "预付款 / Advance, 完工验收 / Completion",
+      "tier": "quality"
+    },
+    {
+      "text": "payment pct sum is about 100%",
+      "passed": true,
+      "evidence": "sum=100.0",
+      "tier": "quality"
+    },
+    {
+      "text": "quality_ok is true",
+      "passed": false,
+      "evidence": "quality_ok=None n=0",
+      "tier": "quality"
+    },
+    {
+      "text": "no quality warnings when data is good",
+      "passed": false,
+      "evidence": "warnings=0 banner=False",
+      "tier": "quality"
+    }
+  ],
+  "passed": 5,
+  "total": 8,
+  "pass_rate": 0.625,
+  "format": {
+    "passed": 2,
+    "total": 3,
+    "pass_rate": 0.6667
+  },
+  "quality": {
+    "passed": 3,
+    "total": 5,
+    "pass_rate": 0.6
+  }
+}

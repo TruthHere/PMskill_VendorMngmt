@@ -1,0 +1,7 @@
+SAMPLE · BMS · BOSCH — RFP
+
+项目：SAMPLE
+采购包：BMS（楼宇自控系统）
+供应商：BOSCH Building Technologies
+对接人邮箱：procurement@bosch-build.example.com
+类型：纯供应

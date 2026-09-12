@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Sample Project · 关键节点时间线</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --ink: #1a2332;
+  --muted: #6b7785;
+  --line: #e2e8ef;
+  --paper: #f6f8fa;
+  --card: #ffffff;
+  --sticky-bg: #fafbfc;
+  --inferred: #9a8570;
+  --rail: #eef2f6;
+  --row-h: 64px;
+  --holiday-spring: rgba(160, 90, 70, 0.07);
+  --holiday-labor: rgba(30, 77, 140, 0.06);
+  --holiday-national: rgba(30, 77, 140, 0.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  min-height: 100vh;
+  padding: 32px 20px 48px;
+  line-height: 1.45;
+}
+.wrap { max-width: 1100px; margin: 0 auto; }
+header { margin-bottom: 20px; }
+header .eyebrow {
+  font-size: 13px; color: var(--muted); font-weight: 500; margin-bottom: 6px;
+}
+header h1 {
+  font-family: Newsreader, Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.legend {
+  display: flex; flex-wrap: wrap; gap: 10px 16px; margin-top: 12px;
+  font-size: 12px; color: var(--muted); font-weight: 500;
+}
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.swatch { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.swatch.ring {
+  background: transparent; border: 1px dashed var(--inferred);
+}
+.swatch.band {
+  width: 12px; height: 8px; border-radius: 1px;
+}
+.swatch.band.spring { background: var(--holiday-spring); box-shadow: inset 0 0 0 1px rgba(160, 90, 70, 0.2); }
+.swatch.band.labor,
+.swatch.band.national { background: var(--holiday-labor); box-shadow: inset 0 0 0 1px rgba(30, 77, 140, 0.18); }
+.months-wrap {
+  position: relative; height: 48px; border-bottom: 1px solid var(--line);
+  background: var(--card);
+}
+.holiday-layer {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+}
+.holiday-band {
+  position: absolute; top: 0; bottom: 0;
+  pointer-events: auto;
+  cursor: default;
+  min-width: 8px;
+}
+.holiday-band::after {
+  content: ""; position: absolute; inset: 0 -6px;
+}
+.holiday-band.spring { background: var(--holiday-spring); }
+.holiday-band.labor,
+.holiday-band.national { background: var(--holiday-labor); }
+.holiday-label {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
+  color: rgba(107, 119, 133, 0.85); line-height: 1.05;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.months-wrap .holiday-label { font-size: 10px; }
+.anchor-layer {
+  position: absolute; inset: 0; pointer-events: none; z-index: 3;
+}
+.anchor-mark {
+  position: absolute; top: 0; bottom: 0;
+  width: 0; margin-left: -1px;
+  border-left: 2px solid var(--ink);
+  opacity: 0.35;
+  pointer-events: auto;
+}
+.anchor-mark.handover {
+  border-color: #9a5a4a;
+  opacity: 0.55;
+}
+.anchor-label {
+  position: absolute; top: 2px; left: 4px;
+  font-size: 9px; font-weight: 500; color: var(--muted);
+  white-space: nowrap; pointer-events: none;
+  transform: translateX(-50%);
+  margin-left: 1px;
+}
+.anchor-swatch {
+  width: 0; height: 10px; border-left: 2px solid var(--ink);
+  display: inline-block; opacity: 0.45;
+}
+.anchor-swatch.handover { border-color: #9a5a4a; opacity: 0.65; }
+.insights {
+  display: grid; gap: 12px; margin-bottom: 14px;
+}
+@media (min-width: 720px) {
+  .insights { grid-template-columns: auto 1fr; align-items: start; }
+  .insights .attention { grid-column: 1 / -1; }
+}
+.kpi {
+  display: flex; flex-wrap: wrap; gap: 12px 18px;
+  font-size: 12px; color: var(--muted);
+}
+.kpi strong { color: var(--ink); font-weight: 600; }
+.kpi-warn strong { color: #8a5a40; }
+.panel {
+  font-size: 12px; color: var(--muted);
+}
+.panel-title {
+  font-size: 11px; font-weight: 550; color: var(--ink);
+  margin-bottom: 6px;
+}
+.panel-list {
+  margin: 0; padding: 0; list-style: none;
+  display: grid; gap: 4px;
+}
+.panel-list li { line-height: 1.4; }
+.up-when { color: var(--ink); font-variant-numeric: tabular-nums; }
+.up-src { margin-left: 6px; font-size: 11px; opacity: 0.85; }
+.panel-empty { margin: 0; font-size: 12px; }
+.att-pending { color: #7a5a38; }
+.att-gap { color: var(--muted); }
+.board {
+  border-radius: 8px; background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: none;
+  overflow: hidden;
+}
+.scroller {
+  overflow-x: auto; overflow-y: hidden;
+  -webkit-overflow-scrolling: touch; scrollbar-gutter: stable;
+}
+.grid {
+  display: grid;
+  grid-template-columns: var(--label-w) var(--track-w);
+  width: calc(var(--label-w) + var(--track-w));
+  min-width: 100%;
+}
+.sticky-cell {
+  position: sticky; left: 0; z-index: 5;
+  background: var(--sticky-bg);
+  border-right: 1px solid var(--line);
+  box-shadow: 4px 0 8px -8px rgba(26, 35, 50, 0.12);
+}
+.head-label {
+  height: 48px; display: flex; align-items: flex-end;
+  padding: 0 12px 10px; font-size: 11px; font-weight: 500;
+  color: var(--muted);
+}
+.months {
+  display: grid;
+  grid-template-columns: repeat(var(--months), var(--month-w));
+  height: 48px; position: relative; z-index: 2;
+  background: transparent;
+}
+.month {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: flex-end; padding-bottom: 8px;
+  font-size: 11px; font-weight: 500; color: var(--muted);
+  border-left: 1px solid var(--rail); position: relative;
+}
+.month .y { font-size: 9px; font-weight: 400; opacity: 0.65; }
+.month .thirds {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+}
+.month .thirds i { border-left: 1px dashed rgba(213, 221, 230, 0.7); }
+.month .thirds i:first-child { border-left: 0; }
+.pkg-label {
+  height: var(--row-h); display: flex; flex-direction: column;
+  justify-content: center; padding: 0 12px; border-top: 1px solid var(--rail);
+}
+.pkg-label.highlight, .track.highlight { background: #f8fafc; }
+.pkg-label strong { font-size: 13px; font-weight: 550; }
+.pkg-label small { color: var(--muted); font-size: 10px; margin-top: 2px; }
+.track {
+  position: relative; height: var(--row-h); border-top: 1px solid var(--rail);
+  background: repeating-linear-gradient(
+    90deg, transparent 0, transparent calc(var(--month-w) - 1px),
+    var(--rail) calc(var(--month-w) - 1px), var(--rail) var(--month-w)
+  );
+}
+.track::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%;
+  height: 1px; background: var(--line); transform: translateY(-50%); z-index: 0;
+}
+.node {
+  position: absolute; top: 50%; transform: translate(-50%, -50%);
+  z-index: 2; min-width: 28px; max-width: 52px; height: 22px;
+  padding: 0 5px; border-radius: 11px;
+  border: 1.5px solid #fff; background: var(--node, #0d7377);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 600; color: #fff;
+  cursor: grab; outline: none; touch-action: none;
+  line-height: 1;
+}
+.node-text {
+  display: block; max-width: 44px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+  pointer-events: none; letter-spacing: -0.02em;
+}
+.node.dragging, .node:active { cursor: grabbing; }
+.node.manual { box-shadow: 0 0 0 1px #3d5a80, 0 1px 3px rgba(0,0,0,0.1); }
+.toolbar {
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  margin: 0 0 10px; padding: 0;
+}
+.toolbar button {
+  font: inherit; font-size: 12px; font-weight: 500; padding: 5px 10px;
+  border-radius: 6px; border: 1px solid var(--line); background: transparent;
+  color: var(--muted); cursor: pointer;
+}
+.toolbar button.primary {
+  background: var(--ink); color: #fff; border-color: var(--ink);
+}
+.toolbar button:disabled { opacity: 0.35; cursor: not-allowed; }
+.toolbar .dirty {
+  font-size: 11px; color: var(--muted); font-weight: 500; margin-left: 2px;
+}
+.toolbar .dirty[hidden] { display: none; }
+.sync-banner {
+  display: none;
+  margin: 0 0 10px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--sticky-bg);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.sync-banner.show { display: block; }
+.modal-backdrop {
+  display: none; position: fixed; inset: 0; z-index: 60;
+  background: rgba(26,35,50,0.35); align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-backdrop.show { display: flex; }
+.modal {
+  background: #fff; border-radius: 14px; padding: 18px 20px; width: min(420px, 100%);
+  box-shadow: 0 20px 50px -24px rgba(0,0,0,0.45);
+}
+.modal h3 { font-size: 16px; margin-bottom: 12px; }
+.modal label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 4px; }
+.modal select, .modal input {
+  width: 100%; font: inherit; padding: 8px 10px; border-radius: 8px;
+  border: 1px solid var(--line);
+}
+.modal .actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+.node span { pointer-events: none; }
+.node.inferred {
+  box-shadow: 0 0 0 1px var(--inferred), 0 1px 3px rgba(0,0,0,0.08);
+}
+.node:hover, .node:focus-visible, .node.active {
+  transform: translate(-50%, -50%) scale(1.04);
+  z-index: 3;
+}
+.tip-panel {
+  display: none; position: fixed; z-index: 50;
+  max-width: min(320px, calc(100vw - 24px));
+  padding: 10px 12px; border-radius: 6px;
+  background: var(--card); color: var(--ink);
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 16px rgba(26, 35, 50, 0.08);
+  font-size: 12px; line-height: 1.45; pointer-events: none;
+}
+.tip-panel.show { display: block; }
+.tip-panel .tip-title { font-weight: 550; margin: 0 0 4px; font-size: 13px; }
+.tip-panel .tip-meta { color: var(--muted); margin: 0; font-size: 11px; }
+.tip-panel .tip-flag {
+  display: inline-block; margin-top: 6px; padding: 1px 6px;
+  border-radius: 4px; background: var(--rail);
+  color: var(--muted); font-size: 10px; font-weight: 500;
+}
+.tip-accent {
+  width: 6px; height: 6px; border-radius: 50%; display: inline-block;
+  margin-right: 5px; vertical-align: middle;
+}
+.empty { padding: 24px 16px; color: var(--muted); font-size: 0.875rem; }
+.summary {
+  margin-top: 20px; display: grid; gap: 10px;
+  font-size: 12px; color: var(--muted);
+}
+.summary-row {
+  display: grid; grid-template-columns: auto auto 1fr; gap: 8px 12px;
+  align-items: baseline; padding-top: 8px; border-top: 1px solid var(--rail);
+}
+.summary-row:first-child { border-top: 0; padding-top: 0; }
+.summary-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 4px; }
+.summary-name { font-weight: 550; color: var(--ink); white-space: nowrap; }
+.summary-list {
+  margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 4px 12px;
+}
+.summary-list li { display: inline; }
+.summary-list .when { color: var(--muted); }
+.summary-list .tag {
+  font-size: 10px; color: var(--muted); margin-left: 2px;
+}
+footer { margin-top: 16px; font-size: 11px; color: var(--muted); }
+footer code {
+  font-size: 10px; background: transparent;
+  padding: 0; border-radius: 0;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Sample Project</div>
+    <h1>关键节点完成时点</h1>
+    <div class="legend">
+      <span><i class="swatch ring"></i>倒推</span>
+      <span><i class="swatch band spring"></i>春节停工</span>
+      <span><i class="swatch band labor"></i>五一 / 国庆</span>
+      <span><i class="anchor-swatch today"></i>今天</span>
+      <span><i class="anchor-swatch handover"></i>客户验收</span>
+    </div>
+  </header>
+  <div class="insights"><div class="kpi"><span><strong>4</strong> 包</span><span><strong>10</strong> 节点</span><span><strong>2</strong> 近30天</span><span class="kpi-warn"><strong>4</strong> 待看</span></div><section class="panel upcoming"><h2 class="panel-title">近 30 天完成</h2><ol class="panel-list"><li><span class="up-when">2026-09-08</span> 总包 · 隔墙隐蔽验收<span class="up-src">明示</span></li><li><span class="up-when">2026-09-17</span> 配电箱 · 到货验收<span class="up-src">倒推</span></li></ol></section><section class="panel attention"><h2 class="panel-title">待确认（倒推 / 对齐）</h2><ul class="panel-list att-review"><li class="att-item"><div class="att-head">配电箱 · 到货验收<span class="up-src">倒推 2026-09-17</span></div><div class="att-basis">配电箱为纯供应；无到货专行；下单「PAU/VRV/PDB」至 8/3，「配电箱安装」自 9/17 → 到货完成取 9/17</div></li><li class="att-item"><div class="att-head">BMS · 到货验收<span class="up-src">手工 2026-12-15</span></div><div class="att-basis">live-save-smoke</div><div class="att-risk">到货完成晚于安装完成：delivery 2026-12-15 &gt; install_complete 2026-11-21</div></li><li class="att-item"><div class="att-head">BMS · 最终验收<span class="up-src">对齐 2027-02-21</span></div><div class="att-basis">BMS 无独立验收行；包级验收对齐总包客户验收 2027-02-21（不以安装完成 11/21 提前当验收）</div></li><li class="att-item"><div class="att-head">家具 · 最终验收<span class="up-src">对齐 2027-02-21</span></div><div class="att-basis">家具包 100% 验收款：计划无家具独立验收行；对齐总包客户验收 2027-02-21（与家具安装完成 1/27 相差约三周，落在约一个月内）</div></li></ul></section></div>
+  <div class="toolbar" id="edit-toolbar">
+    <button type="button" class="primary" id="btn-save">保存</button>
+    <button type="button" id="btn-add">添加</button>
+    <button type="button" id="btn-del" disabled>删除</button>
+    <span class="dirty" id="dirty-flag" hidden>未保存</span>
+  </div>
+  <div class="sync-banner" id="sync-banner" role="status" aria-live="polite" hidden></div>
+  <div class="board" id="timeline-board" data-axis="{&quot;axis_start&quot;: &quot;2026-06-01&quot;, &quot;total_days&quot;: 272, &quot;track_w&quot;: 972}"><div class="scroller"><div class="grid" style="--months:9;--track-w:972px;--label-w:148px;--month-w:108px"><div class="head-label sticky-cell">采购包</div><div class="months-wrap" style="width:972px"><div class="holiday-layer"><div class="holiday-band national" style="left:44.444%;width:2.509%" data-tip="{&quot;kind&quot;: &quot;holiday&quot;, &quot;name&quot;: &quot;十一国庆&quot;, &quot;range&quot;: &quot;2026-10-01～2026-10-07&quot;, &quot;note&quot;: &quot;默认 10/1～10/7&quot;, &quot;color&quot;: &quot;#1e4d8c&quot;}" role="img" aria-label="十一国庆"><span class="holiday-label">国庆</span></div><div class="holiday-band spring" style="left:84.946%;width:11.879%" data-tip="{&quot;kind&quot;: &quot;holiday&quot;, &quot;name&quot;: &quot;春节停工&quot;, &quot;range&quot;: &quot;2027-01-21～2027-02-20&quot;, &quot;note&quot;: &quot;除夕前15天～正月十五（现场默认无人）&quot;, &quot;color&quot;: &quot;#b44830&quot;}" role="img" aria-label="春节停工"><span class="holiday-label">春节</span></div></div><div class="anchor-layer"><div class="anchor-mark today" style="left:35.185%" data-tip="{&quot;kind&quot;: &quot;anchor&quot;, &quot;anchor_kind&quot;: &quot;today&quot;, &quot;name&quot;: &quot;今天&quot;, &quot;range&quot;: &quot;2026-09-06&quot;, &quot;note&quot;: &quot;system&quot;}" role="img" aria-label="今天"><span class="anchor-label">今天</span></div><div class="anchor-mark handover" style="left:96.825%" data-tip="{&quot;kind&quot;: &quot;anchor&quot;, &quot;anchor_kind&quot;: &quot;handover&quot;, &quot;name&quot;: &quot;客户验收&quot;, &quot;range&quot;: &quot;2027-02-21&quot;, &quot;note&quot;: &quot;critical_nodes&quot;}" role="img" aria-label="客户验收"><span class="anchor-label">客户验收</span></div></div><div class="months"><div class="month"><span class="y">2026</span><span>6月</span><span class="thirds"><i></i><i></i><i></i></span></div><div class="month"><span class="y">2026</span><span>7月</span><span class="thirds"><i></i><i></i><i></i></span></div><div class="month"><span class="y">2026</span><span>8月</span><span class="thirds"><i></i><i></i><i></i></span></div><div class="month"><span class="y">2026</span><span>9月</span><span class="thirds"><i></i><i></i><i></i></span></div><div class="month"><span class="y">2026</span><span>10月</span><span class="thirds"><i></i><i></i><i></i></span></div><div class="month"><span class="y">2026</span><span>11月</span><span class="thirds"><i></i><i></i><i></i></span></div><div class="month"><span class="y">2026</span><span>12月</span><span class="thirds"><i></i><i></i><i></i></span></div><div class="month"><span class="y">2027</span><span>1月</span><span class="thirds"><i></i><i></i><i></i></span></div><div class="month"><span class="y">2027</span><span>2月</span><span class="thirds"><i></i><i></i><i></i></span></div></div></div><div class="pkg-label sticky-cell" data-package-name="总包" data-package-type="总包"><strong>总包</strong><small>总包</small></div><div class="track" data-package-name="总包" style="width:972px"><div class="holiday-layer"><div class="holiday-band national" style="left:44.444%;width:2.509%" data-tip="{&quot;kind&quot;: &quot;holiday&quot;, &quot;name&quot;: &quot;十一国庆&quot;, &quot;range&quot;: &quot;2026-10-01～2026-10-07&quot;, &quot;note&quot;: &quot;默认 10/1～10/7&quot;, &quot;color&quot;: &quot;#1e4d8c&quot;}" role="img" aria-label="十一国庆"></div><div class="holiday-band spring" style="left:84.946%;width:11.879%" data-tip="{&quot;kind&quot;: &quot;holiday&quot;, &quot;name&quot;: &quot;春节停工&quot;, &quot;range&quot;: &quot;2027-01-21～2027-02-20&quot;, &quot;note&quot;: &quot;除夕前15天～正月十五（现场默认无人）&quot;, &quot;color&quot;: &quot;#b44830&quot;}" role="img" aria-label="春节停工"></div></div><div class="anchor-layer"><div class="anchor-mark today" style="left:35.185%" data-tip="{&quot;kind&quot;: &quot;anchor&quot;, &quot;anchor_kind&quot;: &quot;today&quot;, &quot;name&quot;: &quot;今天&quot;, &quot;range&quot;: &quot;2026-09-06&quot;, &quot;note&quot;: &quot;system&quot;}" role="img" aria-label="今天"></div><div class="anchor-mark handover" style="left:96.825%" data-tip="{&quot;kind&quot;: &quot;anchor&quot;, &quot;anchor_kind&quot;: &quot;handover&quot;, &quot;name&quot;: &quot;客户验收&quot;, &quot;range&quot;: &quot;2027-02-21&quot;, &quot;note&quot;: &quot;critical_nodes&quot;}" role="img" aria-label="客户验收"></div></div><button type="button" class="node" style="left:9.191%;--node:#1e4d8c" data-tip="{&quot;ordinal&quot;: 1, &quot;package&quot;: &quot;总包（总包）&quot;, &quot;package_name&quot;: &quot;总包&quot;, &quot;package_type&quot;: &quot;总包&quot;, &quot;name&quot;: &quot;施工许可证获得&quot;, &quot;name_full&quot;: &quot;施工许可证获得 / Obtain permit&quot;, &quot;axis_label&quot;: &quot;许可&quot;, &quot;node_code&quot;: &quot;gc_milestone&quot;, &quot;decade&quot;: &quot;2026年6月下旬&quot;, &quot;end&quot;: &quot;2026-06-26&quot;, &quot;source&quot;: &quot;计划明示&quot;, &quot;needs_confirm&quot;: false, &quot;basis&quot;: &quot;总包节点：计划行「Obtain permit 施工许可证获得」2026-06-26&quot;, &quot;color&quot;: &quot;#1e4d8c&quot;, &quot;cn_index&quot;: 5}" data-cn-index="5" data-package="总包" aria-label="施工许可证获得"><span class="node-text">许可</span></button><button type="button" class="node" style="left:36.397%;--node:#1e4d8c" data-tip="{&quot;ordinal&quot;: 2, &quot;package&quot;: &quot;总包（总包）&quot;, &quot;package_name&quot;: &quot;总包&quot;, &quot;package_type&quot;: &quot;总包&quot;, &quot;name&quot;: &quot;隔墙隐蔽验收&quot;, &quot;name_full&quot;: &quot;隔墙隐蔽验收 / Wall Cover-Up Inspection&quot;, &quot;axis_label&quot;: &quot;隔墙&quot;, &quot;node_code&quot;: &quot;gc_milestone&quot;, &quot;decade&quot;: &quot;2026年9月上旬&quot;, &quot;end&quot;: &quot;2026-09-08&quot;, &quot;source&quot;: &quot;计划明示&quot;, &quot;needs_confirm&quot;: false, &quot;basis&quot;: &quot;总包节点：计划行「隔墙隐蔽验收 Wall Cover-Up Inspection」结束日 2026-09-08&quot;, &quot;color&quot;: &quot;#1e4d8c&quot;, &quot;cn_index&quot;: 6}" data-cn-index="6" data-package="总包" aria-label="隔墙隐蔽验收"><span class="node-text">隔墙</span></button><button type="button" class="node" style="left:66.544%;--node:#1e4d8c" data-tip="{&quot;ordinal&quot;: 3, &quot;package&quot;: &quot;总包（总包）&quot;, &quot;package_name&quot;: &quot;总包&quot;, &quot;package_type&quot;: &quot;总包&quot;, &quot;name&quot;: &quot;吊顶隐蔽验收&quot;, &quot;name_full&quot;: &quot;吊顶隐蔽验收 / Ceiling Cover-Up Inspection&quot;, &quot;axis_label&quot;: &quot;吊顶&quot;, &quot;node_code&quot;: &quot;gc_milestone&quot;, &quot;decade&quot;: &quot;2026年11月下旬&quot;, &quot;end&quot;: &quot;2026-11-29&quot;, &quot;source&quot;: &quot;计划明示&quot;, &quot;needs_confirm&quot;: false, &quot;basis&quot;: &quot;总包节点：计划行「吊顶隐蔽验收 Ceiling Cover-Up Inspection」结束日 2026-11-29&quot;, &quot;color&quot;: &quot;#1e4d8c&quot;, &quot;cn_index&quot;: 7}" data-cn-index="7" data-package="总包" aria-label="吊顶隐蔽验收"><span class="node-text">吊顶</span></button><button type="button" class="node" style="left:97.426%;--node:#1e4d8c" data-tip="{&quot;ordinal&quot;: 4, &quot;package&quot;: &quot;总包（总包）&quot;, &quot;package_name&quot;: &quot;总包&quot;, &quot;package_type&quot;: &quot;总包&quot;, &quot;name&quot;: &quot;客户验收&quot;, &quot;name_full&quot;: &quot;客户验收 / Client final acceptance&quot;, &quot;axis_label&quot;: &quot;验收&quot;, &quot;node_code&quot;: &quot;project_handover&quot;, &quot;decade&quot;: &quot;2027年2月下旬&quot;, &quot;end&quot;: &quot;2027-02-21&quot;, &quot;source&quot;: &quot;计划明示&quot;, &quot;needs_confirm&quot;: false, &quot;basis&quot;: &quot;总包节点：计划行「客户验收（Client final acceptance）」2027-02-21；各分包验收请款默认对齐前后&quot;, &quot;color&quot;: &quot;#1e4d8c&quot;, &quot;cn_index&quot;: 4}" data-cn-index="4" data-package="总包" aria-label="客户验收"><span class="node-text">验收</span></button></div><div class="pkg-label sticky-cell" data-package-name="BMS" data-package-type="供装"><strong>BMS</strong><small>供装</small></div><div class="track" data-package-name="BMS" style="width:972px"><div class="holiday-layer"><div class="holiday-band national" style="left:44.444%;width:2.509%" data-tip="{&quot;kind&quot;: &quot;holiday&quot;, &quot;name&quot;: &quot;十一国庆&quot;, &quot;range&quot;: &quot;2026-10-01～2026-10-07&quot;, &quot;note&quot;: &quot;默认 10/1～10/7&quot;, &quot;color&quot;: &quot;#1e4d8c&quot;}" role="img" aria-label="十一国庆"></div><div class="holiday-band spring" style="left:84.946%;width:11.879%" data-tip="{&quot;kind&quot;: &quot;holiday&quot;, &quot;name&quot;: &quot;春节停工&quot;, &quot;range&quot;: &quot;2027-01-21～2027-02-20&quot;, &quot;note&quot;: &quot;除夕前15天～正月十五（现场默认无人）&quot;, &quot;color&quot;: &quot;#b44830&quot;}" role="img" aria-label="春节停工"></div></div><div class="anchor-layer"><div class="anchor-mark today" style="left:35.185%" data-tip="{&quot;kind&quot;: &quot;anchor&quot;, &quot;anchor_kind&quot;: &quot;today&quot;, &quot;name&quot;: &quot;今天&quot;, &quot;range&quot;: &quot;2026-09-06&quot;, &quot;note&quot;: &quot;system&quot;}" role="img" aria-label="今天"></div><div class="anchor-mark handover" style="left:96.825%" data-tip="{&quot;kind&quot;: &quot;anchor&quot;, &quot;anchor_kind&quot;: &quot;handover&quot;, &quot;name&quot;: &quot;客户验收&quot;, &quot;range&quot;: &quot;2027-02-21&quot;, &quot;note&quot;: &quot;critical_nodes&quot;}" role="img" aria-label="客户验收"></div></div><button type="button" class="node" style="left:63.603%;--node:#0d7377" data-tip="{&quot;ordinal&quot;: 1, &quot;package&quot;: &quot;BMS（供装）&quot;, &quot;package_name&quot;: &quot;BMS&quot;, &quot;package_type&quot;: &quot;供装&quot;, &quot;name&quot;: &quot;安装完成&quot;, &quot;name_full&quot;: &quot;安装完成 / Installation Complete&quot;, &quot;axis_label&quot;: &quot;安装&quot;, &quot;node_code&quot;: &quot;install_complete&quot;, &quot;decade&quot;: &quot;2026年11月下旬&quot;, &quot;end&quot;: &quot;2026-11-21&quot;, &quot;source&quot;: &quot;计划明示&quot;, &quot;needs_confirm&quot;: false, &quot;basis&quot;: &quot;楼宇自控「设备安装」结束日 2026-11-21&quot;, &quot;color&quot;: &quot;#0d7377&quot;, &quot;cn_index&quot;: 1}" data-cn-index="1" data-package="BMS" aria-label="安装完成"><span class="node-text">安装</span></button><button type="button" class="node manual" style="left:72.426%;--node:#0d7377" data-tip="{&quot;ordinal&quot;: 2, &quot;package&quot;: &quot;BMS（供装）&quot;, &quot;package_name&quot;: &quot;BMS&quot;, &quot;package_type&quot;: &quot;供装&quot;, &quot;name&quot;: &quot;到货验收&quot;, &quot;name_full&quot;: &quot;到货验收 / Delivery / Arrival Acceptance&quot;, &quot;axis_label&quot;: &quot;到货&quot;, &quot;node_code&quot;: &quot;delivery&quot;, &quot;decade&quot;: &quot;2026年12月中旬&quot;, &quot;end&quot;: &quot;2026-12-15&quot;, &quot;source&quot;: &quot;手工调整&quot;, &quot;needs_confirm&quot;: true, &quot;basis&quot;: &quot;live-save-smoke&quot;, &quot;color&quot;: &quot;#0d7377&quot;, &quot;cn_index&quot;: 0}" data-cn-index="0" data-package="BMS" aria-label="到货验收"><span class="node-text">到货</span></button><button type="button" class="node" style="left:97.426%;--node:#0d7377" data-tip="{&quot;ordinal&quot;: 3, &quot;package&quot;: &quot;BMS（供装）&quot;, &quot;package_name&quot;: &quot;BMS&quot;, &quot;package_type&quot;: &quot;供装&quot;, &quot;name&quot;: &quot;最终验收&quot;, &quot;name_full&quot;: &quot;最终验收 / Final Acceptance&quot;, &quot;axis_label&quot;: &quot;终验&quot;, &quot;node_code&quot;: &quot;final_accept&quot;, &quot;decade&quot;: &quot;2027年2月下旬&quot;, &quot;end&quot;: &quot;2027-02-21&quot;, &quot;source&quot;: &quot;对齐&quot;, &quot;needs_confirm&quot;: false, &quot;basis&quot;: &quot;BMS 无独立验收行；包级验收对齐总包客户验收 2027-02-21（不以安装完成 11/21 提前当验收）&quot;, &quot;color&quot;: &quot;#0d7377&quot;, &quot;cn_index&quot;: 2}" data-cn-index="2" data-package="BMS" aria-label="最终验收"><span class="node-text">终验</span></button></div><div class="pkg-label sticky-cell" data-package-name="家具" data-package-type="供装"><strong>家具</strong><small>供装</small></div><div class="track" data-package-name="家具" style="width:972px"><div class="holiday-layer"><div class="holiday-band national" style="left:44.444%;width:2.509%" data-tip="{&quot;kind&quot;: &quot;holiday&quot;, &quot;name&quot;: &quot;十一国庆&quot;, &quot;range&quot;: &quot;2026-10-01～2026-10-07&quot;, &quot;note&quot;: &quot;默认 10/1～10/7&quot;, &quot;color&quot;: &quot;#1e4d8c&quot;}" role="img" aria-label="十一国庆"></div><div class="holiday-band spring" style="left:84.946%;width:11.879%" data-tip="{&quot;kind&quot;: &quot;holiday&quot;, &quot;name&quot;: &quot;春节停工&quot;, &quot;range&quot;: &quot;2027-01-21～2027-02-20&quot;, &quot;note&quot;: &quot;除夕前15天～正月十五（现场默认无人）&quot;, &quot;color&quot;: &quot;#b44830&quot;}" role="img" aria-label="春节停工"></div></div><div class="anchor-layer"><div class="anchor-mark today" style="left:35.185%" data-tip="{&quot;kind&quot;: &quot;anchor&quot;, &quot;anchor_kind&quot;: &quot;today&quot;, &quot;name&quot;: &quot;今天&quot;, &quot;range&quot;: &quot;2026-09-06&quot;, &quot;note&quot;: &quot;system&quot;}" role="img" aria-label="今天"></div><div class="anchor-mark handover" style="left:96.825%" data-tip="{&quot;kind&quot;: &quot;anchor&quot;, &quot;anchor_kind&quot;: &quot;handover&quot;, &quot;name&quot;: &quot;客户验收&quot;, &quot;range&quot;: &quot;2027-02-21&quot;, &quot;note&quot;: &quot;critical_nodes&quot;}" role="img" aria-label="客户验收"></div></div><button type="button" class="node" style="left:97.426%;--node:#c45d26" data-tip="{&quot;ordinal&quot;: 1, &quot;package&quot;: &quot;家具（供装）&quot;, &quot;package_name&quot;: &quot;家具&quot;, &quot;package_type&quot;: &quot;供装&quot;, &quot;name&quot;: &quot;最终验收&quot;, &quot;name_full&quot;: &quot;最终验收 / Final Acceptance&quot;, &quot;axis_label&quot;: &quot;终验&quot;, &quot;node_code&quot;: &quot;final_accept&quot;, &quot;decade&quot;: &quot;2027年2月下旬&quot;, &quot;end&quot;: &quot;2027-02-21&quot;, &quot;source&quot;: &quot;对齐&quot;, &quot;needs_confirm&quot;: false, &quot;basis&quot;: &quot;家具包 100% 验收款：计划无家具独立验收行；对齐总包客户验收 2027-02-21（与家具安装完成 1/27 相差约三周，落在约一个月内）&quot;, &quot;color&quot;: &quot;#c45d26&quot;, &quot;cn_index&quot;: 3}" data-cn-index="3" data-package="家具" aria-label="最终验收"><span class="node-text">终验</span></button></div><div class="pkg-label sticky-cell" data-package-name="配电箱" data-package-type="供应"><strong>配电箱</strong><small>供应</small></div><div class="track" data-package-name="配电箱" style="width:972px"><div class="holiday-layer"><div class="holiday-band national" style="left:44.444%;width:2.509%" data-tip="{&quot;kind&quot;: &quot;holiday&quot;, &quot;name&quot;: &quot;十一国庆&quot;, &quot;range&quot;: &quot;2026-10-01～2026-10-07&quot;, &quot;note&quot;: &quot;默认 10/1～10/7&quot;, &quot;color&quot;: &quot;#1e4d8c&quot;}" role="img" aria-label="十一国庆"></div><div class="holiday-band spring" style="left:84.946%;width:11.879%" data-tip="{&quot;kind&quot;: &quot;holiday&quot;, &quot;name&quot;: &quot;春节停工&quot;, &quot;range&quot;: &quot;2027-01-21～2027-02-20&quot;, &quot;note&quot;: &quot;除夕前15天～正月十五（现场默认无人）&quot;, &quot;color&quot;: &quot;#b44830&quot;}" role="img" aria-label="春节停工"></div></div><div class="anchor-layer"><div class="anchor-mark today" style="left:35.185%" data-tip="{&quot;kind&quot;: &quot;anchor&quot;, &quot;anchor_kind&quot;: &quot;today&quot;, &quot;name&quot;: &quot;今天&quot;, &quot;range&quot;: &quot;2026-09-06&quot;, &quot;note&quot;: &quot;system&quot;}" role="img" aria-label="今天"></div><div class="anchor-mark handover" style="left:96.825%" data-tip="{&quot;kind&quot;: &quot;anchor&quot;, &quot;anchor_kind&quot;: &quot;handover&quot;, &quot;name&quot;: &quot;客户验收&quot;, &quot;range&quot;: &quot;2027-02-21&quot;, &quot;note&quot;: &quot;critical_nodes&quot;}" role="img" aria-label="客户验收"></div></div><button type="button" class="node inferred" style="left:39.706%;--node:#2f6b3a" data-tip="{&quot;ordinal&quot;: 1, &quot;package&quot;: &quot;配电箱（供应）&quot;, &quot;package_name&quot;: &quot;配电箱&quot;, &quot;package_type&quot;: &quot;供应&quot;, &quot;name&quot;: &quot;到货验收&quot;, &quot;name_full&quot;: &quot;到货验收 / Delivery / Arrival Acceptance&quot;, &quot;axis_label&quot;: &quot;到货&quot;, &quot;node_code&quot;: &quot;delivery&quot;, &quot;decade&quot;: &quot;2026年9月中旬&quot;, &quot;end&quot;: &quot;2026-09-17&quot;, &quot;source&quot;: &quot;倒推&quot;, &quot;needs_confirm&quot;: false, &quot;basis&quot;: &quot;配电箱为纯供应；无到货专行；下单「PAU/VRV/PDB」至 8/3，「配电箱安装」自 9/17 → 到货完成取 9/17&quot;, &quot;color&quot;: &quot;#2f6b3a&quot;, &quot;cn_index&quot;: 8}" data-cn-index="8" data-package="配电箱" aria-label="到货验收"><span class="node-text">到货</span></button><button type="button" class="node" style="left:55.147%;--node:#2f6b3a" data-tip="{&quot;ordinal&quot;: 2, &quot;package&quot;: &quot;配电箱（供应）&quot;, &quot;package_name&quot;: &quot;配电箱&quot;, &quot;package_type&quot;: &quot;供应&quot;, &quot;name&quot;: &quot;调试完成&quot;, &quot;name_full&quot;: &quot;调试 / Commissioning&quot;, &quot;axis_label&quot;: &quot;调试&quot;, &quot;node_code&quot;: &quot;commissioning&quot;, &quot;decade&quot;: &quot;2026年10月下旬&quot;, &quot;end&quot;: &quot;2026-10-29&quot;, &quot;source&quot;: &quot;计划明示&quot;, &quot;needs_confirm&quot;: false, &quot;basis&quot;: &quot;「配电箱功能测试 PDB functional test」结束日 2026-10-29（供应包但计划有调试/测试，按请款需要保留）&quot;, &quot;color&quot;: &quot;#2f6b3a&quot;, &quot;cn_index&quot;: 9}" data-cn-index="9" data-package="配电箱" aria-label="调试完成"><span class="node-text">调试</span></button></div></div></div></div>
+  <div class="summary"><div class="summary-row"><span class="summary-dot" style="background:#1e4d8c"></span><span class="summary-name">总包</span><ol class="summary-list"><li>施工许可证获得 <span class="when">2026年6月下旬</span></li><li>隔墙隐蔽验收 <span class="when">2026年9月上旬</span></li><li>吊顶隐蔽验收 <span class="when">2026年11月下旬</span></li><li>客户验收 <span class="when">2027年2月下旬</span></li></ol></div><div class="summary-row"><span class="summary-dot" style="background:#0d7377"></span><span class="summary-name">BMS</span><ol class="summary-list"><li>安装完成 <span class="when">2026年11月下旬</span></li><li>到货验收 <span class="when">2026年12月中旬</span><span class="tag">手工</span><span class="tag warn">?</span></li><li>最终验收 <span class="when">2027年2月下旬</span><span class="tag">对齐</span></li></ol></div><div class="summary-row"><span class="summary-dot" style="background:#c45d26"></span><span class="summary-name">家具</span><ol class="summary-list"><li>最终验收 <span class="when">2027年2月下旬</span><span class="tag">对齐</span></li></ol></div><div class="summary-row"><span class="summary-dot" style="background:#2f6b3a"></span><span class="summary-name">配电箱</span><ol class="summary-list"><li>到货验收 <span class="when">2026年9月中旬</span><span class="tag">倒推</span></li><li>调试完成 <span class="when">2026年10月下旬</span></li></ol></div></div>
+  <footer>
+    2026-08-09T16:21:21+08:00 · <code>项目档案/00_进度计划/SARL Ph1 Refresh Project - Master Schedule 260519_schedule.csv</code>
+  </footer>
+</div>
+<div id="tip-panel" class="tip-panel" role="tooltip" hidden></div>
+<div class="modal-backdrop" id="add-modal" hidden>
+  <div class="modal" role="dialog" aria-labelledby="add-title">
+    <h3 id="add-title">添加关键节点</h3>
+    <label for="add-pkg">采购包</label>
+    <select id="add-pkg"></select>
+    <label for="add-code">节点类型</label>
+    <select id="add-code">
+      <option value="delivery">到货</option>
+      <option value="site_access">进场</option>
+      <option value="install_complete">安装完成</option>
+      <option value="commissioning">调试</option>
+      <option value="prelim_accept">初步验收</option>
+      <option value="final_accept">最终验收</option>
+      <option value="gc_milestone">总包里程碑</option>
+      <option value="project_handover">移交/客户验收</option>
+    </select>
+    <label for="add-name">名称</label>
+    <input id="add-name" type="text" placeholder="名称"/>
+    <div class="actions">
+      <button type="button" id="add-cancel">取消</button>
+      <button type="button" class="primary" id="add-ok">添加</button>
+    </div>
+  </div>
+</div>
+<script type="application/json" id="schedule-data">{"milestones": [{"name": "Apple SARL Ph1 Refresh Project", "date": "2026-05-14", "end_date": "2027-03-11"}, {"name": "Design", "date": "2026-05-14", "end_date": "2026-06-23"}, {"name": "100% SD Issurance 100%方案图纸发出", "date": "2026-05-14"}, {"name": "DD Development by Infinity 施工图纸制作", "date": "2026-05-15", "end_date": "2026-06-02"}, {"name": "DD Submission 施工图纸提交", "date": "2026-06-02"}, {"name": "DD review 施工图纸审核", "date": "2026-06-02", "end_date": "2026-06-09"}, {"name": "DD Final Approval 施工图最终批复", "date": "2026-06-23"}, {"name": "Government Submission 政府报批", "date": "2026-05-19", "end_date": "2026-06-26"}, {"name": "Preparaton of submission documents 报批文件准备", "date": "2026-05-19", "end_date": "2026-06-09"}, {"name": "Submission and review process 报审流程", "date": "2026-06-09", "end_date": "2026-06-23"}, {"name": "Obtain permit 施工许可证获得", "date": "2026-06-26"}, {"name": "Procurement", "date": "2026-05-26", "end_date": "2026-08-18"}, {"name": "GC quotation approval 总包报价确认", "date": "2026-05-26"}, {"name": "Contract process合同流程", "date": "2026-05-26", "end_date": "2026-06-09"}, {"name": "PO Issurance 发出订单", "date": "2026-06-23"}, {"name": "Long lead time materials submission 长货期材料报批", "date": "2026-06-02", "end_date": "2026-06-16"}, {"name": "Long lead time materials approval 长货期材料批复", "date": "2026-06-16", "end_date": "2026-06-19"}, {"name": "Long lead time materials place order 长货期材料下单", "date": "2026-06-19", "end_date": "2026-08-18"}, {"name": "Built in furniture 固定家具", "date": "2026-06-19", "end_date": "2026-07-19"}, {"name": "Wooden floor 木地板", "date": "2026-06-19", "end_date": "2026-08-18"}, {"name": "Fabric 包布", "date": "2026-06-19", "end_date": "2026-08-03"}, {"name": "Artifical leather 皮革", "date": "2026-06-19", "end_date": "2026-08-03"}, {"name": "PAU/VRV/PDB 机电设备", "date": "2026-06-19", "end_date": "2026-08-03"}, {"name": "Direct trades-By Apple Place Order", "date": "2026-06-19", "end_date": "2026-07-03"}, {"name": "JEB 系统隔断", "date": "2026-06-19", "end_date": "2026-07-03"}, {"name": "Carpet 地毯", "date": "2026-06-19", "end_date": "2026-07-03"}, {"name": "Lighting fixtures 灯具", "date": "2026-06-19", "end_date": "2026-07-03"}, {"name": "Lighting control system 灯控系统", "date": "2026-06-19", "end_date": "2026-07-03"}, {"name": "Kvadrat system", "date": "2026-06-19", "end_date": "2026-07-03"}, {"name": "A/V works 视频视讯", "date": "2026-06-19", "end_date": "2026-07-03"}, {"name": "IS&T works 综合布线", "date": "2026-06-19", "end_date": "2026-07-03"}, {"name": "Security works 安防", "date": "2026-06-19", "end_date": "2026-07-03"}, {"name": "Construction", "date": "2026-06-27", "end_date": "2027-02-14"}, {"name": "Hoarding installation 临时围挡安装", "date": "2026-06-27", "end_date": "2026-07-04"}, {"name": "Site protection  and demolition works 现场保护和拆除", "date": "2026-07-04", "end_date": "2026-07-11"}, {"name": "Site Investigation 现场隐蔽工程勘查及图纸调整", "date": "2026-07-11", "end_date": "2026-07-25"}, {"name": "AV system demolition AV系统拆除", "date": "2026-07-11", "end_date": "2026-07-18"}, {"name": "Security system demolition 安防系统拆除", "date": "2026-07-11", "end_date": "2026-07-18"}, {"name": "IT system demolition 弱电系统拆除", "date": "2026-07-11", "end_date": "2026-07-18"}, {"name": "Floor Setting -out 现场放线  （与勘察及图纸调整同时完成）", "date": "2026-07-18", "end_date": "2026-07-25"}, {"name": "Floor Setting -out confirmation现场验线及调整确认", "date": "2026-07-25", "end_date": "2026-07-28"}, {"name": "HVAC Works 暖通工作", "date": "2026-07-25", "end_date": "2026-12-30"}, {"name": "VRV units installation VRV室内机安装", "date": "2026-09-17", "end_date": "2026-10-08"}, {"name": "Outdoor equipment foundation installation 室外设备基础安装", "date": "2026-07-26", "end_date": "2026-08-25"}, {"name": "PAU installation 新风机组安装", "date": "2026-09-17", "end_date": "2026-10-08"}, {"name": "VRV outdoor Installation VRV室外主机安装", "date": "2026-09-17", "end_date": "2026-10-08"}, {"name": "EAF installation 排风机安装", "date": "2026-10-01", "end_date": "2026-10-08"}, {"name": "Air duct installation 风管安装", "date": "2026-07-25", "end_date": "2026-10-08"}, {"name": "Water pipe installation 水管安装", "date": "2026-07-25", "end_date": "2026-10-08"}, {"name": "Insulation Works 保温施工", "date": "2026-10-08", "end_date": "2026-11-22"}, {"name": "Air outlet connection installation 风口下接安装", "date": "2026-10-08", "end_date": "2026-10-22"}, {"name": "Air outlet installation 风口安装", "date": "2026-10-22", "end_date": "2026-11-05"}, {"name": "Thermostat Installation 温控器安装", "date": "2026-11-05", "end_date": "2026-11-15"}, {"name": "T&C 测试和调试", "date": "2026-11-15", "end_date": "2026-12-30"}, {"name": "Electrical Works 电气工作", "date": "2026-07-25", "end_date": "2027-01-10"}, {"name": "强电桥架安装 Trunking", "date": "2026-07-25", "end_date": "2026-09-23"}, {"name": "线管安装 Conduit installation", "date": "2026-08-09", "end_date": "2026-10-08"}, {"name": "线缆安装  Power cable installation", "date": "2026-10-08", "end_date": "2026-10-29"}, {"name": "灯控系统安装 Lighting control system installation", "date": "2026-10-08", "end_date": "2026-10-29"}, {"name": "系统家具强电布线 System furniture power cabling", "date": "2026-10-29", "end_date": "2026-11-19"}, {"name": "配电箱安装 Power distribution box installation", "date": "2026-09-17", "end_date": "2026-10-01"}, {"name": "绝缘测试  Isloation test", "date": "2026-10-01", "end_date": "2026-10-15"}, {"name": "配电箱功能测试 PDB functional test", "date": "2026-10-15", "end_date": "2026-10-29"}, {"name": "接入正式电Permanent power connection", "date": "2026-11-28"}, {"name": "灯具安装 Lighting fixture installation", "date": "2026-12-27", "end_date": "2027-01-10"}, {"name": "开关插座安装 Switches and socket installation", "date": "2026-11-10", "end_date": "2026-11-24"}, {"name": "灯控系统调试 Lighting control system T&C", "date": "2026-11-24", "end_date": "2026-12-08"}, {"name": "FS Works 消防工作", "date": "2026-07-25", "end_date": "2026-10-21"}, {"name": "消防管道安装 Installation Fire Service pipes", "date": "2026-07-25", "end_date": "2026-09-23"}, {"name": "烟感管线Conduit& wiring for  smoking detector", "date": "2026-08-09", "end_date": "2026-08-30"}, {"name": "喷淋头安装 Sprinkler installation", "date": "2026-09-23", "end_date": "2026-10-14"}, {"name": "压力检测Pressure test", "date": "2026-10-14", "end_date": "2026-10-21"}, {"name": "移位手动报警按钮Relocate fire alarm button", "date": "2026-08-30", "end_date": "2026-09-06"}, {"name": "移位及增加消防广播Relocate or addition fire boardcast system", "date": "2026-09-06", "end_date": "2026-09-13"}, {"name": "烟感探头安装Smoking detector installation", "date": "2026-08-30", "end_date": "2026-09-13"}, {"name": "PD Works 给排水工作", "date": "2026-07-25", "end_date": "2027-02-13"}, {"name": "管道铺设 Install the pipe", "date": "2026-07-25", "end_date": "2026-09-23"}, {"name": "压力检测Pressure test", "date": "2026-09-30", "end_date": "2026-10-07"}, {"name": "洁具安装 Santary ware installation", "date": "2026-12-11", "end_date": "2026-12-25"}, {"name": "ZIP直饮水机安装 ZIP installation", "date": "2027-01-24", "end_date": "2027-01-30"}, {"name": "测试调试 T&C", "date": "2027-01-30", "end_date": "2027-02-13"}, {"name": "Partition Works 隔墙工作", "date": "2026-07-28", "end_date": "2027-01-24"}, {"name": "石膏板隔墙轻钢龙骨安装 Stud metal for gypsum board", "date": "2026-07-28", "end_date": "2026-08-11"}, {"name": "封单面石膏板 Apply single side of gypsum board", "date": "2026-08-11", "end_date": "2026-08-25"}, {"name": "墙内管线安装 conduit and pipe installation in partition", "date": "2026-08-11", "end_date": "2026-08-25"}, {"name": "隔音棉安装 Insulation installation", "date": "2026-08-25", "end_date": "2026-09-01"}, {"name": "隔墙隐蔽验收Wall Cover-Up Inspection", "date": "2026-09-01", "end_date": "2026-09-08"}, {"name": "封另一面石膏板 Apply another side of gypsum board", "date": "2026-09-08", "end_date": "2026-09-22"}, {"name": "踢脚线安装 Skirt installation", "date": "2026-09-22", "end_date": "2026-10-06"}, {"name": "墙面批嵌 Wall plastering", "date": "2026-09-22", "end_date": "2026-10-20"}, {"name": "批灰打磨 Wall Polishing", "date": "2026-10-20", "end_date": "2026-10-27"}, {"name": "假天花内隔墙封堵", "date": "2026-10-08", "end_date": "2026-10-22"}, {"name": "系统隔断安装 system partition installation", "date": "2026-09-22", "end_date": "2026-10-20"}, {"name": "墙面刷乳胶漆 Emulsion paint", "date": "2026-10-27", "end_date": "2026-11-10"}, {"name": "墙饰面安装 Wall finish installation", "date": "2026-12-27", "end_date": "2027-01-24"}, {"name": "天花工程 Ceiling Works", "date": "2026-10-09", "end_date": "2027-01-17"}, {"name": "石膏板天花龙骨安装 Metal keel for ceiling", "date": "2026-10-09", "end_date": "2026-10-30"}, {"name": "包布天花方钢基础Kvdrat sofecell base structure installation", "date": "2026-10-09", "end_date": "2026-10-30"}, {"name": "吊顶隐蔽验收Ceiling Cover-Up Inspection", "date": "2026-11-22", "end_date": "2026-11-29"}, {"name": "石膏板安装 Gypsum installation", "date": "2026-11-29", "end_date": "2026-12-13"}, {"name": "石膏板天花批嵌 Plastering and paining", "date": "2026-12-13", "end_date": "2026-12-27"}, {"name": "天花刷乳胶漆 Emulsion paint", "date": "2026-12-27", "end_date": "2027-01-10"}, {"name": "各种天花板安装 All kinds of Ceiling panel Installation", "date": "2026-12-27", "end_date": "2027-01-17"}, {"name": "地面工程 Floor Works", "date": "2026-07-25", "end_date": "2027-01-25"}, {"name": "地面基层处理 Ground base treatment", "date": "2026-07-25", "end_date": "2026-08-15"}, {"name": "地面排水管安装Floor Drainage Pipe Installation", "date": "2026-08-15", "end_date": "2026-08-29"}, {"name": "地面防水施工Ground waterproofing construction", "date": "2026-08-29", "end_date": "2026-09-12"}, {"name": "高架地板安装及调平 install and adjust raised floor", "date": "2026-12-27", "end_date": "2027-01-04"}, {"name": "地板安装 wood floor installation", "date": "2027-01-04", "end_date": "2027-01-25"}, {"name": "地毯安装 Carpet installation", "date": "2027-01-11", "end_date": "2027-01-14"}, {"name": "门窗工程 Doors and Windows", "date": "2026-10-27", "end_date": "2026-12-11"}, {"name": "门框，门扇安装 Door frame& leaf installation", "date": "2026-10-27", "end_date": "2026-11-26"}, {"name": "五金安装hardware installation", "date": "2026-11-26", "end_date": "2026-12-11"}, {"name": "家具安装工程 Furniture installation works", "date": "2026-11-11", "end_date": "2027-01-27"}, {"name": "固定家具 Bulid-in furture", "date": "2026-11-11", "end_date": "2026-12-11"}, {"name": "系统家具 System furniture", "date": "2027-01-14", "end_date": "2027-01-24"}, {"name": "活动家具  Loose furniture", "date": "2027-01-24", "end_date": "2027-01-27"}, {"name": "弱电工程 IT Works", "date": "2026-10-08", "end_date": "2026-11-24"}, {"name": "天花、墙面布线 cabling installation", "date": "2026-10-08", "end_date": "2026-10-29"}, {"name": "面板安装 outlet panel installation", "date": "2026-11-10", "end_date": "2026-11-24"}, {"name": "楼宇自控工程 BMS works", "date": "2026-10-09", "end_date": "2026-11-21"}, {"name": "穿线工作 Wiring works", "date": "2026-10-09", "end_date": "2026-10-30"}, {"name": "设备安装 equipment and device installation", "date": "2026-10-31", "end_date": "2026-11-21"}, {"name": "视频视讯工程 AV Works", "date": "2026-10-08", "end_date": "2027-02-14"}, {"name": "天花墙面布线 Cabling", "date": "2026-10-08", "end_date": "2026-10-29"}, {"name": "设备安装 Equipment Installation", "date": "2027-01-24", "end_date": "2027-02-14"}, {"name": "安保工程 Security  Works", "date": "2026-10-08", "end_date": "2027-02-12"}, {"name": "天花墙面布线  Cabling", "date": "2026-10-08", "end_date": "2026-10-29"}, {"name": "设备安装equipment installation", "date": "2026-10-29", "end_date": "2026-11-19"}, {"name": "安防系统调试 Security system test", "date": "2026-12-30", "end_date": "2027-01-29"}, {"name": "安防系统验收 Security system acceptance inspection", "date": "2027-01-29", "end_date": "2027-02-12"}, {"name": "开业前送审 Submission & Approval Before Opening", "date": "2027-01-24", "end_date": "2027-03-02"}, {"name": "竣工送审和获得批文 CCAIR Submission& approval", "date": "2027-01-24", "end_date": "2027-02-23"}, {"name": "获取竣工验收批文 Obtain Completion Certificate", "date": "2027-03-02"}, {"name": "验收工程 Inspection", "date": "2027-01-14", "end_date": "2027-03-11"}, {"name": "总包自检并整改 GC Self Inspection", "date": "2027-01-14", "end_date": "2027-01-19"}, {"name": "业主初验 Client Completion Inspection", "date": "2027-01-19"}, {"name": "春节放假 CNY shutdown", "date": "2027-01-30", "end_date": "2027-02-14"}, {"name": "缺陷修补 Defects Rectification", "date": "2027-01-19", "end_date": "2027-01-24"}, {"name": "精细保洁 deep cleaning", "date": "2027-02-14", "end_date": "2027-02-21"}, {"name": "客户验收（Client final acceptance）", "date": "2027-02-21"}, {"name": "基本完工 Substantial Completion", "date": "2027-02-21"}, {"name": "空气处理 IAQ  purified", "date": "2027-01-19", "end_date": "2027-02-18"}, {"name": "空气质量检测 IAQ test", "date": "2027-02-18", "end_date": "2027-03-11"}, {"name": "水质测试 water test", "date": "2027-02-25", "end_date": "2027-03-11"}, {"name": "培训和移交用户 Training& Handover to FM", "date": "2027-01-19", "end_date": "2027-02-28"}, {"name": "测试报告完成并签字", "date": "2027-03-11"}, {"name": "最终完工Final completion", "date": "2027-03-11"}, {"name": "现场具备搬家条件 Site Ready for Client Go Live", "date": "2027-03-11"}], "critical_nodes": [{"node_code": "delivery", "name": "到货验收 / Delivery / Arrival Acceptance", "name_zh": "到货验收", "name_en": "Delivery / Arrival Acceptance", "window_start": "2026-10-09", "window_end": "2026-12-15", "source": "manual", "confidence": 0.62, "needs_confirm": true, "basis": "live-save-smoke", "package_name": "BMS", "package_type": "供装", "risks": ["到货完成晚于安装完成：delivery 2026-12-15 > install_complete 2026-11-21"]}, {"node_code": "install_complete", "name": "安装完成 / Installation Complete", "name_zh": "安装完成", "name_en": "Installation Complete", "window_start": "2026-10-31", "window_end": "2026-11-21", "source": "explicit", "confidence": 0.92, "basis": "楼宇自控「设备安装」结束日 2026-11-21", "package_name": "BMS", "package_type": "供装", "risks": ["完成日顺序冲突：install_complete 2026-11-21 早于 delivery 2026-12-15"]}, {"node_code": "final_accept", "name": "最终验收 / Final Acceptance", "name_zh": "最终验收", "name_en": "Final Acceptance", "window_start": "2027-02-21", "window_end": "2027-02-21", "source": "aligned", "confidence": 0.82, "basis": "BMS 无独立验收行；包级验收对齐总包客户验收 2027-02-21（不以安装完成 11/21 提前当验收）", "package_name": "BMS", "package_type": "供装", "risks": []}, {"node_code": "final_accept", "name": "最终验收 / Final Acceptance", "name_zh": "最终验收", "name_en": "Final Acceptance", "window_start": "2027-02-21", "window_end": "2027-02-21", "source": "aligned", "confidence": 0.85, "basis": "家具包 100% 验收款：计划无家具独立验收行；对齐总包客户验收 2027-02-21（与家具安装完成 1/27 相差约三周，落在约一个月内）", "package_name": "家具", "package_type": "供装", "risks": []}, {"node_code": "project_handover", "name": "客户验收 / Client final acceptance", "name_zh": "客户验收", "name_en": "Client final acceptance", "window_start": "2027-02-21", "window_end": "2027-02-21", "source": "explicit", "confidence": 0.95, "basis": "总包节点：计划行「客户验收（Client final acceptance）」2027-02-21；各分包验收请款默认对齐前后", "package_name": "总包", "package_type": "总包", "risks": []}, {"node_code": "gc_milestone", "name": "施工许可证获得 / Obtain permit", "name_zh": "施工许可证获得", "name_en": "Obtain permit", "window_start": "2026-06-26", "window_end": "2026-06-26", "source": "explicit", "confidence": 0.95, "basis": "总包节点：计划行「Obtain permit 施工许可证获得」2026-06-26", "package_name": "总包", "package_type": "总包", "risks": []}, {"node_code": "gc_milestone", "name": "隔墙隐蔽验收 / Wall Cover-Up Inspection", "name_zh": "隔墙隐蔽验收", "name_en": "Wall Cover-Up Inspection", "window_start": "2026-09-01", "window_end": "2026-09-08", "source": "explicit", "confidence": 0.92, "basis": "总包节点：计划行「隔墙隐蔽验收 Wall Cover-Up Inspection」结束日 2026-09-08", "package_name": "总包", "package_type": "总包", "risks": []}, {"node_code": "gc_milestone", "name": "吊顶隐蔽验收 / Ceiling Cover-Up Inspection", "name_zh": "吊顶隐蔽验收", "name_en": "Ceiling Cover-Up Inspection", "window_start": "2026-11-22", "window_end": "2026-11-29", "source": "explicit", "confidence": 0.92, "basis": "总包节点：计划行「吊顶隐蔽验收 Ceiling Cover-Up Inspection」结束日 2026-11-29", "package_name": "总包", "package_type": "总包", "risks": []}, {"node_code": "delivery", "name": "到货验收 / Delivery / Arrival Acceptance", "name_zh": "到货验收", "name_en": "Delivery / Arrival Acceptance", "window_start": "2026-08-03", "window_end": "2026-09-17", "source": "inferred", "confidence": 0.7, "basis": "配电箱为纯供应；无到货专行；下单「PAU/VRV/PDB」至 8/3，「配电箱安装」自 9/17 → 到货完成取 9/17", "package_name": "配电箱", "package_type": "供应", "risks": []}, {"node_code": "commissioning", "name": "调试 / Commissioning", "name_zh": "调试完成", "name_en": "Commissioning", "window_start": "2026-10-15", "window_end": "2026-10-29", "source": "explicit", "confidence": 0.93, "basis": "「配电箱功能测试 PDB functional test」结束日 2026-10-29（供应包但计划有调试/测试，按请款需要保留）", "package_name": "配电箱", "package_type": "供应", "risks": []}], "pending": [], "packages": [{"package_name": "总包", "package_type": "总包"}, {"package_name": "家具", "package_type": "供装"}, {"package_name": "BMS", "package_type": "供装"}, {"package_name": "配电箱", "package_type": "供应"}], "source_file": "项目档案/00_进度计划/SARL Ph1 Refresh Project - Master Schedule 260519_schedule.csv", "analyzed_at": "2026-08-09T16:21:21+08:00", "note": "critical_nodes from schedule-critical-nodes (agent-led)", "analysis_mode": "agent"}</script>
+<script type="application/json" id="node-axis-short">{"delivery": "到货", "site_access": "进场", "install_complete": "安装", "commissioning": "调试", "prelim_accept": "初验", "final_accept": "终验", "project_handover": "验收", "project_start": "开工", "project_completion": "竣工", "project_interface": "界面", "po_confirm": "下单", "fat": "厂验", "shipment": "发运", "warranty_start": "质保", "contract_sign": "签约", "concept": "方案", "detail_deliverable": "成果", "site_support": "配合", "deliverable_accept": "成果验"}</script>
+<script>
+(function () {
+  var NODE_SHORT = {};
+  try {
+    NODE_SHORT = JSON.parse(document.getElementById("node-axis-short").textContent || "{}");
+  } catch (e) {}
+  function axisLabel(code, name) {
+    if (NODE_SHORT[code]) return NODE_SHORT[code];
+    var text = String(name || "").replace(/[\sA-Za-z/].*$/, "").trim();
+    if (!text) return "?";
+    if (text.indexOf("隔墙") >= 0) return "隔墙";
+    if (text.indexOf("吊顶") >= 0 || text.indexOf("天花") >= 0) return "吊顶";
+    if (text.indexOf("许可") >= 0) return "许可";
+    if (text.indexOf("客户") >= 0 && text.indexOf("验收") >= 0) return "验收";
+    var suffixes = ["验收", "完成", "获得"];
+    for (var si = 0; si < suffixes.length; si++) {
+      var suf = suffixes[si];
+      if (text.slice(-suf.length) === suf && text.length > suf.length + 1) {
+        text = text.slice(0, -suf.length);
+        break;
+      }
+    }
+    if (text.length <= 4) return text;
+    return text.slice(0, 3);
+  }
+  var panel = document.getElementById("tip-panel");
+  var pinned = null;
+  var selected = null;
+  var dirty = false;
+  var pendingCardSync = false;
+  var dragging = null;
+  var schedule = {};
+  try {
+    schedule = JSON.parse(document.getElementById("schedule-data").textContent || "{}");
+  } catch (e) { schedule = { critical_nodes: [] }; }
+  if (!Array.isArray(schedule.critical_nodes)) schedule.critical_nodes = [];
+
+  var board = document.getElementById("timeline-board");
+  var axis = { axis_start: null, total_days: 1, track_w: 800 };
+  try { axis = JSON.parse(board.getAttribute("data-axis") || "{}"); } catch (e) {}
+
+  function escapeHtml(s) {
+    return String(s || "")
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function decadeLabel(iso) {
+    var m = String(iso || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (!m) return iso || "";
+    var day = parseInt(m[3], 10);
+    var d = day <= 10 ? "上旬" : day <= 20 ? "中旬" : "下旬";
+    return parseInt(m[1], 10) + "年" + parseInt(m[2], 10) + "月" + d;
+  }
+  function updateSyncBanner() {
+    var banner = document.getElementById("sync-banner");
+    var dirtyEl = document.getElementById("dirty-flag");
+    if (dirtyEl) dirtyEl.hidden = !dirty;
+    if (!banner) return;
+    if (!pendingCardSync) {
+      banner.hidden = true;
+      banner.classList.remove("show");
+      banner.innerHTML = "";
+      return;
+    }
+    banner.hidden = false;
+    banner.classList.add("show");
+    banner.textContent = "";
+  }
+  function setDirty(v) {
+    dirty = !!v;
+    if (dirty) pendingCardSync = true;
+    updateSyncBanner();
+  }
+  function renderTip(data) {
+    if (!panel || !data) return;
+    if (data.kind === "holiday") {
+      var accentH = data.color
+        ? '<i class="tip-accent" style="background:' + escapeHtml(data.color) + '"></i>'
+        : "";
+      panel.innerHTML =
+        '<div class="tip-title">' + accentH + escapeHtml(data.name || "停工/长假") + "</div>" +
+        '<div class="tip-meta">' + escapeHtml(data.range || "") + "</div>";
+      return;
+    }
+    if (data.kind === "anchor") {
+      panel.innerHTML =
+        '<div class="tip-title">' + escapeHtml(data.name || "锚点") + "</div>" +
+        '<div class="tip-meta">' + escapeHtml(data.range || "") + "</div>";
+      return;
+    }
+    var accent = data.color
+      ? '<i class="tip-accent" style="background:' + escapeHtml(data.color) + '"></i>'
+      : "";
+    var flag = data.needs_confirm ? '<div class="tip-flag">需确认</div>' : "";
+    panel.innerHTML =
+      '<div class="tip-title">' + accent + escapeHtml(data.name || "节点") + "</div>" +
+      '<div class="tip-meta">' + escapeHtml(data.package || "") +
+      " · " + escapeHtml(data.decade || data.end || "") +
+      (data.source ? " · " + escapeHtml(data.source) : "") +
+      "</div>" + flag;
+  }
+  function placePanel(el) {
+    if (!panel) return;
+    panel.hidden = false; panel.classList.add("show");
+    var rect = el.getBoundingClientRect();
+    var tw = panel.offsetWidth || 300, th = panel.offsetHeight || 120;
+    var left = Math.max(12, Math.min(rect.left + rect.width / 2 - tw / 2, window.innerWidth - tw - 12));
+    var top = rect.top - th - 10;
+    if (top < 8) top = rect.bottom + 10;
+    panel.style.left = left + "px"; panel.style.top = top + "px";
+  }
+  function showHoliday(el) {
+    var raw = el.getAttribute("data-tip"); if (!raw) return;
+    var data; try { data = JSON.parse(raw); } catch (e) { return; }
+    renderTip(data); placePanel(el);
+  }
+  function showFor(el, pin) {
+    var raw = el.getAttribute("data-tip"); if (!raw) return;
+    var data; try { data = JSON.parse(raw); } catch (e) { return; }
+    document.querySelectorAll(".node.active").forEach(function (d) { d.classList.remove("active"); });
+    el.classList.add("active"); selected = el;
+    var del = document.getElementById("btn-del");
+    if (del) del.disabled = false;
+    renderTip(data); placePanel(el);
+    if (pin) pinned = el;
+  }
+  function hide(force) {
+    if (pinned && !force) return;
+    pinned = null;
+    if (!force && selected) return;
+    document.querySelectorAll(".node.active").forEach(function (d) { d.classList.remove("active"); });
+    if (force) { selected = null; var del = document.getElementById("btn-del"); if (del) del.disabled = true; }
+    if (!panel) return; panel.classList.remove("show"); panel.hidden = true;
+  }
+  function parseIso(s) {
+    var m = String(s || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (!m) return null;
+    return new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  }
+  function fmtIso(d) {
+    return d.getUTCFullYear() + "-" + String(d.getUTCMonth() + 1).padStart(2, "0") + "-" +
+      String(d.getUTCDate()).padStart(2, "0");
+  }
+  function xToDate(clientX, track) {
+    var rect = track.getBoundingClientRect();
+    var x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    var start = parseIso(axis.axis_start);
+    if (!start) return null;
+    var days = Math.round((x / rect.width) * (axis.total_days || 1));
+    var d = new Date(start.getTime());
+    d.setUTCDate(d.getUTCDate() + days);
+    return fmtIso(d);
+  }
+  function updateNodeDom(el, iso) {
+    var tip; try { tip = JSON.parse(el.getAttribute("data-tip") || "{}"); } catch (e) { return; }
+    tip.end = iso;
+    tip.decade = decadeLabel(iso);
+    tip.source = "手工调整";
+    tip.needs_confirm = false;
+    tip.basis = "PM 在时间线上调整为 " + iso;
+    el.setAttribute("data-tip", JSON.stringify(tip));
+    el.classList.add("manual");
+    el.classList.remove("inferred");
+    var start = parseIso(axis.axis_start);
+    var end = parseIso(iso);
+    if (start && end) {
+      var left = ((end - start) / 86400000) / (axis.total_days || 1) * 100;
+      left = Math.min(Math.max(left, 0.8), 99.2);
+      el.style.left = left.toFixed(3) + "%";
+    }
+    if (selected === el) renderTip(tip);
+  }
+  function applyDateToSchedule(cnIndex, iso) {
+    var n = schedule.critical_nodes[cnIndex];
+    if (!n) return;
+    n.window_end = iso;
+    if (!n.window_start || n.window_start > iso) n.window_start = iso;
+    n.source = "manual";
+    n.confidence = 1;
+    n.needs_confirm = false;
+    n.basis = "PM 在时间线上调整为 " + iso;
+    setDirty(true);
+  }
+  function bindNode(el) {
+    el.addEventListener("mouseenter", function () {
+      if (dragging || (pinned && pinned !== el)) return;
+      showFor(el, false);
+    });
+    el.addEventListener("mouseleave", function () { if (!pinned && !dragging) hide(false); });
+    el.addEventListener("pointerdown", function (ev) {
+      if (ev.button !== 0) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      showFor(el, true);
+      dragging = {
+        el: el,
+        track: el.parentElement,
+        moved: false,
+        startX: ev.clientX
+      };
+      el.classList.add("dragging");
+      el.setPointerCapture(ev.pointerId);
+    });
+    el.addEventListener("pointermove", function (ev) {
+      if (!dragging || dragging.el !== el) return;
+      if (Math.abs(ev.clientX - dragging.startX) > 3) dragging.moved = true;
+      var iso = xToDate(ev.clientX, dragging.track);
+      if (iso) updateNodeDom(el, iso);
+    });
+    el.addEventListener("pointerup", function (ev) {
+      if (!dragging || dragging.el !== el) return;
+      el.classList.remove("dragging");
+      var iso = xToDate(ev.clientX, dragging.track);
+      var idx = parseInt(el.getAttribute("data-cn-index") || "-1", 10);
+      if (iso && dragging.moved && idx >= 0) {
+        updateNodeDom(el, iso);
+        applyDateToSchedule(idx, iso);
+      }
+      dragging = null;
+      try { el.releasePointerCapture(ev.pointerId); } catch (e) {}
+    });
+  }
+  document.querySelectorAll(".node").forEach(bindNode);
+  document.querySelectorAll(".holiday-band[data-tip]").forEach(function (el) {
+    el.addEventListener("mouseenter", function () {
+      if (dragging || pinned) return;
+      showHoliday(el);
+    });
+    el.addEventListener("mouseleave", function () {
+      if (pinned || dragging) return;
+      if (selected && selected.classList && selected.classList.contains("node")) {
+        showFor(selected, false);
+      } else {
+        hide(true);
+      }
+    });
+    el.addEventListener("click", function (ev) {
+      ev.stopPropagation();
+      showHoliday(el);
+    });
+  });
+  document.querySelectorAll(".anchor-mark[data-tip]").forEach(function (el) {
+    el.addEventListener("mouseenter", function () {
+      if (dragging || pinned) return;
+      showHoliday(el);
+    });
+    el.addEventListener("mouseleave", function () {
+      if (pinned || dragging) return;
+      if (selected && selected.classList && selected.classList.contains("node")) {
+        showFor(selected, false);
+      } else {
+        hide(true);
+      }
+    });
+  });
+  document.addEventListener("click", function () { if (!dragging) hide(true); });
+
+  document.getElementById("btn-save").addEventListener("click", function () {
+    var blob = new Blob([JSON.stringify(schedule, null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "schedule.edited.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+    dirty = false;
+    pendingCardSync = true;
+    updateSyncBanner();
+  });
+
+  document.getElementById("btn-del").addEventListener("click", function () {
+    if (!selected) return;
+    var idx = parseInt(selected.getAttribute("data-cn-index") || "-1", 10);
+    if (idx < 0 || !confirm("删除该关键节点？")) return;
+    schedule.critical_nodes.splice(idx, 1);
+    selected.remove();
+    selected = null;
+    document.getElementById("btn-del").disabled = true;
+    hide(true);
+    setDirty(true);
+    // refresh indices on remaining nodes in DOM is best-effort; save uses schedule array
+    document.querySelectorAll(".node").forEach(function (el) {
+      var tip; try { tip = JSON.parse(el.getAttribute("data-tip") || "{}"); } catch (e) { return; }
+      var found = -1;
+      for (var i = 0; i < schedule.critical_nodes.length; i++) {
+        var n = schedule.critical_nodes[i];
+        if (n.package_name === tip.package_name && n.node_code === tip.node_code &&
+            (n.window_end === tip.end || n.name === tip.name_full || n.name_zh === tip.name)) {
+          found = i; break;
+        }
+      }
+      el.setAttribute("data-cn-index", String(found));
+      tip.cn_index = found;
+      el.setAttribute("data-tip", JSON.stringify(tip));
+    });
+  });
+
+  var modal = document.getElementById("add-modal");
+  function openAdd() {
+    var sel = document.getElementById("add-pkg");
+    sel.innerHTML = "";
+    var seen = {};
+    document.querySelectorAll(".pkg-label[data-package-name]").forEach(function (el) {
+      var name = el.getAttribute("data-package-name");
+      if (!name || seen[name]) return;
+      seen[name] = true;
+      var opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name + "（" + (el.getAttribute("data-package-type") || "") + "）";
+      opt.dataset.type = el.getAttribute("data-package-type") || "";
+      sel.appendChild(opt);
+    });
+    modal.hidden = false; modal.classList.add("show");
+  }
+  function closeAdd() { modal.classList.remove("show"); modal.hidden = true; }
+  document.getElementById("btn-add").addEventListener("click", openAdd);
+  document.getElementById("add-cancel").addEventListener("click", closeAdd);
+  document.getElementById("add-ok").addEventListener("click", function () {
+    var pkgSel = document.getElementById("add-pkg");
+    var pkg = pkgSel.value;
+    var ptype = pkgSel.options[pkgSel.selectedIndex]
+      ? (pkgSel.options[pkgSel.selectedIndex].dataset.type || "")
+      : "";
+    var code = document.getElementById("add-code").value;
+    var name = (document.getElementById("add-name").value || "").trim() || code;
+    var mid = parseIso(axis.axis_start);
+    if (mid) mid = new Date(mid.getTime() + Math.floor((axis.total_days || 1) / 2) * 86400000);
+    var iso = mid ? fmtIso(mid) : (axis.axis_start || "");
+    var node = {
+      node_code: code,
+      name: name,
+      name_zh: name,
+      name_en: code,
+      window_start: iso,
+      window_end: iso,
+      source: "manual",
+      confidence: 1,
+      basis: "PM 在时间线上新增",
+      package_name: pkg,
+      package_type: ptype || (pkg === "总包" ? "总包" : "供装"),
+      risks: []
+    };
+    schedule.critical_nodes.push(node);
+    setDirty(true);
+    closeAdd();
+    var track = null;
+    document.querySelectorAll(".track[data-package-name]").forEach(function (t) {
+      if (t.getAttribute("data-package-name") === pkg) track = t;
+    });
+    if (track) {
+      var idx = schedule.critical_nodes.length - 1;
+      var color = getComputedStyle(document.documentElement).getPropertyValue("--ink") || "#1e4d8c";
+      var existing = track.querySelector(".node");
+      if (existing) color = getComputedStyle(existing).getPropertyValue("--node") || color;
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "node manual";
+      btn.style.setProperty("--node", color.trim() || "#1e4d8c");
+      var start = parseIso(axis.axis_start);
+      var end = parseIso(iso);
+      var left = 50;
+      if (start && end) left = Math.min(Math.max(((end - start) / 86400000) / (axis.total_days || 1) * 100, 0.8), 99.2);
+      btn.style.left = left.toFixed(3) + "%";
+      var axLabel = axisLabel(code, name);
+      var tip = {
+        ordinal: track.querySelectorAll(".node").length + 1,
+        package: pkg,
+        package_name: pkg,
+        package_type: ptype,
+        name: name,
+        name_full: name,
+        axis_label: axLabel,
+        node_code: code,
+        decade: decadeLabel(iso),
+        end: iso,
+        source: "手工调整",
+        needs_confirm: false,
+        basis: "PM 在时间线上新增",
+        color: color.trim() || "#1e4d8c",
+        cn_index: idx
+      };
+      btn.setAttribute("data-tip", JSON.stringify(tip));
+      btn.setAttribute("data-cn-index", String(idx));
+      btn.setAttribute("data-package", pkg);
+      btn.innerHTML = '<span class="node-text">' + escapeHtml(axLabel) + "</span>";
+      track.appendChild(btn);
+      bindNode(btn);
+      showFor(btn, true);
+    }
+  });
+})();
+</script>
+</body>
+</html>

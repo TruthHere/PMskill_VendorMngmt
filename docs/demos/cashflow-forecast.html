@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample Project · 现金流预测 · 示例</title>
+<style>
+  :root { --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --hdr:#334155; --page:#f8fafc; --exp:#fff7ed; --act:#ecfdf5; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; background:var(--page); color:var(--ink); padding:32px 20px 48px; line-height:1.5; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .meta { font-size:12px; color:var(--muted); margin-bottom:14px; padding:10px 14px; background:#fff; border:1px solid var(--line); border-radius:8px; }
+  h1 { font-size:22px; margin:0 0 6px; }
+  .project-name { font-size:13px; color:var(--muted); margin:0 0 6px; }
+  .project-name strong { color:var(--ink); font-size:16px; font-weight:700; }
+  .sub { font-size:14px; color:var(--muted); margin:0 0 16px; }
+  .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:16px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:8px; padding:12px 14px; }
+  .card .k { font-size:11px; color:var(--muted); margin-bottom:4px; }
+  .card .v { font-size:15px; font-weight:600; }
+  .sheet { background:#fff; border:1px solid var(--line); border-radius:8px; overflow:auto; margin-bottom:16px; }
+  table { border-collapse:collapse; font-size:12px; min-width:720px; width:100%; }
+  th, td { border:1px solid var(--line); padding:8px 10px; vertical-align:middle; }
+  th { background:var(--hdr); color:#fff; font-weight:600; text-align:center; white-space:nowrap; }
+  .num { text-align:right; white-space:nowrap; }
+  .left { text-align:left; }
+  .exp { background:var(--exp); }
+  .act { background:var(--act); }
+  .note { font-size:12px; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="meta">示例 · Skill 4 现金流预测产出 · 对应 Excel：<code>Skill4 Demo Project_现金流预测.xlsx</code>（只读聚合，不改履约/请款）</p>
+  <p class="project-name">项目 · <strong>Skill4 Demo Project</strong></p>
+  <h1>供应商出账现金流预测</h1>
+  <p class="sub">按月看「应请 / 实请」：完成锚点 + 默认 30 天滞后；已确认变更挂在尾款。</p>
+  <div class="summary">
+    <div class="card"><div class="k">合同基价（不含税）</div><div class="v">1,000,000</div></div>
+    <div class="card"><div class="k">已确认变更</div><div class="v">50,000</div></div>
+    <div class="card"><div class="k">已实请</div><div class="v">100,000</div></div>
+    <div class="card"><div class="k">预测剩余出账</div><div class="v">950,000</div></div>
+    <div class="card"><div class="k">滞后天数</div><div class="v">30 天</div></div>
+  </div>
+  <div class="sheet">
+    <table>
+      <thead>
+        <tr>
+          <th>月份</th><th class="exp">应请（计划出账）</th><th class="act">实请（已入账）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>2026-01</td><td class="num exp">100,000</td><td class="num act"></td></tr>
+        <tr><td>2026-07</td><td class="num exp"></td><td class="num act">100,000</td></tr>
+        <tr><td>2026-09</td><td class="num exp">300,000</td><td class="num act"></td></tr>
+        <tr><td>2026-12</td><td class="num exp">650,000</td><td class="num act"></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">上表只列有金额的月份。完整表按采购包分行、按月两列展开；节点明细可对到「预付款 / 到货 / 验收」。</p>
+  <div class="sheet">
+    <table>
+      <thead>
+        <tr><th>期次</th><th>节点</th><th>状态</th><th>金额（不含税）</th><th>计划出账月</th><th>实际月</th><th>备注</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td class="left">预付款 / Advance</td><td>已实请</td><td class="num">100,000</td><td>2026-01</td><td>2026-07</td><td class="left">10%</td></tr>
+        <tr><td>2</td><td class="left">到货 / Delivery</td><td>预测</td><td class="num">300,000</td><td>2026-09</td><td></td><td class="left">30% · 对齐 window_end</td></tr>
+        <tr><td>3</td><td class="left">验收 / Acceptance</td><td>预测</td><td class="num">650,000</td><td>2026-12</td><td></td><td class="left">60% + 变更 5 万挂尾款</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

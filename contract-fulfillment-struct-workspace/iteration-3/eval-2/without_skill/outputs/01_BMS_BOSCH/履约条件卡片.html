@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMS 履约条件卡片</title>
+<style>
+  :root {
+    --page:#eef0f4; --surface:#fff; --border:#dfe3ea; --ink:#141418; --muted:#52525b;
+    --blue:#2563eb; --blue-soft:rgba(37,99,235,.08); --radius:12px;
+    --shadow:0 1px 2px rgba(20,20,24,.04),0 8px 24px rgba(20,20,24,.06);
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif; background:var(--page); color:var(--ink); padding:40px 24px 56px; line-height:1.55; }
+  .page { max-width:880px; margin:0 auto; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+  .card-header { padding:22px 28px; background:linear-gradient(180deg,var(--blue-soft),var(--surface)); border-bottom:1px solid var(--border); display:flex; justify-content:space-between; gap:16px; }
+  .type-badge { display:inline-block; font-size:11px; font-weight:600; padding:3px 10px; border-radius:999px; background:var(--blue-soft); color:var(--blue); margin-bottom:8px; }
+  h1 { font-size:22px; letter-spacing:-.02em; }
+  .supplier { color:var(--muted); margin-top:4px; font-size:14px; }
+  .amount { text-align:right; }
+  .amount .label { font-size:12px; color:var(--muted); }
+  .amount .value { font-size:24px; font-weight:700; color:var(--blue); }
+  .section { padding:22px 28px; border-bottom:1px solid var(--border); }
+  .section:last-child { border-bottom:none; }
+  .section h2 { font-size:15px; margin-bottom:12px; }
+  .grid { display:grid; grid-template-columns:160px 1fr; gap:8px 16px; font-size:14px; }
+  .k { color:var(--muted); }
+  .pay-node { display:flex; gap:14px; padding:14px; border:1px solid var(--border); border-radius:10px; background:#fafbfc; margin-bottom:10px; }
+  .pay-idx { width:28px; height:28px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+  .pay-title { font-weight:600; margin-bottom:4px; }
+  .pct { color:var(--blue); margin-left:6px; }
+  .pay-cond,.pay-src,.pay-att,.node-meta { font-size:13px; color:var(--muted); margin-top:2px; }
+  .actions { padding:18px 28px; }
+  .actions a { display:inline-block; padding:10px 16px; background:var(--blue); color:#fff; text-decoration:none; border-radius:8px; font-size:14px; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <span class="type-badge">纯供应</span>
+        <h1>BMS</h1>
+        <div class="supplier">BOSCH Building Technologies · Sample Project</div>
+      </div>
+      <div class="amount">
+        <div class="label">金额含税</div>
+        <div class="value">¥1,280,000.00</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>基础信息</h2>
+      <div class="grid">
+        <div class="k">对接邮箱</div><div>procurement@bosch-build.example.com</div>
+        <div class="k">交期</div><div>2026-09-30</div>
+        <div class="k">数据来源</div><div>Raise PO 邮件；付款指示邮件 SAMPLE · BMS · BOSCH</div>
+      </div>
+    </div>
+    <div class="section">
+      <h2>付款节点</h2>
+      
+    <div class="pay-node">
+      <div class="pay-idx">1</div>
+      <div class="pay-body">
+        <div class="pay-title">预付款 / Advance <span class="pct">30%</span></div>
+        <div class="pay-cond">条件：PO 签发后 7 日内</div>
+        <div class="pay-src">来源：邮件指示 / Email instruction</div>
+        <div class="pay-att">附件要求：请款单；PO/合同复印件；发票（如适用）；预付款保函（如合同要求）</div>
+        
+      </div>
+    </div>
+    <div class="pay-node">
+      <div class="pay-idx">2</div>
+      <div class="pay-body">
+        <div class="pay-title">到货验收 / Delivery acceptance <span class="pct">60%</span></div>
+        <div class="pay-cond">条件：全部到货并验收合格后</div>
+        <div class="pay-src">来源：邮件指示 / Email instruction</div>
+        <div class="pay-att">附件要求：请款单；到货签认单；送货单/装箱单；发票</div>
+        <div class="node-meta">里程碑：2026-09-30</div><div class="node-meta">计划窗口：≤ 2026-09-30</div>
+      </div>
+    </div>
+    <div class="pay-node">
+      <div class="pay-idx">3</div>
+      <div class="pay-body">
+        <div class="pay-title">尾款 / Final payment <span class="pct">10%</span></div>
+        <div class="pay-cond">条件：质保期满无质量问题后</div>
+        <div class="pay-src">来源：邮件指示 / Email instruction</div>
+        <div class="pay-att">附件要求：请款单；最终验收/质保期满证明；发票；保函释放申请（如适用）</div>
+        
+      </div>
+    </div>
+    </div>
+    <div class="actions">
+      <a href="请款申请.html">发起请款</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

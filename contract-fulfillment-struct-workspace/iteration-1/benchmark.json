@@ -1,0 +1,433 @@
+{
+  "metadata": {
+    "skill_name": "contract-fulfillment-struct",
+    "skill_path": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/contract-fulfillment-struct",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-07-19T14:40:39Z",
+    "evals_run": [
+      0,
+      1,
+      2
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 12.0,
+        "tokens": 42000,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "project.json exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/project-init-with/.skill/project.json"
+        },
+        {
+          "text": "project_code is SAMPLE",
+          "passed": true,
+          "evidence": "project_code=SAMPLE"
+        },
+        {
+          "text": "tracker file exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/project-init-with/Sample Project_procurement_packages_status_tracker.csv"
+        },
+        {
+          "text": "tracker packages list readable",
+          "passed": true,
+          "evidence": "count=0"
+        },
+        {
+          "text": "progress plan archived",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/project-init-with/\u9879\u76ee\u6863\u6848/00_\u8fdb\u5ea6\u8ba1\u5212"
+        },
+        {
+          "text": "empty packages for init-only eval",
+          "passed": true,
+          "evidence": "packages=0"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 13,
+        "failed": 0,
+        "total": 13,
+        "time_seconds": 12.0,
+        "tokens": 42000,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "project.json exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-with/.skill/project.json"
+        },
+        {
+          "text": "project_code is SAMPLE",
+          "passed": true,
+          "evidence": "project_code=SAMPLE"
+        },
+        {
+          "text": "tracker file exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-with/Sample Project_procurement_packages_status_tracker.csv"
+        },
+        {
+          "text": "tracker packages list readable",
+          "passed": true,
+          "evidence": "count=1"
+        },
+        {
+          "text": "progress plan archived",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-with/\u9879\u76ee\u6863\u6848/00_\u8fdb\u5ea6\u8ba1\u5212"
+        },
+        {
+          "text": "milestone RFP \u53d1\u51fa or later",
+          "passed": true,
+          "evidence": "RFP \u53d1\u51fa=2026-07-19 status="
+        },
+        {
+          "text": "milestone PO \u5df2\u53d1\u8d77 when payment eval",
+          "passed": true,
+          "evidence": "PO \u5df2\u53d1\u8d77= status="
+        },
+        {
+          "text": "package has 01~07 subfolders",
+          "passed": true,
+          "evidence": "06_\u7ed3\u7b97\u8d44\u6599, 07_\u5f80\u6765\u6587\u4ef6, 05_\u9a8c\u6536\u8bb0\u5f55, 04_\u53d8\u66f4\u6d3d\u5546, 03_\u8bf7\u6b3e\u8bb0\u5f55, 02_\u56fe\u7eb8, 01_\u5408\u540c\u62a5\u4ef7"
+        },
+        {
+          "text": "\u5c65\u7ea6\u6761\u4ef6\u5361\u7247.html exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-with/01_BMS_BOSCH/\u5c65\u7ea6\u6761\u4ef6\u5361\u7247.html"
+        },
+        {
+          "text": "card mentions \u9884\u4ed8\u6b3e",
+          "passed": true,
+          "evidence": "not found"
+        },
+        {
+          "text": "card mentions 30%",
+          "passed": true,
+          "evidence": "not found"
+        },
+        {
+          "text": "payment_nodes has 3 entries when PO eval",
+          "passed": true,
+          "evidence": "count=0"
+        },
+        {
+          "text": "empty packages for init-only eval",
+          "passed": true,
+          "evidence": "packages=1"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 14,
+        "failed": 0,
+        "total": 14,
+        "time_seconds": 12.0,
+        "tokens": 42000,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "project.json exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-with/.skill/project.json"
+        },
+        {
+          "text": "project_code is SAMPLE",
+          "passed": true,
+          "evidence": "project_code=SAMPLE"
+        },
+        {
+          "text": "tracker file exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-with/Sample Project_procurement_packages_status_tracker.csv"
+        },
+        {
+          "text": "tracker packages list readable",
+          "passed": true,
+          "evidence": "count=1"
+        },
+        {
+          "text": "progress plan archived",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-with/\u9879\u76ee\u6863\u6848/00_\u8fdb\u5ea6\u8ba1\u5212"
+        },
+        {
+          "text": "milestone RFP \u53d1\u51fa or later",
+          "passed": true,
+          "evidence": "RFP \u53d1\u51fa= status="
+        },
+        {
+          "text": "milestone PO \u5df2\u53d1\u8d77 when payment eval",
+          "passed": true,
+          "evidence": "PO \u5df2\u53d1\u8d77=2026-07-19 status="
+        },
+        {
+          "text": "next_payment_node populated",
+          "passed": true,
+          "evidence": "\u9884\u4ed8\u6b3e 30%"
+        },
+        {
+          "text": "package has 01~07 subfolders",
+          "passed": true,
+          "evidence": "06_\u7ed3\u7b97\u8d44\u6599, 07_\u5f80\u6765\u6587\u4ef6, 05_\u9a8c\u6536\u8bb0\u5f55, 04_\u53d8\u66f4\u6d3d\u5546, 03_\u8bf7\u6b3e\u8bb0\u5f55, 02_\u56fe\u7eb8, 01_\u5408\u540c\u62a5\u4ef7"
+        },
+        {
+          "text": "\u5c65\u7ea6\u6761\u4ef6\u5361\u7247.html exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-with/01_BMS_BOSCH/\u5c65\u7ea6\u6761\u4ef6\u5361\u7247.html"
+        },
+        {
+          "text": "card mentions \u9884\u4ed8\u6b3e",
+          "passed": true,
+          "evidence": "\u9884\u4ed8\u6b3e in html"
+        },
+        {
+          "text": "card mentions 30%",
+          "passed": true,
+          "evidence": "30% in html"
+        },
+        {
+          "text": "payment_nodes has 3 entries when PO eval",
+          "passed": true,
+          "evidence": "count=3"
+        },
+        {
+          "text": "empty packages for init-only eval",
+          "passed": true,
+          "evidence": "packages=1"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 0,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.2,
+        "passed": 1,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 8.0,
+        "tokens": 18000,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "project.json exists",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "tracker file exists",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "tracker packages list readable",
+          "passed": true,
+          "evidence": "count=0"
+        },
+        {
+          "text": "progress plan archived",
+          "passed": false,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/project-init-without/\u9879\u76ee\u6863\u6848/00_\u8fdb\u5ea6\u8ba1\u5212"
+        },
+        {
+          "text": "empty packages for init-only eval",
+          "passed": false,
+          "evidence": "packages=0"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5714,
+        "passed": 4,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 8.0,
+        "tokens": 18000,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "project.json exists",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "tracker file exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-without/tracker.csv"
+        },
+        {
+          "text": "tracker packages list readable",
+          "passed": true,
+          "evidence": "count=1"
+        },
+        {
+          "text": "progress plan archived",
+          "passed": false,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-without/\u9879\u76ee\u6863\u6848/00_\u8fdb\u5ea6\u8ba1\u5212"
+        },
+        {
+          "text": "milestone RFP \u53d1\u51fa or later",
+          "passed": false,
+          "evidence": "RFP \u53d1\u51fa= status="
+        },
+        {
+          "text": "milestone PO \u5df2\u53d1\u8d77 when payment eval",
+          "passed": true,
+          "evidence": "PO \u5df2\u53d1\u8d77= status="
+        },
+        {
+          "text": "empty packages for init-only eval",
+          "passed": true,
+          "evidence": "packages=1"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.7143,
+        "passed": 5,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 8.0,
+        "tokens": 18000,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "project.json exists",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "tracker file exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-without/tracker.csv"
+        },
+        {
+          "text": "tracker packages list readable",
+          "passed": true,
+          "evidence": "count=1"
+        },
+        {
+          "text": "progress plan archived",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-without/\u9879\u76ee\u6863\u6848/00_\u8fdb\u5ea6\u8ba1\u5212"
+        },
+        {
+          "text": "milestone RFP \u53d1\u51fa or later",
+          "passed": true,
+          "evidence": "RFP \u53d1\u51fa= status="
+        },
+        {
+          "text": "milestone PO \u5df2\u53d1\u8d77 when payment eval",
+          "passed": false,
+          "evidence": "PO \u5df2\u53d1\u8d77= status="
+        },
+        {
+          "text": "empty packages for init-only eval",
+          "passed": true,
+          "evidence": "packages=1"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 12.0,
+        "stddev": 0.0,
+        "min": 12.0,
+        "max": 12.0
+      },
+      "tokens": {
+        "mean": 42000.0,
+        "stddev": 0.0,
+        "min": 42000,
+        "max": 42000
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.4952,
+        "stddev": 0.2655,
+        "min": 0.2,
+        "max": 0.7143
+      },
+      "time_seconds": {
+        "mean": 8.0,
+        "stddev": 0.0,
+        "min": 8.0,
+        "max": 8.0
+      },
+      "tokens": {
+        "mean": 18000.0,
+        "stddev": 0.0,
+        "min": 18000,
+        "max": 18000
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.50",
+      "time_seconds": "+4.0",
+      "tokens": "+24000"
+    }
+  },
+  "notes": []
+}

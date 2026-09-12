@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill5 Demo Project · 项目通讯录 · 示例</title>
+<style>
+  :root { --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --hdr:#334155; --page:#f8fafc; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; background:var(--page); color:var(--ink); padding:32px 20px 48px; line-height:1.5; }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  .meta { font-size:12px; color:var(--muted); margin-bottom:14px; padding:10px 14px; background:#fff; border:1px solid var(--line); border-radius:8px; }
+  .meta a { color:#216e68; text-decoration:none; }
+  h1 { font-size:22px; margin:0 0 6px; }
+  .project-name { font-size:13px; color:var(--muted); margin:0 0 6px; }
+  .project-name strong { color:var(--ink); font-size:16px; font-weight:700; }
+  .sub { font-size:14px; color:var(--muted); margin:0 0 16px; }
+  .sheet { background:#fff; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+  table { border-collapse:collapse; font-size:13px; width:100%; min-width:720px; }
+  th, td { border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top; }
+  th { background:var(--hdr); color:#fff; font-size:12px; font-weight:600; }
+  .center { text-align:center; }
+</style>
+<link rel="stylesheet" href="resizable-table.css">
+</head>
+<body>
+<div class="wrap">
+  <p class="meta">示例 · Skill 5 项目通讯录产出 · 对应 Excel：<code>Skill5 Demo Project_项目通讯录.xlsx</code> · 不走邮箱，群消息 + <a href="directory-fill-form.html">填写页</a> 收集</p>
+  <p class="project-name">项目 · <strong>Skill5 Demo Project</strong></p>
+  <h1>项目通讯录</h1>
+  <p class="sub">按采购包汇总对接人姓名、Title、手机、邮箱；群里按模板回复后并入本表。</p>
+  <p class="resize-hint">表头右缘可拖动调节列宽。</p>
+  <div class="sheet">
+    <table class="resizable-table" data-col-widths="56,88,200,72,100,120,200,100">
+      <thead>
+        <tr class="head-row">
+          <th>序号</th><th>采购包</th><th>供应商</th><th>姓名</th><th>Title</th><th>手机</th><th>邮箱</th><th>更新时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="center">01</td><td>BMS</td><td>Schneider Electric (China) Co., Ltd.</td>
+          <td>王工</td><td>项目经理</td><td>13800138000</td><td>wang@schneider.example.com</td><td>2026-09-06</td>
+        </tr>
+        <tr>
+          <td class="center">01</td><td>BMS</td><td>Schneider Electric (China) Co., Ltd.</td>
+          <td>赵工</td><td>现场负责人</td><td>13900139000</td><td>zhao@schneider.example.com</td><td>2026-09-06</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script src="resizable-table.js"></script>
+</body>
+</html>

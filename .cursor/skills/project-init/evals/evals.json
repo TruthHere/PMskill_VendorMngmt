@@ -1,0 +1,48 @@
+{
+  "skill_name": "project-init",
+  "evals": [
+    {
+      "id": 0,
+      "name": "dialog-create-empty-project",
+      "prompt": "请在本机新建空项目（不要建采购包）。\n\n主题：[项目初始化] Harbor Lab - HARBOR\n\n项目名称：Harbor Lab\n项目编号：HARBOR\n项目类型：实验室\n项目地址：上海市浦东新区张江路 88 号\n甲方名称：港湾科技有限公司\n项目经理：李四\n币种/含税：CNY 含税\n本地根文件夹路径：{{PROJECT_ROOT}}\n专用邮箱：HarborLab_AI@163.com\n\n无进度计划附件。完成后汇报项目根、Tracker 路径、邮箱是否已绑，并提示可转发 RFP。",
+      "expected_output": "入口 A：init_project 建好 .skill/project.json（code=HARBOR）、空 Tracker、项目背景.md、mailbox 已绑；未建采购包；未跑无附件的进度表 B",
+      "files": [],
+      "assertions": [
+        "project.json exists with project_code HARBOR",
+        "tracker exists with empty packages",
+        "mailbox.address is HarborLab_AI@163.com",
+        "项目背景.md exists",
+        "no procurement package folders created",
+        "used init_project CLI (not hand-written project.json only)"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "mail-handler-pending-not-silent-create",
+      "prompt": "语境：mail-inbox 已将下列邮件分类为 project_init，请按 Skill 0 邮局入口处理（不要走对话建项静默 init）。\n\n目标目录 {{PROJECT_ROOT}} 目前是空目录，没有 .skill/project.json。\n邮件文件：{{EML_PATH}}\n主题：[项目初始化] Ghost Proj - GHOST\n正文含项目名称/编号/本地根文件夹路径（指向该空目录）。\n\n请调用 handle_init_email（或等价 dispatch），并根据返回结果说明下一步应如何用对话入口补建。",
+      "expected_output": "入口 B：pending project_not_initialized；目录仍无完整初始化产物（或仅有 pending 相关）；不静默建成可用项目；结果提示走 init_project",
+      "files": [],
+      "assertions": [
+        "handler result reason is project_not_initialized",
+        "result auto is false",
+        "pending.json has project_init item",
+        "did not create a complete initialized project via silent init",
+        "note or reply tells PM/Agent to use init_project / 入口 A"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "mail-handler-confirm-existing-mailbox",
+      "prompt": "语境：mail-inbox 分发 project_init。项目 {{PROJECT_ROOT}} 已由 Skill 0 初始化完毕（已有 project.json，code=HARBOR，原邮箱 old@163.com）。\n\n邮件文件：{{EML_PATH}}，正文要求把专用邮箱改为 HarborLab_AI@163.com。\n\n请按邮局入口处理：确认档案并回写邮箱，不要重建项目、不要建采购包。",
+      "expected_output": "auto 确认；mailbox 更新为 HarborLab_AI@163.com；无新采购包；不重复 init",
+      "files": [],
+      "assertions": [
+        "handler result auto is true",
+        "mailbox.address updated to HarborLab_AI@163.com",
+        "project_code remains HARBOR",
+        "no new procurement package folders",
+        "did not wipe or recreate tracker packages"
+      ]
+    }
+  ]
+}

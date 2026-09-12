@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>请款申请 · BMS</title>
+<style>
+  :root {
+    --page: #eef0f4;
+    --surface: #fff;
+    --muted: #52525b;
+    --border: #dfe3ea;
+    --ink: #141418;
+    --blue: #2563eb;
+    --amber: #b45309;
+    --green: #047857;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 32px 16px 48px;
+    background: var(--page);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px 28px;
+    box-shadow: 0 8px 24px rgba(20,20,24,.06);
+  }
+  h1 { margin: 0 0 4px; font-size: 24px; }
+  h2 { margin: 24px 0 10px; font-size: 16px; }
+  .sub, .hint { color: var(--muted); font-size: 13px; }
+  .hint { margin-top: 6px; }
+  .hint.warn { color: var(--amber); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+  @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+  .full { grid-column: 1 / -1; }
+  label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 12px; }
+  input, select, textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 10px;
+    font: inherit;
+    background: #fff;
+  }
+  input[readonly], textarea[readonly] {
+    background: #f6f7f9;
+    color: var(--muted);
+  }
+  .locked-note {
+    margin-top: 4px;
+    color: var(--green);
+    font-size: 11px;
+    display: none;
+  }
+  .locked .locked-note { display: block; }
+  .checklist { list-style: none; margin: 0; padding: 0; }
+  .checklist li { padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  button {
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 16px;
+    background: var(--blue);
+    color: #fff;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  button.secondary {
+    background: #fff;
+    color: var(--blue);
+    border: 1px solid var(--blue);
+  }
+  pre {
+    display: none;
+    margin-top: 14px;
+    padding: 12px;
+    background: #f6f7f9;
+    border-radius: 8px;
+    overflow: auto;
+    font-size: 12px;
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .no-print { display: none !important; }
+    .card { box-shadow: none; border: 0; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <article class="card">
+    <h1>请款申请</h1>
+    <p class="sub">Schneider · BMS · Demo</p>
+
+    <h2>固定信息</h2>
+    <p class="hint">PO、供应商编号和联系方式第一次填写后会进入请款记录，后续页面会自动带出并锁定。</p>
+    <div class="grid">
+      <div>
+        <label>报价单确认金额（不含税）</label>
+        <input id="contract_value" value="1000000" readonly>
+        <p class="hint">以报价单确认金额为准。已认证请款累计会从 `payment_ledger.json` 自动同步。</p>
+      </div>
+      <div>
+        <label>已认证请款累计</label>
+        <input id="previously_certified" value="0" readonly>
+      </div>
+      <div class="">
+        <label>PO Number（第一次填好后固定）</label>
+        <input id="po_number" value="" >
+        <p class="locked-note">已从历史请款记录带出。</p>
+      </div>
+      <div class="">
+        <label>Vendor Reference Number（第一次填好后固定）</label>
+        <input id="vendor_ref" value="" >
+        <p class="locked-note">已从历史请款记录带出。</p>
+      </div>
+      <div class="">
+        <label>联系人</label>
+        <input id="contact_name" value="" >
+        <p class="locked-note">已从历史请款记录带出。</p>
+      </div>
+      <div class="">
+        <label>手机</label>
+        <input id="contact_mobile" value="" >
+        <p class="locked-note">已从历史请款记录带出。</p>
+      </div>
+      <div class="">
+        <label>公司电话</label>
+        <input id="office_phone" value="" >
+        <p class="locked-note">已从历史请款记录带出。</p>
+      </div>
+      <div class="">
+        <label>公司地址</label>
+        <input id="office_address" value="" >
+        <p class="locked-note">已从历史请款记录带出。</p>
+      </div>
+    </div>
+
+    <h2>本次请款</h2>
+    <div class="grid">
+      <div>
+        <label>请款节点</label>
+        <select id="claim_node"><option value="预付款 / Advance">预付款 / Advance（已请）</option>
+<option value="到货 / Delivery" selected>到货 / Delivery</option>
+<option value="验收 / Acceptance">验收 / Acceptance</option></select>
+      </div>
+      <div>
+        <label>PAYMENT NO（随节点变化）</label>
+        <input id="payment_no" value="2" readonly>
+      </div>
+      <div>
+        <label>本次请款金额（不含税）</label>
+        <input id="claim_amount" type="number" min="0" step="0.01" value="300000">
+        <p class="hint" id="amount_hint">参考：基价 1000000 × 节点比例 ≈ 300000（仅提示）</p>
+      </div>
+      <div>
+        <label>备注（如有）</label>
+        <input id="notes" placeholder="如：本次含到货批次说明、特殊附件说明等">
+      </div>
+      <div class="full">
+        <label>付款节点总览</label>
+        <textarea id="nodes_overview" rows="4" readonly>1. 预付款 / Advance  10%
+2. 到货 / Delivery  30%
+3. 验收 / Acceptance  60%</textarea>
+      </div>
+    </div>
+
+    <h2>支持文件确认</h2>
+    <p class="hint">请确认并随请款单一并提交。Checklist 只作提醒，不会单独输出文件。</p>
+    <ul class="checklist" id="checklist"><li><label><input type="checkbox"> 请款单</label></li><li><label><input type="checkbox"> 到货签认单</label></li><li><label><input type="checkbox"> 送货单/装箱单</label></li><li><label><input type="checkbox"> 发票</label></li></ul>
+
+    <div class="actions no-print">
+      <button type="button" id="btn_json">下载申请数据（生成 Excel）</button>
+      <button type="button" class="secondary" id="btn_preview">预览申请数据</button>
+    </div>
+    <pre id="preview"></pre>
+  </article>
+</div>
+
+<script type="application/json" id="boot">{"project_name": "Demo", "division": "", "vendor_name": "Schneider", "work_package": "BMS", "contract_value_excl_tax": 1000000.0, "vat_note_pct": 9, "nodes": [{"name": "预付款 / Advance", "pct": "10%", "pct_fraction": 0.1, "checklist": ["请款单", "发票"], "claimed": true, "payment_no": 1}, {"name": "到货 / Delivery", "pct": "30%", "pct_fraction": 0.3, "checklist": ["请款单", "到货签认单", "送货单/装箱单", "发票"], "claimed": false, "payment_no": 2}, {"name": "验收 / Acceptance", "pct": "60%", "pct_fraction": 0.6, "checklist": ["请款单", "验收签认单", "发票"], "claimed": false, "payment_no": 3}], "default_checklist": ["请款单", "相关签认单或支持性文件", "发票"]}</script>
+<script>
+(function () {
+  const boot = JSON.parse(document.getElementById("boot").textContent);
+  const nodeSelect = document.getElementById("claim_node");
+  const paymentNo = document.getElementById("payment_no");
+  const claimAmount = document.getElementById("claim_amount");
+  const amountHint = document.getElementById("amount_hint");
+  const checklist = document.getElementById("checklist");
+
+  function money(v) {
+    if (v === null || v === undefined || v === "") return null;
+    const n = Number(String(v).replace(/[,¥]/g, ""));
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function fmt(v) {
+    if (v === null || v === undefined || Number.isNaN(Number(v))) return "";
+    return Number(v).toLocaleString("zh-CN", { maximumFractionDigits: 2 });
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (ch) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch];
+    });
+  }
+
+  function selectedNode() {
+    return (boot.nodes || []).find(function (n) { return n.name === nodeSelect.value; }) || {};
+  }
+
+  function renderChecklist(items) {
+    checklist.innerHTML = (items || []).map(function (t) {
+      return "<li><label><input type=\"checkbox\"> " + esc(t) + "</label></li>";
+    }).join("") || "<li>（无清单）</li>";
+  }
+
+  function syncNode() {
+    const node = selectedNode();
+    paymentNo.value = node.payment_no || "";
+    renderChecklist(node.checklist || boot.default_checklist || []);
+    const base = money(boot.contract_value_excl_tax);
+    const pct = node.pct_fraction;
+    if (base != null && pct != null) {
+      const suggested = Math.round(base * pct * 100) / 100;
+      claimAmount.value = String(suggested);
+      amountHint.textContent = "参考：报价确认金额 " + fmt(base) + " × " + (pct * 100).toFixed(1).replace(".0", "") + "% ≈ " + fmt(suggested);
+      amountHint.className = "hint";
+    } else {
+      claimAmount.value = "";
+      amountHint.textContent = "该节点无法按比例自动估算，请按合同/付款条件填写。";
+      amountHint.className = "hint warn";
+    }
+  }
+
+  function checkedFiles() {
+    return Array.from(checklist.querySelectorAll("li")).map(function (li) {
+      const input = li.querySelector("input");
+      return { item: li.textContent.trim(), checked: !!(input && input.checked) };
+    });
+  }
+
+  function payload() {
+    const base = money(document.getElementById("contract_value").value) || money(boot.contract_value_excl_tax);
+    return {
+      payment_no: Number(paymentNo.value),
+      project_name: boot.project_name || "",
+      division: boot.division || "",
+      vendor_name: boot.vendor_name || "",
+      work_package: boot.work_package || "",
+      vendor_ref: document.getElementById("vendor_ref").value.trim(),
+      po_number: document.getElementById("po_number").value.trim(),
+      po_value_excl_tax: base,
+      contract_value_excl_tax: base,
+      contact_name: document.getElementById("contact_name").value.trim(),
+      contact_mobile: document.getElementById("contact_mobile").value.trim(),
+      office_phone: document.getElementById("office_phone").value.trim(),
+      office_address: document.getElementById("office_address").value.trim(),
+      claim_node: nodeSelect.value,
+      claim_amount_excl_tax: money(claimAmount.value),
+      variations_to_date: 0,
+      previously_certified: money(document.getElementById("previously_certified").value) || 0,
+      nodes_overview: document.getElementById("nodes_overview").value,
+      vat_note_pct: boot.vat_note_pct != null ? boot.vat_note_pct : 9,
+      notes: document.getElementById("notes").value.trim(),
+      support_files: checkedFiles()
+    };
+  }
+
+  function validate(p) {
+    if (!p.po_number) return "请填写 PO Number";
+    if (!p.claim_node) return "请选择请款节点";
+    if (p.claim_amount_excl_tax == null) return "请填写本次请款金额";
+    return "";
+  }
+
+  function downloadJson() {
+    const p = payload();
+    const err = validate(p);
+    if (err) { alert(err); return; }
+    const blob = new Blob([JSON.stringify(p, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "claim_response.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  nodeSelect.addEventListener("change", syncNode);
+  document.getElementById("btn_json").addEventListener("click", downloadJson);
+  document.getElementById("btn_preview").addEventListener("click", function () {
+    const pre = document.getElementById("preview");
+    pre.style.display = "block";
+    pre.textContent = JSON.stringify(payload(), null, 2);
+  });
+  syncNode();
+})();
+</script>
+</body>
+</html>

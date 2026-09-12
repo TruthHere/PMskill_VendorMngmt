@@ -1,0 +1,19 @@
+{
+  "expectations": [
+    {
+      "text": "intent is project_init",
+      "passed": true,
+      "evidence": "got 'project_init'"
+    },
+    {
+      "text": "route_to is project-init",
+      "passed": true,
+      "evidence": "got 'project-init'"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 2,
+    "pass_rate": 1.0
+  }
+}

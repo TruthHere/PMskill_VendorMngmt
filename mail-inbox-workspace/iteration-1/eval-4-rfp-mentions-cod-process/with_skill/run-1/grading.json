@@ -1,0 +1,39 @@
+{
+  "expectations": [
+    {
+      "text": "intent is fulfillment.rfp",
+      "passed": true,
+      "evidence": "got 'fulfillment.rfp'"
+    },
+    {
+      "text": "route_to is contract-fulfillment-struct",
+      "passed": true,
+      "evidence": "got 'contract-fulfillment-struct'"
+    },
+    {
+      "text": "package_name is Door Package",
+      "passed": true,
+      "evidence": "got 'Door Package'"
+    },
+    {
+      "text": "not change.*",
+      "passed": true,
+      "evidence": "got 'fulfillment.rfp'"
+    },
+    {
+      "text": "not change.cod",
+      "passed": true,
+      "evidence": "got 'fulfillment.rfp'"
+    },
+    {
+      "text": "not payment_claim",
+      "passed": true,
+      "evidence": "got 'fulfillment.rfp'"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 6,
+    "pass_rate": 1.0
+  }
+}

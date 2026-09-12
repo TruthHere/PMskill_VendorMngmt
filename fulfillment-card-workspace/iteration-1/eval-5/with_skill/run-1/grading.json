@@ -1,0 +1,89 @@
+{
+  "expectations": [
+    {
+      "text": "card HTML exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/fulfillment-card-workspace/iteration-1/eval-5/with_skill/outputs/履约条件卡片.html",
+      "tier": "format"
+    },
+    {
+      "text": "card-data.json exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/fulfillment-card-workspace/iteration-1/eval-5/with_skill/outputs/card-data.json",
+      "tier": "format"
+    },
+    {
+      "text": "payment nodes render as payment-table",
+      "passed": true,
+      "evidence": "found",
+      "tier": "format"
+    },
+    {
+      "text": "change items render as change-table",
+      "passed": true,
+      "evidence": "found",
+      "tier": "format"
+    },
+    {
+      "text": "data_sources live in footer-meta",
+      "passed": true,
+      "evidence": "found",
+      "tier": "format"
+    },
+    {
+      "text": "no unresolved template placeholders",
+      "passed": true,
+      "evidence": "clean",
+      "tier": "format"
+    },
+    {
+      "text": "validate_rendered_card passes",
+      "passed": true,
+      "evidence": "ok",
+      "tier": "format"
+    },
+    {
+      "text": "supplier_name is non-empty",
+      "passed": false,
+      "evidence": "empty",
+      "tier": "quality"
+    },
+    {
+      "text": "payment node names are bilingual",
+      "passed": false,
+      "evidence": "预付款, 尾款",
+      "tier": "quality"
+    },
+    {
+      "text": "payment pct sum is about 100%",
+      "passed": false,
+      "evidence": "sum=80.0",
+      "tier": "quality"
+    },
+    {
+      "text": "total_amount marks 含税 or 不含税",
+      "passed": false,
+      "evidence": "¥99,000",
+      "tier": "quality"
+    },
+    {
+      "text": "each payment node has attachments after enrich",
+      "passed": true,
+      "evidence": "ok",
+      "tier": "quality"
+    }
+  ],
+  "passed": 8,
+  "total": 12,
+  "pass_rate": 0.6667,
+  "format": {
+    "passed": 7,
+    "total": 7,
+    "pass_rate": 1.0
+  },
+  "quality": {
+    "passed": 1,
+    "total": 5,
+    "pass_rate": 0.2
+  }
+}

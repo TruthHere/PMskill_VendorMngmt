@@ -1,0 +1,8 @@
+{
+  "auto": false,
+  "pending_id": "p-7T2132040800",
+  "reason": "out_of_order",
+  "intent": "change.commercial",
+  "_elapsed_ms": 50,
+  "_eval_type": "out_of_order"
+}

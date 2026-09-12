@@ -1,0 +1,110 @@
+{
+  "eval_type": "po",
+  "expectations": [
+    {
+      "text": "process_result.json exists (pipeline evidence)",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-2/with_skill/outputs/process_result.json"
+    },
+    {
+      "text": "process_result is non-empty JSON",
+      "passed": true,
+      "evidence": "ok"
+    },
+    {
+      "text": "process_result records Raise PO via pipeline (step3 auto)",
+      "passed": true,
+      "evidence": "raise_po.step=step3 auto=True flat_step=None"
+    },
+    {
+      "text": "process_result records payment terms via pipeline",
+      "passed": true,
+      "evidence": "payment.step=step4_payment payment_nodes=3"
+    },
+    {
+      "text": "project.json exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-2/with_skill/outputs/.skill/project.json"
+    },
+    {
+      "text": "tracker has a package",
+      "passed": true,
+      "evidence": "count=1"
+    },
+    {
+      "text": "milestone PO 已发起 is set",
+      "passed": true,
+      "evidence": "PO 已发起=2026-08-01"
+    },
+    {
+      "text": "next_payment_node is populated",
+      "passed": true,
+      "evidence": "预付款 / Advance 30%"
+    },
+    {
+      "text": "履约条件卡片.html exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-2/with_skill/outputs/01_BMS_BOSCH/履约条件卡片.html"
+    },
+    {
+      "text": "card HTML mentions 预付款",
+      "passed": true,
+      "evidence": "found"
+    },
+    {
+      "text": "card HTML mentions 30%",
+      "passed": true,
+      "evidence": "found"
+    },
+    {
+      "text": "card-data payment_nodes has 3 entries",
+      "passed": true,
+      "evidence": "count=3"
+    },
+    {
+      "text": "PO amount written to tracker or card (含税)",
+      "passed": true,
+      "evidence": "card=¥1,280,000.00（含税） tracker=1280000.00"
+    },
+    {
+      "text": "card-data.json exists (Skill 1 → fulfillment-card input)",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-2/with_skill/outputs/01_BMS_BOSCH/card-data.json"
+    },
+    {
+      "text": "card HTML passes fulfillment-card template validation",
+      "passed": true,
+      "evidence": "ok"
+    },
+    {
+      "text": "card HTML has payment-table (template fingerprint)",
+      "passed": true,
+      "evidence": "found"
+    },
+    {
+      "text": "请款申请.html exists (produced by fulfillment-card)",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-2/with_skill/outputs/01_BMS_BOSCH/请款申请.html"
+    },
+    {
+      "text": "请款申请.html looks like claim-form template",
+      "passed": true,
+      "evidence": "template markers ok"
+    },
+    {
+      "text": "card has 发起请款 link to 请款申请.html",
+      "passed": true,
+      "evidence": "found"
+    },
+    {
+      "text": "card-data supplier_name filled by Skill 1",
+      "passed": true,
+      "evidence": "BOSCH Building Technologies"
+    }
+  ],
+  "summary": {
+    "passed": 20,
+    "total": 20,
+    "pass_rate": 1.0
+  }
+}

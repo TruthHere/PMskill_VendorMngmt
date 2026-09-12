@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "eml_path": "",
+  "intent": "unknown",
+  "route_to": null,
+  "confidence": "low",
+  "project_root": "",
+  "hints": {
+    "subject": "Invoice for July",
+    "change_no": ""
+  },
+  "enrichment": {
+    "payment_terms": false,
+    "has_quote_attachment": false,
+    "has_drawing": false,
+    "schedule_attachment": false
+  },
+  "attachments": [],
+  "pending": {
+    "reason": "intent_low_confidence",
+    "question": "邮件意图置信度低，需确认交给哪个 Skill。",
+    "candidates": [
+      "project-init",
+      "contract-fulfillment-struct",
+      "payment-request",
+      "change-archive"
+    ]
+  },
+  "did": [
+    "ingest",
+    "classify"
+  ],
+  "next": {
+    "skill": null,
+    "action": "pending_only",
+    "note": "业务 Skill 消费本 JSON；mail-inbox 不改业务数据"
+  }
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>change-archive · Eval Review</title>
+<style>
+body { font-family: system-ui, sans-serif; margin: 2rem; max-width: 960px; color: #0f172a; }
+h1 { margin-bottom: 0.2rem; }
+.summary { background: #f1f5f9; padding: 1rem 1.2rem; border-radius: 8px; margin: 1rem 0 2rem; }
+section { border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 1.5rem; }
+.prompt { background: #f8fafc; padding: 0.8rem; white-space: pre-wrap; font-size: 0.9rem; }
+.config { margin-top: 1rem; }
+.pass { color: #15803d; } .fail { color: #b91c1c; }
+.evidence { display: block; font-size: 0.85rem; color: #64748b; margin-left: 1.2rem; }
+</style>
+</head>
+<body>
+<h1>contract-fulfillment-struct</h1>
+<p>Eval workspace：<code>/Users/truth_here/Documents/AI Projects/PMskills/change-archive-workspace/iteration-1</code></p>
+<div class="summary">
+  <strong>Benchmark</strong><br/>
+  with_skill：100% ± 0%<br/>
+  without_skill：13% ± 0%<br/>
+  delta：0.8667
+</div>
+<section><h2>cod-create</h2><pre class="prompt">项目已初始化且有采购包 Glazing partition。处理 COD 邮件：变更序号 COT-003，预估金额不含税 ¥15,000，标题增加一道防火门。建立 Change Log，状态「COD 已发出」，双归档，不改采购包 Tracker。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (6/6)</p><ul><li class="pass"><strong>✓</strong> change log exists<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/change-archive-workspace/iteration-1/_tmp/cod-create-with/ChangeEval_change_log.csv</span></li>
+<li class="pass"><strong>✓</strong> row status is COD 已发出<span class="evidence">COD 已发出</span></li>
+<li class="pass"><strong>✓</strong> estimate amount is ¥15,000.00<span class="evidence">¥15,000.00</span></li>
+<li class="pass"><strong>✓</strong> COD已发出 milestone timestamp filled<span class="evidence">2026-08-08T22:00:00+08:00</span></li>
+<li class="pass"><strong>✓</strong> eml archived under 04 and 07 with COD stage<span class="evidence">04=1 07=1</span></li>
+<li class="pass"><strong>✓</strong> procurement tracker unchanged<span class="evidence">ok</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：0% (0/6)</p><ul><li class="fail"><strong>✗</strong> change log exists<span class="evidence">missing</span></li>
+<li class="fail"><strong>✗</strong> row status is COD 已发出<span class="evidence">no row</span></li>
+<li class="fail"><strong>✗</strong> estimate amount is ¥15,000.00<span class="evidence">empty</span></li>
+<li class="fail"><strong>✗</strong> COD已发出 milestone timestamp filled<span class="evidence">empty</span></li>
+<li class="fail"><strong>✗</strong> eml archived under 04 and 07 with COD stage<span class="evidence">package dir missing</span></li>
+<li class="fail"><strong>✗</strong> procurement tracker unchanged<span class="evidence">changed</span></li></ul></div></section><section><h2>lifecycle-close</h2><pre class="prompt">同一变更走完 COD→PMI→技术提交→技术确认→商务确认→商务金额确认（主题含 COT-003 CP Confirm，正文 excl VAT ¥16,800）→Change PO。最终金额不得误写成 ¥3；只写 Change Log，不写履约卡片；不改 Tracker。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (6/6)</p><ul><li class="pass"><strong>✓</strong> row status is Change PO 下发<span class="evidence">Change PO 下发</span></li>
+<li class="pass"><strong>✓</strong> final amount is ¥16,800.00 not ¥3.00<span class="evidence">¥16,800.00</span></li>
+<li class="pass"><strong>✓</strong> COD已发出 and PMI已发出 timestamps filled<span class="evidence">COD=2026-08-08T22:00:00+08:00 PMI=2026-08-08T22:00:00+08:00</span></li>
+<li class="pass"><strong>✓</strong> Skill 3 did not write change_items to card<span class="evidence">card clean of this change amount</span></li>
+<li class="pass"><strong>✓</strong> seven stage archives under 04 without overwrite<span class="evidence">found=[&#x27;CHPO&#x27;, &#x27;COD&#x27;, &#x27;CP&#x27;, &#x27;PMI&#x27;, &#x27;QUOTE&#x27;, &#x27;TC&#x27;, &#x27;TECH&#x27;]</span></li>
+<li class="pass"><strong>✓</strong> procurement tracker unchanged<span class="evidence">ok</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：33% (2/6)</p><ul><li class="pass"><strong>✓</strong> row status is Change PO 下发<span class="evidence">Change PO 下发</span></li>
+<li class="fail"><strong>✗</strong> final amount is ¥16,800.00 not ¥3.00<span class="evidence">¥3.00</span></li>
+<li class="fail"><strong>✗</strong> COD已发出 and PMI已发出 timestamps filled<span class="evidence">COD=empty PMI=empty</span></li>
+<li class="pass"><strong>✓</strong> Skill 3 did not write change_items to card<span class="evidence">card clean of this change amount</span></li>
+<li class="fail"><strong>✗</strong> seven stage archives under 04 without overwrite<span class="evidence">found=[]</span></li>
+<li class="fail"><strong>✗</strong> procurement tracker unchanged<span class="evidence">changed</span></li></ul></div></section><section><h2>out-of-order</h2><pre class="prompt">仅有 COD 建行后，收到商务确认邮件（技术未确认）。应挂 pending，不推进到商务确认。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (3/3)</p><ul><li class="pass"><strong>✓</strong> process result is pending out_of_order<span class="evidence">auto=False reason=out_of_order</span></li>
+<li class="pass"><strong>✓</strong> row status remains COD 已发出<span class="evidence">COD 已发出</span></li>
+<li class="pass"><strong>✓</strong> procurement tracker unchanged<span class="evidence">ok</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：0% (0/3)</p><ul><li class="fail"><strong>✗</strong> process result is pending out_of_order<span class="evidence">auto=True reason=missing</span></li>
+<li class="fail"><strong>✗</strong> row status remains COD 已发出<span class="evidence">商务确认</span></li>
+<li class="fail"><strong>✗</strong> procurement tracker unchanged<span class="evidence">changed</span></li></ul></div></section>
+</body>
+</html>

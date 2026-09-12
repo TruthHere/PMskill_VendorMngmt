@@ -1,0 +1,17 @@
+{
+  "eval_id": 2,
+  "eval_name": "po-payment",
+  "prompt": "已有 BMS 包（技术方案已确认）。依次处理 Raise PO + 付款指示。",
+  "assertions": [
+    "process_result.json exists (pipeline evidence)",
+    "process_result records Raise PO via pipeline (step3 auto)",
+    "process_result records payment terms via pipeline",
+    "milestone PO 已发起 is set",
+    "next_payment_node is populated",
+    "card-data payment_nodes has 3 entries",
+    "PO amount written to tracker or card (含税)",
+    "card HTML passes fulfillment-card template validation",
+    "card HTML has payment-table (template fingerprint)",
+    "请款申请.html looks like claim-form template"
+  ]
+}

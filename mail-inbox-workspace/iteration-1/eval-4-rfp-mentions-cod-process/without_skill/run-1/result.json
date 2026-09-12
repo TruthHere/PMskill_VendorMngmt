@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "intent": "change.cod",
+  "route_to": "change-archive",
+  "confidence": "high",
+  "hints": {
+    "subject": "RFP for Door Package (SupplierA)",
+    "change_no": "",
+    "package_name": ""
+  },
+  "enrichment": {
+    "payment_terms": false
+  },
+  "attachments": [],
+  "pending": null,
+  "did": [
+    "naive_classify"
+  ],
+  "next": {
+    "skill": "change-archive",
+    "action": "naive"
+  }
+}

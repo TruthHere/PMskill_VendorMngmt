@@ -1,0 +1,4 @@
+# 原始邮件与真实对照表 — 永不提交
+raw/**
+!raw/.gitkeep
+mapping.json

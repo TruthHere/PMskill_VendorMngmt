@@ -1,0 +1,17 @@
+From: supplier@schneider.example.com
+To: pm@example.com
+Subject: Payment Application No. 2 for BMS - Delivery
+Date: Sat, 1 Aug 2026 08:00:00 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+
+Dear PM,
+
+Please find our payment claim for BMS package.
+
+PAYMENT NO: 2
+Claim node: 到货 / Delivery
+Amount (excl. tax): 300000
+
+Best regards,
+Schneider

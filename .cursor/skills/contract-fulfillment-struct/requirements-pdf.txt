@@ -1,0 +1,3 @@
+# PDF / OCR runtime deps — 已迁至 pdf-read
+# 见 .cursor/skills/pdf-read/scripts/requirements.txt
+# 本文件仅作兼容提示，勿在本目录再装一套。

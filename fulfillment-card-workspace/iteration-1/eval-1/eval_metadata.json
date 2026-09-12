@@ -1,0 +1,18 @@
+{
+  "eval_id": 1,
+  "eval_name": "gc-constraint",
+  "eval_kind": "standard",
+  "prompt": "渲染夹具 gc-constraint.json：总包卡片，constraint_clauses 非空。",
+  "assertions": [
+    "card HTML exists",
+    "card-title is supplier_name",
+    "payment nodes render as payment-table",
+    "validate_rendered_card passes",
+    "GC shows 约束条款 section",
+    "supplier_name is non-empty",
+    "payment node names are bilingual",
+    "payment pct sum is about 100%",
+    "total_amount marks 含税 or 不含税",
+    "each payment node has attachments after enrich"
+  ]
+}

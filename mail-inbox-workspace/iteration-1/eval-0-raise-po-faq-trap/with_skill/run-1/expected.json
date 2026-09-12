@@ -1,0 +1,4 @@
+{
+  "intent": "fulfillment.raise_po",
+  "route_to": "contract-fulfillment-struct"
+}

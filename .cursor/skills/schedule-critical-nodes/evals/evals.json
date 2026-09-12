@@ -1,0 +1,35 @@
+{
+  "skill_name": "schedule-critical-nodes",
+  "evals": [
+    {
+      "id": "eval-0-explicit-agent",
+      "prompt": "请按 schedule-critical-nodes（Agent 主导）分析样例「已写明到货/安装」。\n\n1. 阅读 `.cursor/skills/schedule-critical-nodes/samples/explicit/project_schedule.csv` 与 `packages.json`\n2. 先理解再推理：写出 critical_nodes（BMS delivery=explicit；IT-cabling 有 install_complete/prelim_accept=explicit，并合理补全供装必推缺失节点）\n3. 用 write_critical_nodes.py 落盘到临时项目根（可 --write-md），禁止把 analyze_schedule 结果不经审改直接当定稿\n\n验收：schedule.json 中 BMS delivery source=explicit；IT-cabling 含 install_complete；analysis_mode=agent；对人汇报用旬。",
+      "expected_traits": [
+        "agent-led reasoning before write",
+        "BMS delivery explicit",
+        "IT-cabling install_complete present",
+        "write_critical_nodes used",
+        "analysis_mode agent"
+      ]
+    },
+    {
+      "id": "eval-1-coarse-agent",
+      "prompt": "请按 schedule-critical-nodes（Agent 主导）分析样例「仅有专业粗条」。\n\n源：`samples/coarse/project_schedule.csv` + `packages.json`。\n\n验收：项目级开工/竣工/移交有节点；BMS（供应）有 delivery（inferred 可）；幕墙与 IT-cabling（供装）有 delivery→…→final_accept 等必推完成时点；basis 说明依据；经 write_critical_nodes 落盘。不要只跑 analyze_schedule 交差。",
+      "expected_traits": [
+        "project anchors present",
+        "coarse bar inference with basis",
+        "供装 default node set",
+        "agent write path"
+      ]
+    },
+    {
+      "id": "eval-2-no-dict-as-final",
+      "prompt": "用户强调：关键节点必须 Agent 理解进度，不能靠关键词字典定稿。请说明本 Skill 主路径命令是什么，以及 analyze_schedule / sync_schedule_timeline 各扮演什么角色。",
+      "expected_traits": [
+        "primary path write_critical_nodes",
+        "analyze is optional draft",
+        "sync renders without clobbering"
+      ]
+    }
+  ]
+}

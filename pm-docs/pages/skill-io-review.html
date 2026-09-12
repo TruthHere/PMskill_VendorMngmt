@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill 输入输出审查表 — 供应商全生命周期管理</title>
+<style>
+  :root {
+    --bg: #1a1a1e;
+    --card: #242429;
+    --border: #3a3a40;
+    --text: #e0e0e8;
+    --muted: #9898a8;
+    --blue: #378ADD;
+    --teal: #1D9E75;
+    --amber: #BA7517;
+    --coral: #D85A30;
+    --purple: #7F77DD;
+    --red: #E24B4A;
+    --pink: #D4537E;
+    --green: #639922;
+    --gold: #EF9F27;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 40px;
+    line-height: 1.7;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .header h1 {
+    font-size: 24px;
+    font-weight: 500;
+    color: #EEEDFE;
+    margin-bottom: 8px;
+  }
+  .header p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .section-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 48px 0 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    display: inline-block;
+  }
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    border-left: 4px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .skill-card:hover { border-color: rgba(255,255,255,0.15); }
+  .skill-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .skill-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 500; color: #fff;
+  }
+  .skill-name {
+    font-size: 17px; font-weight: 500; color: #fff;
+  }
+  .skill-tagline {
+    font-size: 12px; color: var(--muted);
+    margin-left: auto;
+  }
+  .io-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .io-block {
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+  .io-in {
+    background: rgba(55,138,221,0.08);
+    border: 1px solid rgba(55,138,221,0.2);
+  }
+  .io-out {
+    background: rgba(99,153,34,0.08);
+    border: 1px solid rgba(99,153,34,0.2);
+  }
+  .io-label {
+    font-size: 11px; font-weight: 500; margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .io-in .io-label { color: var(--blue); }
+  .io-out .io-label { color: var(--green); }
+  .io-item {
+    display: flex; gap: 8px;
+    margin-bottom: 6px; font-size: 13px; color: var(--text);
+  }
+  .io-item .bullet { color: var(--muted); flex-shrink: 0; }
+  .io-detail {
+    font-size: 11px; color: var(--muted); margin-top: 2px;
+    padding-left: 16px;
+  }
+  .constraints {
+    margin-top: 12px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    background: rgba(239,159,39,0.06);
+    border: 1px solid rgba(239,159,39,0.2);
+    font-size: 13px;
+  }
+  .constraints-label {
+    font-size: 11px; font-weight: 500; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .constraint-item {
+    display: flex; gap: 8px;
+    margin-bottom: 4px; color: #D5C896;
+  }
+  .constraint-item .tag {
+    font-size: 10px; padding: 1px 6px; border-radius: 3px;
+    font-weight: 500; flex-shrink: 0; margin-top: 3px;
+  }
+  .tag-risk { background: rgba(226,75,74,0.15); color: var(--red); }
+  .tag-dep { background: rgba(55,138,221,0.15); color: var(--blue); }
+  .tag-q { background: rgba(212,83,126,0.15); color: var(--pink); }
+  .confirm {
+    margin-top: 12px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    background: rgba(212,83,126,0.06);
+    border: 1px solid rgba(212,83,126,0.2);
+    font-size: 13px;
+  }
+  .confirm-label {
+    font-size: 11px; font-weight: 500; color: var(--pink);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .confirm-item {
+    display: flex; gap: 8px;
+    margin-bottom: 4px; color: #ED93B1;
+  }
+  .process-step {
+    font-size: 13px; color: var(--muted);
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    border: 1px dashed var(--border);
+    margin-bottom: 16px;
+  }
+  .process-step .step-label {
+    color: var(--text); font-weight: 500;
+  }
+  .note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  @media (max-width: 800px) {
+    .io-grid { grid-template-columns: 1fr; }
+    body { padding: 20px; }
+  }
+</style>
+<link rel="stylesheet" href="/assets/editable.css">
+</head>
+<body data-page-id="skill-io-review.html" data-save-mode="server">
+
+<div id="editable-root">
+
+<div class="header">
+  <h1>Skill 输入输出审查表</h1>
+  <p>每个技能的输入数据、输出产物、潜在限制 &amp; 需要确认的问题 — 逐项过一遍</p>
+</div>
+
+<!-- ============ SECTION 1 ============ -->
+<div class="section-title">
+  <span class="section-dot" style="background:var(--purple)"></span>
+  一、五大流程环节 Skill
+</div>
+
+<!-- Skill 1 -->
+<div class="skill-card" style="border-left-color: var(--blue)">
+  <div class="skill-header">
+    <span class="skill-num" style="background: var(--blue)">1</span>
+    <span class="skill-name">合同履约条件结构化 Skill</span>
+    <span class="skill-tagline">邮件驱动 · 归档与结构化建档</span>
+  </div>
+
+  <div class="io-grid">
+    <div class="io-block io-in">
+      <div class="io-label">输入 INPUT</div>
+      <div class="io-item"><span class="bullet">0.</span><span>项目初始化邮件（阶段 0：正文 + 进度计划附件）</span></div>
+      <div class="io-detail">阶段 0 时 Tracker 无采购包行；Skill 自动建企微表。必须先完成初始化</div>
+      <div class="io-item"><span class="bullet">1.</span><span>项目经理转发的邮件（支持转发 + 发件 BCC）</span></div>
+      <div class="io-detail">RFP、顾问确认技术文件、Raise PO、合同、付款指示邮件等；微信文件整理后邮件转发</div>
+      <div class="io-item"><span class="bullet">2.</span><span>邮件附件（PDF/Word/图片/DWG/Excel 等）</span></div>
+      <div class="io-detail">收到当下同步 OCR/解析，非事后批量提取</div>
+      <div class="io-item"><span class="bullet">3.</span><span>按采购包类型的字段模板</span></div>
+      <div class="io-detail">纯供应 / 供装 / 顾问 / 总包 四类，付款节点数以类型区分</div>
+    </div>
+    <div class="io-block io-out">
+      <div class="io-label">输出 OUTPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>Tracker（企微在线表格 · 每项目一张）</span></div>
+      <div class="io-detail">每直采包一行总览；Skill 自动建表、API 自动写入；详情见卡片 HTML</div>
+      <div class="io-item"><span class="bullet">2.</span><span>履约条件卡片 HTML（每包一份，可导出 PDF）</span></div>
+      <div class="io-detail">付款节点、验收标准、约束条款；付款以合同为准</div>
+      <div class="io-item"><span class="bullet">3.</span><span>标准化供应商文件夹（01~09 子目录 + 标准命名文件）</span></div>
+      <div class="io-detail">RFP 正文→07_往来文件；图纸→02_图纸；报价/合同→01_合同报价</div>
+      <div class="io-item"><span class="bullet">4.</span><span>节点提醒（企微对话机器人）</span></div>
+      <div class="io-detail">到货日前 N 天、质保金到期等；为 R1 提供扫描数据</div>
+    </div>
+  </div>
+
+  <div class="process-step">
+    <span class="step-label">处理链路：</span>邮件送达（转发/BCC）→ 同步归档 + 标准命名 → OCR/文档解析 + 字段提取 → 企微 API 更新 Tracker 行 + 增量更新卡片 HTML → 不确定字段经企微对话机器人确认 → 持续扫描生成提醒
+  </div>
+
+  <div class="constraints">
+    <div class="constraints-label">潜在限制 &amp; 风险</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 扫描件 OCR 准确率影响付款比例等关键字段</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 邮件主题/正文识别采购包可能误关联（待调试）</div>
+    <div class="constraint-item"><span class="tag tag-dep">存储</span> 文件夹建在本地电脑，根路径于阶段 0 指定</div>
+    <div class="constraint-item"><span class="tag tag-dep">依赖</span> 阶段 0 必须先完成；一包一供应商、一般一封 RFP</div>
+    <div class="constraint-item"><span class="tag tag-dep">边界</span> 总包滚动进度款、付款结构核验 → Skill 2；变更/请款分析由 Skill 2/3 负责</div>
+  </div>
+
+  <div class="confirm">
+    <div class="confirm-label">已确认（2026-07）</div>
+    <div class="confirm-item"><span class="bullet">✓</span> Tracker = 企微在线表格（自动建表/API 写入）；邮件 = 转发 + BCC；反馈 = 企微对话机器人</div>
+    <div class="confirm-item"><span class="bullet">✓</span> 文件夹 = 本地电脑，根路径在阶段 0 与项目信息一并指定</div>
+    <div class="confirm-item"><span class="bullet">✓</span> 总包滚动进度款、付款结构核验 → Skill 2；付款变更可随改并留历史，无审批流</div>
+  </div>
+</div>
+
+<!-- Skill 2 -->
+<div class="skill-card" style="border-left-color: var(--teal)">
+  <div class="skill-header">
+    <span class="skill-num" style="background: var(--teal)">2</span>
+    <span class="skill-name">请款合理性自动核验 Skill</span>
+    <span class="skill-tagline">中间过程请款阶段</span>
+  </div>
+
+  <div class="io-grid">
+    <div class="io-block io-in">
+      <div class="io-label">输入 INPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>供应商请款单（金额、申请节点、请款事由）</span></div>
+      <div class="io-detail">格式：Excel/表单/微信消息截图？需明确统一格式</div>
+      <div class="io-item"><span class="bullet">2.</span><span>该供应商的履约条件卡片（Skill 1产出）</span></div>
+      <div class="io-detail">含：合同约定付款比例、里程碑触发条件、前置条件</div>
+      <div class="io-item"><span class="bullet">3.</span><span>当前实际进度证据</span></div>
+      <div class="io-detail">现场带水印照片（带时间+地点）、监理书面确认、进度百分比</div>
+      <div class="io-item"><span class="bullet">4.</span><span>已支付历史请款记录</span></div>
+      <div class="io-detail">该包累计已付金额、上期是否已抵扣、发票状态</div>
+    </div>
+    <div class="io-block io-out">
+      <div class="io-label">输出 OUTPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>《请款审核意见》含审核结论</span></div>
+      <div class="io-detail">通过 / 建议核减XX元 / 退回补充资料，每条结论附依据</div>
+      <div class="io-item"><span class="bullet">2.</span><span>建议核减金额明细</span></div>
+      <div class="io-detail">超出合同比例部分、前置条件不满足部分、与进度不符部分</div>
+      <div class="io-item"><span class="bullet">3.</span><span>需补充资料清单</span></div>
+      <div class="io-detail">缺发票、缺进度照片、缺监理签字等，逐条列出</div>
+    </div>
+  </div>
+
+  <div class="process-step">
+    <span class="step-label">处理链路：</span>请款单结构化解析 → 关联合同履约卡片（取付款条件） → 关联历史支付记录 → 解析进度证据（照片识别+表单提取） → 多维度比对（金额/比例/前置条件/资料齐备） → 生成审核意见
+  </div>
+
+  <div class="constraints">
+    <div class="constraints-label">潜在限制 &amp; 风险</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 现场照片真实性问题：照片可能不是当天的、同角度摆拍、或并非本项目的工地</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 进度百分比的主观性：监理/供应商/现场三方对"完成度"的认定可能不一致</div>
+    <div class="constraint-item"><span class="tag tag-dep">依赖</span> Skill 1的履约卡片必须准确，否则核验基准就是错的</div>
+    <div class="constraint-item"><span class="tag tag-dep">依赖</span> 付款节点"soft condition"难以量化：如"甲方代表口头认可"这类前置条件AI无法自动验证</div>
+  </div>
+
+  <div class="confirm">
+    <div class="confirm-label">需要你确认</div>
+    <div class="confirm-item"><span class="bullet">Q1</span> 请款单目前是什么格式？Excel模板统一吗？还是微信/邮件里发个金额就来了？</div>
+    <div class="confirm-item"><span class="bullet">Q2</span> 进度证据你们现在怎么收？监理签字是纸质还是电子？现场照片有平台管理吗？</div>
+    <div class="confirm-item"><span class="bullet">Q3</span> 核减建议AI直接生成后，是给你审核再发，还是AI直接退回供应商？你们希望AI的"决策权限"到什么程度？</div>
+  </div>
+</div>
+
+<!-- Skill 3 -->
+<div class="skill-card" style="border-left-color: var(--amber)">
+  <div class="skill-header">
+    <span class="skill-num" style="background: var(--amber)">3</span>
+    <span class="skill-name">变更影响连锁分析 Skill</span>
+    <span class="skill-tagline">过程变更阶段</span>
+  </div>
+
+  <div class="io-grid">
+    <div class="io-block io-in">
+      <div class="io-label">输入 INPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>变更指令/洽商记录（变更内容、涉及区域、变更原因）</span></div>
+      <div class="io-detail">格式：变更单/签证单/洽商记录，可能含图纸附件</div>
+      <div class="io-item"><span class="bullet">2.</span><span>「采购包关联图谱」— 预设的包间依赖关系</span></div>
+      <div class="io-detail">核心输入！需人工先定义：如天花造型变更→关联灯具/空调风口/消防点位/石膏板</div>
+      <div class="io-item"><span class="bullet">3.</span><span>各关联包的当前执行状态</span></div>
+      <div class="io-detail">已下单/已到货/已安装/已完成 — 判断变更是否影响已完成的包</div>
+    </div>
+    <div class="io-block io-out">
+      <div class="io-label">输出 OUTPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>《变更影响地图》</span></div>
+      <div class="io-detail">可视化展示：源头变更 → 波及的直采包（按影响程度分级：必须改/可能改/无影响）</div>
+      <div class="io-item"><span class="bullet">2.</span><span>《波及供应商通知清单》+ 通知草稿</span></div>
+      <div class="io-detail">列出每个受影响的供应商该暂停/改规格/改数量/改交期</div>
+      <div class="io-item"><span class="bullet">3.</span><span>《需重新核量/询价清单》+ 待办派发</span></div>
+      <div class="io-detail">自动创建任务：设计师确认量、成本人员询价</div>
+      <div class="io-item"><span class="bullet">4.</span><span>变更前后量价记录（链接到该包结算底稿）</span></div>
+    </div>
+  </div>
+
+  <div class="process-step">
+    <span class="step-label">处理链路：</span>变更指令解析（提取关键词+涉及区域+变更类型） → 在关联图谱中匹配波及路径 → 查询各波及包的当前状态 → 生成影响分级 → 生成通知清单 &amp; 待办任务 → 记录变更历史链接结算
+  </div>
+
+  <div class="constraints">
+    <div class="constraints-label">潜在限制 &amp; 风险</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 关联图谱的完整性是核心瓶颈：如果漏定义了一个关联（如没录入"踢脚线与地面石材关联"），AI就不会提醒</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 变更指令表述模糊："天花造型微调" — AI可能不理解"微调"的实际影响范围</div>
+    <div class="constraint-item"><span class="tag tag-dep">依赖</span> 关联图谱的维护成本：每个新项目可能有新的包组合，图谱需要持续更新</div>
+    <div class="constraint-item"><span class="tag tag-dep">依赖</span> 波及包的实时状态数据：如果状态更新不及时，可能对已完成包误发变更通知</div>
+  </div>
+
+  <div class="confirm">
+    <div class="confirm-label">需要你确认</div>
+    <div class="confirm-item"><span class="bullet">Q1</span> 关联图谱你们现在有吗？还是靠脑子记？如果要建，你预估每个项目大概有多少个直采包、多少对关联？</div>
+    <div class="confirm-item"><span class="bullet">Q2</span> 变更指令来源是统一的变更单系统，还是微信/会议上口头说的？如果能统一模板（变更类型下拉+涉及材料/区域/部位），AI就准确得多</div>
+    <div class="confirm-item"><span class="bullet">Q3</span> 波及包的"当前状态"数据现在能拿到吗？是实时还是靠人报？</div>
+  </div>
+</div>
+
+<!-- Skill 4 -->
+<div class="skill-card" style="border-left-color: var(--coral)">
+  <div class="skill-header">
+    <span class="skill-num" style="background: var(--coral)">4</span>
+    <span class="skill-name">多源数据交叉核验 Skill</span>
+    <span class="skill-tagline">验收交付阶段</span>
+  </div>
+
+  <div class="io-grid">
+    <div class="io-block io-in">
+      <div class="io-label">输入 INPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>供应商《到货/安装完成确认单》（数量、规格、自评合格率）</span></div>
+      <div class="io-detail">格式：供应商自身的验收单、送货单、安装确认单</div>
+      <div class="io-item"><span class="bullet">2.</span><span>监理进度确认（数量、合格率、验收意见）</span></div>
+      <div class="io-detail">监理报告/监理日志/监理APP确认截图</div>
+      <div class="io-item"><span class="bullet">3.</span><span>现场带水印照片（含时间+GPS+拍摄角度）</span></div>
+      <div class="io-detail">AI需能识别：材料数量、破损/瑕疵、安装完成面</div>
+      <div class="io-item"><span class="bullet">4.</span><span>特殊验收条件清单（如破坏性试验报告、防火检测报告）</span></div>
+      <div class="io-detail">某些材料需要额外检测报告才能视为验收通过</div>
+    </div>
+    <div class="io-block io-out">
+      <div class="io-label">输出 OUTPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>《验收一致性报告》</span></div>
+      <div class="io-detail">三个数据来源的比对结果，无争议项&times;N，争议项&times;N</div>
+      <div class="io-item"><span class="bullet">2.</span><span>争议项高亮 + 自动提问</span></div>
+      <div class="io-detail">"XX木饰面：供应商报1000平，监理确认980平，差额20平如何处理？"</div>
+      <div class="io-item"><span class="bullet">3.</span><span>特殊验收条件达标检查</span></div>
+      <div class="io-detail">漏掉「破坏性试验报告」等特殊条件时自动标红</div>
+      <div class="io-item"><span class="bullet">4.</span><span>通过验收的包直接触发请款流程</span></div>
+      <div class="io-detail">无争议项自动流转到Skill 2的请款环节</div>
+    </div>
+  </div>
+
+  <div class="process-step">
+    <span class="step-label">处理链路：</span>三方数据录入/上传 → 图片AI识别（计数+质量检测） → 表单数据解析 → 维度对齐（按包/按材料/按区域） → 三方数据比对 → 差异分级（自动通过/需人工仲裁/严重差异） → 生成报告 → 触发下游动作
+  </div>
+
+  <div class="constraints">
+    <div class="constraints-label">潜在限制 &amp; 风险</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 照片计数的准确率：AI从照片中数木饰面板、数灯具数量，遮挡/重叠/角度可能导致误差</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 破损检测的准确率：细小裂缝、轻微色差AI可能无法识别，而这些都是验收争议的常见点</div>
+    <div class="constraint-item"><span class="tag tag-dep">依赖</span> 三方数据的维度对齐：供应商按「件」、监理按「平」、照片里只能看「块」—— 单位不一致时如何换算？</div>
+    <div class="constraint-item"><span class="tag tag-dep">依赖</span> 差异容忍阈值需定义：差2%自动通过、差5%人工确认、差10%标红——这个阈值需要你定</div>
+  </div>
+
+  <div class="confirm">
+    <div class="confirm-label">需要你确认</div>
+    <div class="confirm-item"><span class="bullet">Q1</span> 现场照片目前谁拍？用什么工具？有没有水印（时间+GPS）？如果没有，水印需要先落实</div>
+    <div class="confirm-item"><span class="bullet">Q2</span> 监理的确认格式统一吗？是APP里填表单，还是纸质签字后拍照？</div>
+    <div class="confirm-item"><span class="bullet">Q3</span> 差异容忍阈值你心里的标准是什么？2%/5%/10%还是其他？不同类型材料是不是不一样？</div>
+  </div>
+</div>
+
+<!-- Skill 5 -->
+<div class="skill-card" style="border-left-color: var(--purple)">
+  <div class="skill-header">
+    <span class="skill-num" style="background: var(--purple)">5</span>
+    <span class="skill-name">全链路回溯结算 Skill</span>
+    <span class="skill-tagline">结算阶段</span>
+  </div>
+
+  <div class="io-grid">
+    <div class="io-block io-in">
+      <div class="io-label">输入 INPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>合同PO号（唯一标识）</span></div>
+      <div class="io-detail">这是唯一输入！触发后AI自动拉取全链路数据</div>
+      <div class="io-item"><span class="bullet">2.</span><span>（自动拉取）原始合同价 — 来自Skill 1履约卡片</span></div>
+      <div class="io-item"><span class="bullet">3.</span><span>（自动拉取）所有已确认变更 ± 金额 — 来自Skill 3记录</span></div>
+      <div class="io-item"><span class="bullet">4.</span><span>（自动拉取）过程扣款/罚款单 — 来自项目管理记录</span></div>
+      <div class="io-item"><span class="bullet">5.</span><span>（自动拉取）已支付请款总和 — 来自Skill 2记录</span></div>
+      <div class="io-item"><span class="bullet">6.</span><span>（自动拉取）质保金应留比例 — 来自Skill 1履约卡片</span></div>
+    </div>
+    <div class="io-block io-out">
+      <div class="io-label">输出 OUTPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>《结算一页纸》核心公式</span></div>
+      <div class="io-detail">应结算 = 合同价 + 变更(±) - 罚款 - 已付 - 质保金</div>
+      <div class="io-item"><span class="bullet">2.</span><span>每项金额的凭证链接/跳转</span></div>
+      <div class="io-detail">点击每笔变更可追溯到原始变更单，每笔罚款可看罚款单</div>
+      <div class="io-item"><span class="bullet">3.</span><span>可直接与供应商对账的结算单草稿</span></div>
+      <div class="io-detail">格式：Excel/PDF，包含明细行+汇总行</div>
+    </div>
+  </div>
+
+  <div class="process-step">
+    <span class="step-label">处理链路：</span>输入PO号 → 系统自动检索关联的：合同数据(Skill1) + 变更记录(Skill3) + 罚款记录 + 支付记录(Skill2) → 按公式汇总 → 逐项附凭证链接 → 生成结算单 → 标记「待对账确认」
+  </div>
+
+  <div class="constraints">
+    <div class="constraints-label">潜在限制 &amp; 风险</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 全链路数据完整性依赖：如果前面任何一个Skill的数据缺失（如有一笔变更没录入系统），结算就不准</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 历史遗留项目的旧数据：之前没用这套系统的项目，历史变更/罚款/请款记录可能散落在邮件和微信里</div>
+    <div class="constraint-item"><span class="tag tag-dep">依赖</span> 最依赖前面4个Skill的数据质量和覆盖率，是"最终验收"性质的Skill</div>
+    <div class="constraint-item"><span class="tag tag-dep">依赖</span> 分包/变更价差：同一变更可能有"暂估价"和"最终核定价"，用哪个价需要规则</div>
+  </div>
+
+  <div class="confirm">
+    <div class="confirm-label">需要你确认</div>
+    <div class="confirm-item"><span class="bullet">Q1</span> 扣款/罚款记录现在怎么管的？有统一台账吗？还是散落在Excel/邮件/微信里？</div>
+    <div class="confirm-item"><span class="bullet">Q2</span> 结算单的最终格式你们有模板吗？甲方/财务对格式有要求吗？</div>
+    <div class="confirm-item"><span class="bullet">Q3</span> 新上一个项目怎么处理历史数据？是先做数据迁移/补录，还是新老划断、只从某个节点之后启用？</div>
+  </div>
+</div>
+
+<!-- ============ SECTION 2 ============ -->
+<div class="section-title">
+  <span class="section-dot" style="background:var(--red)"></span>
+  二、高阶统筹 Skill（跨周期全局控制）
+</div>
+
+<!-- Skill 6 -->
+<div class="skill-card" style="border-left-color: var(--red)">
+  <div class="skill-header">
+    <span class="skill-num" style="background: var(--red)">R1</span>
+    <span class="skill-name">全局风险预警 Skill</span>
+    <span class="skill-tagline">跨包扫描 · 定时巡检</span>
+  </div>
+
+  <div class="io-grid">
+    <div class="io-block io-in">
+      <div class="io-label">输入 INPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>预警规则集（可配置）</span></div>
+      <div class="io-detail">例：直采包超期7天未请款 / 变更超3天未发起关联评估 / 质保金预留比例异常 / 供应商连续2次请款被退回</div>
+      <div class="io-item"><span class="bullet">2.</span><span>所有供应商的实时状态数据流</span></div>
+      <div class="io-detail">来自Skill 1-5的结构化数据：履约节点进度、请款状态、变更记录、验收结果、付款记录</div>
+      <div class="io-item"><span class="bullet">3.</span><span>规则触发历史（避免重复报警）</span></div>
+    </div>
+    <div class="io-block io-out">
+      <div class="io-label">输出 OUTPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>「管理例外」清单</span></div>
+      <div class="io-detail">只展示触发预警的异常项，正常的不显示 — 让你只看例外</div>
+      <div class="io-item"><span class="bullet">2.</span><span>推送消息（企业微信/钉钉/邮件）</span></div>
+      <div class="io-detail">按严重程度分级：红色紧急 / 黄色提醒 / 蓝色信息</div>
+      <div class="io-item"><span class="bullet">3.</span><span>趋势预警</span></div>
+      <div class="io-detail">虽然还没超期，但按当前进度推算将在3天内超期 → 提前预警</div>
+    </div>
+  </div>
+
+  <div class="constraints">
+    <div class="constraints-label">潜在限制 &amp; 风险</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 误报太多导致"狼来了"效应：阈值设太严，天天报警，人就麻木了</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 漏报：阈值太松，真正有风险的情况没报出来</div>
+    <div class="constraint-item"><span class="tag tag-dep">依赖</span> 严重依赖Skill 1-5的数据完整性和实时性</div>
+  </div>
+
+  <div class="confirm">
+    <div class="confirm-label">需要你确认</div>
+    <div class="confirm-item"><span class="bullet">Q1</span> 预警规则你想设哪些？我列了几个例子（超期7天/变更3天/质保金异常），哪些你觉得最需要？阈值你觉得多少合适？</div>
+    <div class="confirm-item"><span class="bullet">Q2</span> 推送渠道：企业微信？钉钉？邮件？还是系统内有消息中心？</div>
+    <div class="confirm-item"><span class="bullet">Q3</span> 预警频率：每天几点扫一次？还是实时触发？</div>
+  </div>
+</div>
+
+<!-- Skill 7 -->
+<div class="skill-card" style="border-left-color: var(--pink)">
+  <div class="skill-header">
+    <span class="skill-num" style="background: var(--pink)">R2</span>
+    <span class="skill-name">供应商画像 Skill</span>
+    <span class="skill-tagline">数据积累 · 辅助招标决策</span>
+  </div>
+
+  <div class="io-grid">
+    <div class="io-block io-in">
+      <div class="io-label">输入 INPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>该供应商在所有项目中的历史数据</span></div>
+      <div class="io-detail">来源：Skill 1-5积累的合同履约、请款、变更、验收、结算数据</div>
+      <div class="io-item"><span class="bullet">2.</span><span>评价维度 &amp; 权重配置</span></div>
+      <div class="io-detail">例：累计变更率(25%) / 平均延误天数(25%) / 一次验收合格率(30%) / 配合度(20%)</div>
+    </div>
+    <div class="io-block io-out">
+      <div class="io-label">输出 OUTPUT</div>
+      <div class="io-item"><span class="bullet">1.</span><span>供应商合作档案（一页纸）</span></div>
+      <div class="io-detail">累计合作项目数、总金额、平均延误天数、变更率、一次验收合格率</div>
+      <div class="io-item"><span class="bullet">2.</span><span>招标风险提示</span></div>
+      <div class="io-detail">"该木作供应商近三次项目平均延误12天，变更率达18%，建议审慎"</div>
+      <div class="io-item"><span class="bullet">3.</span><span>供应商排名/对比</span></div>
+      <div class="io-detail">同类供应商（如石材供应商A/B/C）横向对比，辅助招标短名单</div>
+    </div>
+  </div>
+
+  <div class="constraints">
+    <div class="constraints-label">潜在限制 &amp; 风险</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 新供应商冷启动：没有历史数据，画像为空，无法评价 — 是否影响其短名单入围？</div>
+    <div class="constraint-item"><span class="tag tag-risk">风险</span> 评价维度可能不公平：比如延误可能不是供应商的错（是甲方变更导致的），但数据上会归因给供应商</div>
+    <div class="constraint-item"><span class="tag tag-dep">依赖</span> 需要积累足够的历史数据才能有统计意义（至少3-5个项目）</div>
+  </div>
+
+  <div class="confirm">
+    <div class="confirm-label">需要你确认</div>
+    <div class="confirm-item"><span class="bullet">Q1</span> 你现在合作的供应商大概有多少家？每年新增多少？数据量够不够做统计画像？</div>
+    <div class="confirm-item"><span class="bullet">Q2</span> 供应商评价维度你觉得哪些最重要？除了我列的那些，还有没有你们特别在意的？（如配合度、主动解决问题能力等）</div>
+    <div class="confirm-item"><span class="bullet">Q3</span> 供应商画像是否要分享给甲方/第三方？还是仅内部招标决策用？</div>
+  </div>
+</div>
+
+<!-- ============ SECTION 3 ============ -->
+<div class="section-title">
+  <span class="section-dot" style="background:var(--green)"></span>
+  三、整体评估 &amp; 落地建议
+</div>
+
+<div class="skill-card" style="border-left-color: var(--green)">
+  <div class="skill-header">
+    <span class="skill-name">关键依赖链总览</span>
+  </div>
+  <div style="font-size:13px; color:var(--text); margin-bottom:12px">
+    下面是这7个Skill之间的数据依赖关系，越靠左的Skill越基础，后续Skill都依赖它：
+  </div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; font-size:12px">
+    <span style="background:rgba(55,138,221,0.15);color:var(--blue);padding:4px 10px;border-radius:6px">Skill1 合同结构化</span>
+    <span style="color:var(--muted)">→</span>
+    <span style="background:rgba(29,158,117,0.15);color:var(--teal);padding:4px 10px;border-radius:6px">Skill2 请款核验</span>
+    <span style="color:var(--muted)">↘</span>
+    <span style="background:rgba(127,119,221,0.15);color:var(--purple);padding:4px 10px;border-radius:6px">Skill5 结算回溯</span>
+  </div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; font-size:12px; margin-top:8px">
+    <span style="background:rgba(55,138,221,0.15);color:var(--blue);padding:4px 10px;border-radius:6px">Skill1 合同结构化</span>
+    <span style="color:var(--muted)">→</span>
+    <span style="background:rgba(186,117,23,0.15);color:var(--amber);padding:4px 10px;border-radius:6px">Skill3 变更分析</span>
+    <span style="color:var(--muted)">↘</span>
+    <span style="background:rgba(216,90,48,0.15);color:var(--coral);padding:4px 10px;border-radius:6px">Skill4 交叉核验</span>
+    <span style="color:var(--muted)">→</span>
+    <span style="background:rgba(127,119,221,0.15);color:var(--purple);padding:4px 10px;border-radius:6px">Skill5 结算回溯</span>
+  </div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; font-size:12px; margin-top:8px">
+    <span style="background:rgba(127,119,221,0.15);color:var(--purple);padding:4px 10px;border-radius:6px">Skill1-5 全数据</span>
+    <span style="color:var(--muted)">→</span>
+    <span style="background:rgba(226,75,74,0.15);color:var(--red);padding:4px 10px;border-radius:6px">R1 风险预警</span>
+    <span style="background:rgba(212,83,126,0.15);color:var(--pink);padding:4px 10px;border-radius:6px">R2 供应商画像</span>
+  </div>
+  <div class="note" style="margin-top:16px">
+    建议落地顺序：先做 Skill 1（合同结构化）→ Skill 2（请款核验），这两个是基座。Skill 3-5 和 R1-R2 可以在数据积累到一定量后再上线。
+  </div>
+</div>
+
+</div>
+
+<div class="edit-toolbar">
+  <div class="edit-status" id="editStatus">
+    <span class="dot"></span>
+    <span class="status-text">就绪</span>
+  </div>
+  <button class="save-now-btn" id="saveNowBtn" onclick="PMEditable.saveNow()">💾 立即保存</button>
+  <button class="edit-toggle" id="editToggle" onclick="PMEditable.toggleEdit()">✏️ 编辑模式：开</button>
+  <button class="reset-btn" id="resetBtn" onclick="PMEditable.resetPage()" style="display:none">重置</button>
+</div>
+
+<script src="/assets/editable.js"></script>
+<script>
+PMEditable.init({
+  selectors: [
+    '.header h1',
+    '.header p',
+    '.section-title',
+    '.skill-name',
+    '.skill-tagline',
+    '.io-label',
+    '.io-item > span:last-child',
+    '.io-detail',
+    '.process-step',
+    '.constraint-item',
+    '.confirm-item',
+    '.note',
+    '.skill-card > div[style]'
+  ]
+});
+</script>
+
+</body>
+</html>

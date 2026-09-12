@@ -1,0 +1,5 @@
+{
+  "intent": "fulfillment.rfp",
+  "route_to": "contract-fulfillment-struct",
+  "package_name": "Door Package"
+}

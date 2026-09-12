@@ -1,0 +1,17 @@
+{
+  "eval_id": 4,
+  "eval_name": "change-items",
+  "eval_kind": "standard",
+  "prompt": "渲染夹具 change-items.json：含 COT-001 / COT-002 两条已确认变更。",
+  "assertions": [
+    "card HTML exists",
+    "change items render as change-table",
+    "validate_rendered_card passes",
+    "change item rows match card-data",
+    "supplier_name is non-empty",
+    "payment node names are bilingual",
+    "payment pct sum is about 100%",
+    "quality_ok is true",
+    "no quality warnings when data is good"
+  ]
+}

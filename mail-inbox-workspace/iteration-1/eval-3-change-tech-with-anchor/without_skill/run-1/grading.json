@@ -1,0 +1,24 @@
+{
+  "expectations": [
+    {
+      "text": "intent is change.tech_submit",
+      "passed": false,
+      "evidence": "got 'change.tech_confirm'"
+    },
+    {
+      "text": "route_to is change-archive",
+      "passed": true,
+      "evidence": "got 'change-archive'"
+    },
+    {
+      "text": "change_no is COT003",
+      "passed": false,
+      "evidence": "got ''"
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "total": 3,
+    "pass_rate": 0.3333333333333333
+  }
+}

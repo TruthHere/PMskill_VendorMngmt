@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Sample Project · 关键节点时间线</title>
+<style>
+:root {
+  --bg: #f6f3ee;
+  --ink: #1c1917;
+  --muted: #78716c;
+  --line: #d6d3d1;
+  --pkg-bg: #fffdf9;
+  --dot: #0f766e;
+  --dot-inferred: #b45309;
+  --hl: #ecfdf5;
+  --label-w: 200px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(900px 420px at 12% -10%, #dde8e4 0%, transparent 55%),
+    radial-gradient(700px 380px at 100% 0%, #efe6d8 0%, transparent 50%),
+    var(--bg);
+  min-height: 100vh;
+}
+.wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 48px; }
+h1 { font-size: 1.35rem; font-weight: 700; margin: 0 0 6px; letter-spacing: 0.02em; }
+.sub { color: var(--muted); font-size: 0.85rem; margin: 0 0 18px; line-height: 1.5; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.8rem; color: var(--muted); margin-bottom: 14px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.legend .ex { background: var(--dot); }
+.legend .inf { background: transparent; border: 2px dashed var(--dot-inferred); }
+.board {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(28,25,23,0.04);
+}
+.axis {
+  display: flex;
+  border-bottom: 1px solid var(--line);
+  background: #fafaf9;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+.axis .corner {
+  flex: 0 0 var(--label-w);
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  background: #fafaf9;
+  border-right: 1px solid var(--line);
+  padding: 10px 12px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.axis-scroll { overflow-x: auto; flex: 1; }
+.months { display: flex; min-height: 36px; }
+.month {
+  flex: 0 0 auto;
+  border-right: 1px dashed #e7e5e4;
+  padding: 10px 8px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.rows { }
+.row {
+  display: flex;
+  min-height: 52px;
+  border-bottom: 1px solid #f0eeeb;
+}
+.row:last-child { border-bottom: 0; }
+.row.highlight { background: var(--hl); }
+.pkg {
+  flex: 0 0 var(--label-w);
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--pkg-bg);
+  border-right: 1px solid var(--line);
+  padding: 14px 12px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.row.highlight .pkg { background: var(--hl); }
+.track { flex: 1; overflow-x: auto; position: relative; }
+.track-inner {
+  position: relative;
+  height: 52px;
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent,
+    transparent calc(10px - 1px),
+    #f5f5f4 calc(10px - 1px),
+    #f5f5f4 10px
+  );
+}
+.dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--dot);
+  background: #fff;
+  color: var(--dot);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0;
+  cursor: default;
+  line-height: 1;
+  z-index: 1;
+}
+.dot span { pointer-events: none; }
+.dot:hover, .dot:focus-visible {
+  background: var(--dot);
+  color: #fff;
+  outline: none;
+  z-index: 2;
+}
+.dot.inferred {
+  border-style: dashed;
+  border-color: var(--dot-inferred);
+  color: var(--dot-inferred);
+}
+.dot.inferred:hover, .dot.inferred:focus-visible {
+  background: var(--dot-inferred);
+  color: #fff;
+}
+.empty { padding: 28px 18px; color: var(--muted); font-size: 0.9rem; }
+.note { margin-top: 14px; font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
+code { font-size: 0.85em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Sample Project · 关键节点时间线</h1>
+  <p class="sub">完成时点（请款对齐 <code>window_end</code>）· 轴上为请款序号，悬停见全名与旬 · 聚焦采购包 BMS</p>
+  <div class="legend">
+    <span><i class="ex"></i>计划明示 / aligned</span>
+    <span><i class="inf"></i>倒推 inferred</span>
+  </div>
+  <div class="board">
+    <div class="axis">
+      <div class="corner">采购包</div>
+      <div class="axis-scroll">
+        <div class="months" style="width:640px"><div class="month" style="width:99px">2026-07</div><div class="month" style="width:99px">2026-08</div><div class="month" style="width:96px">2026-09</div><div class="month" style="width:99px">2026-10</div><div class="month" style="width:96px">2026-11</div></div>
+      </div>
+    </div>
+    <div class="rows"><div class="empty">暂无关键节点。请先导入进度计划并运行 <code>analyze_schedule.py</code>。</div></div>
+  </div>
+  <p class="note">分析时间：— · 源：— · 圆点位置按完成日落位；禁止将作业工期画成长条。</p>
+</div>
+<script>
+(function () {
+  var scrolls = document.querySelectorAll(".axis-scroll, .track");
+  if (!scrolls.length) return;
+  var lock = false;
+  function sync(from) {
+    if (lock) return;
+    lock = true;
+    var left = from.scrollLeft;
+    scrolls.forEach(function (el) { if (el !== from) el.scrollLeft = left; });
+    lock = false;
+  }
+  scrolls.forEach(function (el) {
+    el.addEventListener("scroll", function () { sync(el); }, { passive: true });
+  });
+})();
+</script>
+</body>
+</html>

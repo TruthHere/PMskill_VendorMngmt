@@ -1,0 +1,30 @@
+{
+  "package_name": "Carpet",
+  "supplier_name": "Modular Space",
+  "package_type": "供应",
+  "package_type_label": "纯供应",
+  "project_name": "Sample Project",
+  "contact_email": "sales@modular.example.com",
+  "total_amount": "¥220,000 CNY 含税",
+  "scope_summary": "地毯与橡胶地板供应",
+  "delivery_schedule": "2026-08-15 前到货",
+  "payment_nodes": [
+    {
+      "name": "到货 / Delivery",
+      "pct": "100%",
+      "condition": "到货验收后",
+      "payment_attachments": "请款单；到货签认单；发票",
+      "source": "邮件指示",
+      "schedule_window": "≤ 2026-08-15",
+      "milestone": "2026-08-15"
+    }
+  ],
+  "change_items": [],
+  "acceptance_items": [
+    "按样品验收"
+  ],
+  "constraint_clauses": "这段文字不应出现在非总包卡片的约束章节里",
+  "data_sources": "报价邮件",
+  "quality_warnings": [],
+  "quality_ok": true
+}

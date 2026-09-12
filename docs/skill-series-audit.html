@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>系列 Skill 自查表</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #1a1f24;
+    --muted: #66727d;
+    --faint: #939ca6;
+    --bg: #f7f8f9;
+    --panel: #fff;
+    --line: #e2e6ea;
+    --accent: #216e68;
+    --warn: #9b3d2a;
+    --ok: #216e68;
+    --paper: #f7f5f1;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+    line-height: 1.55;
+    background: var(--bg);
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 36px 20px 120px; }
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+  .lede {
+    margin: 0 0 20px;
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 46em;
+  }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  .intent-box {
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    border-left: 3px solid var(--accent);
+    background: var(--paper);
+  }
+  .intent-box .t {
+    margin: 0 0 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .intent-box .b { margin: 0; font-size: 14px; color: var(--ink); }
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 28px;
+    align-items: center;
+  }
+  button, .file-btn {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ink);
+    padding: 7px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  button:hover, .file-btn:hover { border-color: var(--accent); color: var(--accent); }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.primary:hover { filter: brightness(0.95); color: #fff; }
+  button.danger { color: var(--warn); }
+  button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .save-hint {
+    font-size: 12px;
+    color: var(--faint);
+    font-family: "IBM Plex Mono", monospace;
+  }
+  nav.toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin: 0 0 32px;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.toc a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  nav.toc a:hover { color: var(--accent); }
+  section.block {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 22px 22px 18px;
+    margin: 0 0 18px;
+  }
+  .block-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 0 0 14px;
+  }
+  .block-head h2 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .block-head p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .stamp {
+    flex: none;
+    min-width: 52px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 8px 10px;
+    border: 2px solid var(--line);
+    color: var(--faint);
+    border-radius: 2px;
+    transform: rotate(-6deg);
+  }
+  .stamp.ok { border-color: var(--ok); color: var(--ok); }
+  .stamp.fail { border-color: var(--warn); color: var(--warn); }
+  .stamp.mid { border-color: #b08a2e; color: #8a6a1a; }
+  label.field {
+    display: block;
+    margin: 0 0 12px;
+  }
+  label.field span {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin: 0 0 4px;
+  }
+  input[type="text"], textarea, select {
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 8px 10px;
+    border-radius: 4px;
+  }
+  textarea { min-height: 72px; resize: vertical; }
+  .hint {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: var(--faint);
+  }
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 14px;
+    margin: 0 0 12px;
+    background: #fafbfc;
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 10px;
+  }
+  .card-top .idx {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--faint);
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+  }
+  .table-wrap { overflow-x: auto; margin: 8px 0 4px; }
+  table.matrix {
+    border-collapse: collapse;
+    min-width: 100%;
+    font-size: 13px;
+  }
+  table.matrix th, table.matrix td {
+    border: 1px solid var(--line);
+    padding: 6px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  table.matrix th {
+    background: var(--paper);
+    font-weight: 600;
+    font-size: 12px;
+  }
+  table.matrix th.rowhead, table.matrix td.rowhead {
+    text-align: left;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  table.matrix tr.hot td { background: #f8eee9; }
+  table.matrix select { min-width: 72px; padding: 4px 6px; }
+  .fail-note {
+    margin: 8px 0 0;
+    font-size: 13px;
+    color: var(--warn);
+  }
+  .check-list { list-style: none; margin: 0; padding: 0; }
+  .check-list li {
+    border-top: 1px solid var(--line);
+    padding: 12px 0;
+  }
+  .check-list li:first-child { border-top: 0; padding-top: 0; }
+  .check-q { font-size: 14px; margin: 0 0 8px; }
+  .verdicts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    align-items: center;
+  }
+  .verdicts label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .dock {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.94);
+    border-top: 1px solid var(--line);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    z-index: 20;
+  }
+  .dock inner, .dock-inner {
+    width: 100%;
+    max-width: 1080px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    font-size: 13px;
+  }
+  .dock strong.fail { color: var(--warn); }
+  .dock strong.ok { color: var(--ok); }
+  #summary-list { margin: 0; padding-left: 1.2em; font-size: 14px; }
+  #summary-list li { margin: 0 0 6px; }
+  @media (max-width: 720px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .wrap { padding: 24px 14px 120px; }
+  }
+  @media print {
+    .toolbar, nav.toc, .dock, button, .file-btn { display: none !important; }
+    .wrap { padding: 0; max-width: none; }
+    section.block { break-inside: avoid; }
+    body { background: #fff; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>系列 Skill 自查表</h1>
+    <p class="lede">
+      给「多个 Skill 连成一套」用的。查的是结构：<strong>谁能写、状态清不清、会不会抢同一份内容</strong>。
+      不查某一份说明书写得漂不漂亮——那是 Skill Creator 的活。
+    </p>
+    <div class="intent-box">
+      <p class="t">怎么用</p>
+      <p class="b">按 1→6 的顺序填。先列对象，再列 Skill，再对「谁能写」。一次只查结构，先别改功能。填空会自动存在这台电脑的浏览器里。</p>
+    </div>
+    <div class="toolbar">
+      <button type="button" class="primary" id="btn-export">导出备份</button>
+      <label class="file-btn">导入备份<input type="file" id="import-file" accept="application/json" hidden /></label>
+      <button type="button" class="danger" id="btn-reset">清空重来</button>
+      <button type="button" id="btn-load-seed">载入已填底稿</button>
+      <button type="button" id="btn-print">打印</button>
+      <span class="save-hint" id="save-hint">尚未保存</span>
+    </div>
+    <nav class="toc">
+      <a href="#s0">0 一句话</a>
+      <a href="#s1">1 对象</a>
+      <a href="#s2">2 Skill</a>
+      <a href="#s3">3 谁能写</a>
+      <a href="#s4">4 状态</a>
+      <a href="#s5">5 联调</a>
+      <a href="#s6">6 抽 / 加</a>
+      <a href="#s7">判定</a>
+    </nav>
+
+    <section class="block" id="s0">
+      <div class="block-head">
+        <div>
+          <h2>0. 这套系列到底在干什么</h2>
+          <p>不是功能清单。是更硬的一句：这套东西把什么收成「事后不用靠人脑」的事实。</p>
+        </div>
+        <div class="stamp" data-stamp="s0">待填</div>
+      </div>
+      <label class="field">
+        <span>一句话（写不出来就先空着，后面对象填完再回来改）</span>
+        <textarea id="intent" placeholder="例如：把散落在邮件和微信里的履约事实，收成一份事后能对账的正式记录。"></textarea>
+      </label>
+    </section>
+
+    <section class="block" id="s1">
+      <div class="block-head">
+        <div>
+          <h2>1. 对象：系统真正在管的东西</h2>
+          <p>合同、变更、请款、图纸、进度……先写这些，不要先写 Skill 名字。一张卡片一个对象。</p>
+        </div>
+        <div class="stamp" data-stamp="s1">待填</div>
+      </div>
+      <div id="objects"></div>
+      <button type="button" id="add-object">＋ 添加对象</button>
+    </section>
+
+    <section class="block" id="s2">
+      <div class="block-head">
+        <div>
+          <h2>2. Skill 清单：谁上场</h2>
+          <p>现在才写 Skill。重点是：它可以单独用吗？单独用时许不许改整套的正式记录。</p>
+        </div>
+        <div class="stamp" data-stamp="s2">待填</div>
+      </div>
+      <div id="skills"></div>
+      <button type="button" id="add-skill">＋ 添加 Skill</button>
+    </section>
+
+    <section class="block" id="s3">
+      <div class="block-head">
+        <div>
+          <h2>3. 谁能写</h2>
+          <p>每一行（一个对象）的「写」尽量只有一个。两个都能写，必须在备注里写清：凭什么状态、谁先谁后。</p>
+        </div>
+        <div class="stamp" data-stamp="s3">待填</div>
+      </div>
+      <div class="table-wrap">
+        <table class="matrix" id="matrix">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="hint">格子含义：写 = 可以改正式记录；读 = 只能看、只能引用；不许 = 碰都不许。</p>
+      <p class="fail-note" id="matrix-fail" hidden></p>
+    </section>
+
+    <section class="block" id="s4">
+      <div class="block-head">
+        <div>
+          <h2>4. 状态闸门</h2>
+          <p>按对象填，不要按 Skill 填流程。状态是闸门，不是标签。回退必须写清：已经发出去的许可怎么收回。</p>
+        </div>
+        <div class="stamp" data-stamp="s4">待填</div>
+      </div>
+      <div id="states"></div>
+    </section>
+
+    <section class="block" id="s5">
+      <div class="block-head">
+        <div>
+          <h2>5. 跨 Skill 联调</h2>
+          <p>单科考过不算。这里模拟过手：同一件事经过两块以上，会不会写两份、会不会拿着过期许可往下走。</p>
+        </div>
+        <div class="stamp" data-stamp="s5">待填</div>
+      </div>
+      <ol class="check-list" id="cross-checks"></ol>
+    </section>
+
+    <section class="block" id="s6">
+      <div class="block-head">
+        <div>
+          <h2>6. 抽一块 / 加一块</h2>
+          <p>两个很损的实验。过不了，说明真相还住在某一份交底里，没住在产品里。</p>
+        </div>
+        <div class="stamp" data-stamp="s6">待填</div>
+      </div>
+      <label class="field">
+        <span>抽一块：拿掉哪个 Skill 后，正式记录就没地方放了？（没有这种 Skill，写「无」）</span>
+        <textarea id="kill-one" placeholder="若拿掉某一块，某个对象的真相就消失，说明真相写在交底里，不在总图里。"></textarea>
+      </label>
+      <div class="verdicts" data-field="killVerdict">
+        <label><input type="radio" name="killVerdict" value="pass" /> 过：拿掉任何一块，真相仍有住处</label>
+        <label><input type="radio" name="killVerdict" value="fail" /> 挂：有一块是真相的唯一住所</label>
+        <label><input type="radio" name="killVerdict" value="skip" /> 还没试</label>
+      </div>
+      <label class="field" style="margin-top:16px">
+        <span>加一块：假如下周要多一个能力，它读谁、写谁、碰哪几个状态？</span>
+        <textarea id="add-one" placeholder="写得出 = 系列是长出来的。写不出 = 还在堆功能。"></textarea>
+      </label>
+      <div class="verdicts" data-field="addVerdict">
+        <label><input type="radio" name="addVerdict" value="pass" /> 过：能指出读/写/状态</label>
+        <label><input type="radio" name="addVerdict" value="fail" /> 挂：指不出该接在哪</label>
+        <label><input type="radio" name="addVerdict" value="skip" /> 还没试</label>
+      </div>
+    </section>
+
+    <section class="block" id="s7">
+      <div class="block-head">
+        <div>
+          <h2>判定</h2>
+          <p>下面这些是自动从你填的内容里挑出来的。先改结构，再改某一个 Skill 的措辞。</p>
+        </div>
+        <div class="stamp" data-stamp="s7">待填</div>
+      </div>
+      <ul id="summary-list"></ul>
+    </section>
+  </div>
+
+  <div class="dock">
+    <div class="dock-inner">
+      <span id="dock-text">还没开始填。</span>
+      <button type="button" class="primary" id="btn-summary">看判定</button>
+    </div>
+  </div>
+
+<script>
+(function () {
+  const KEY = "skill-series-audit-v5";
+  const CROSS = [
+    { id: "dup", q: "同一件事进来两遍（同一封邮件、同一张变更、同一版图），会不会生出两份正式记录？" },
+    { id: "cite", q: "上游改了正式记录，下游引用的还是不是同一份？有没有下游自己又记了一份？" },
+    { id: "wrong", q: "故意用错的 Skill 去碰不该它管的对象，它会不会下手改？" },
+    { id: "solo", q: "先单独用某一块，再纳入整套，会不会把总账写脏？" },
+    { id: "back", q: "状态从「已批准」退回后，下游是否还拿着旧许可继续走？" },
+    { id: "gate", q: "非法跳步（未批准就采购 / 未升版就当现行），是脚本硬拦，还是只写在说明书里指望 Agent 自觉？" }
+  ];
+
+  const uid = () => Math.random().toString(36).slice(2, 9);
+
+  const emptyObject = () => ({
+    id: uid(),
+    name: "",
+    record: "",
+    evidence: "",
+    writer: "",
+    readers: "",
+    derived: "",
+    retire: "",
+    states: "",
+    arrows: "",
+    whoPushes: "",
+    opens: "",
+    revoke: "",
+    gate: "unset"
+  });
+
+  const emptySkill = () => ({
+    id: uid(),
+    name: "",
+    mode: "both",
+    soloWrite: "no"
+  });
+
+  const FILLED_SEED = {
+  "intent": "把供应商履约过程里散落的事实（邮件、合同、进度、变更、请款），收成项目文件夹里事后能对账的正式记录：这个包是谁的、付过多少、变过什么、节点何时完成。",
+  "objects": [
+    {
+      "id": "obj-project",
+      "name": "项目档案",
+      "record": "项目根目录 .skill/project.json（项目名、编号、甲方、PM、专用邮箱地址）。项目背景.md 给人看，以 json 为准。",
+      "evidence": "以已落盘的 project.json 为准。初始化邮件只是入口，不能代替档案。授权码不进 json，只在本地 .mailbox.secret。",
+      "writer": "PM（对话里确认字段后，由 Skill 0 落盘）",
+      "readers": "后面所有业务：建包、请款、变更、进度、通讯录都要先有这份档案。",
+      "derived": "空 Tracker、空 pending、inbox 文件夹是建项时一并立起来的壳，不算另一份真相。",
+      "retire": "不另开第二份 project.json。要改名/改编号，改这一份并留下谁改的说明。旧路径作废靠人搬家，系统不自动认两份。",
+      "states": "未建 → 已初始化（有 project.json）→ 邮箱已绑定",
+      "arrows": "未建不能静默建成半残项目（邮局只挂 pending）。已初始化后可补绑邮箱。没有「删档回未建」的正式箭头。",
+      "whoPushes": "未建→已初始化：PM 在对话里确认，Skill 0 init_project。已初始化→邮箱已绑定：PM 提供已开通地址（和授权码），Skill 0 写入。邮局 handler 只确认已建或挂 pending。",
+      "opens": "有档案才能建采购包、收履约/变更/请款邮件、写进度节点。",
+      "revoke": "没有合法退回。若建错项目，停用该根目录，不要在同一份 json 上假装没建过。",
+      "gate": "script"
+    },
+    {
+      "id": "obj-tracker",
+      "name": "采购包（Tracker）",
+      "record": "项目根 {项目名}_procurement_packages_status_tracker.csv（xlsx 给人看，csv 给脚本）。一行一个采购包。",
+      "evidence": "报价金额以报价附件为准，不以邮件正文为准；冲突先写附件并挂 pending。里程碑以首次盖上的时间戳为准，后来的同主题邮件不覆盖。",
+      "writer": "PM 确认包名/供应商；金额来自报价附件。角色上：履约侧改身份和里程碑，请款侧改请款四列（已请/待请/下一节点/请款进度）。",
+      "readers": "请款、变更（对包名）、进度归属、通讯录名单、现金流、请款申请页。",
+      "derived": "xlsx 是 csv 的人看版，允许旧几分钟。履约卡片 HTML、请款页都不是 Tracker 真相。",
+      "retire": "包名以 Tracker 这一行为准。不要另建一行冒充同一包；同名再建包会被拒绝。作废包目前没有「关闭」态，只能停更并在备注说明。",
+      "states": "RFP 发出 → 技术方案已确认 → 商务报价已确认 → PO 已发起 → 已结算（五列戳，有日期=已到；中间列允许空）",
+      "arrows": "只前进、首次锁定。Raise PO 可以同时盖「商务报价已确认 + PO 已发起」（业务如此）。没有从已结算退回草稿的箭头。未技术确认就 Raise PO，脚本不拦（现场常这样）。",
+      "whoPushes": "Skill 1 处理履约邮件盖里程碑戳、写金额与包身份。Skill 2 每步回写请款进度与下一节点；客户批复后重算已请/待请。Skill 0 只建空表。",
+      "opens": "有包行才能归档邮件、出履约卡片、请款、把变更挂到这个包。PO 已发起后请款才有合同额可对。",
+      "revoke": "里程碑戳不收回。请款进度可 returned/rejected；已请金额只在客户批复后累加，不因改卡片而自动退。",
+      "gate": "script"
+    },
+    {
+      "id": "obj-card",
+      "name": "履约卡片数据",
+      "record": "每包 card-data.json。HTML 卡片只是印出来的纸，改 HTML 不算数。",
+      "evidence": "付款节点：履约邮件/合同正文能解析再写入；合同 PDF 先读正文再抽节点，须 PM 确认才当定稿。变更金额只认 Change Log「最终确认金额」（非已取消），不进履约卡片。",
+      "writer": "履约侧写主数据（Skill 1）。变更不写卡片。",
+      "readers": "履约卡片、请款申请页、请款入账、现金流（付款节点）；变更金额改读 Change Log。",
+      "derived": "履约条件卡片.html、请款申请.html 都是派生，旧一天可以，重渲即跟上。quality_ok 是渲染时盖的质检戳。旧 change_items 若还在 json 里，视为过期，系统不再写入也不展示。",
+      "retire": "以最新 card-data.json 为准。重渲覆盖 HTML。旧 HTML 若没重渲，就是过期打印件。",
+      "states": "有草稿数据 → 已渲染出卡（可能带质量提醒）→ 付款节点已确认",
+      "arrows": "改 json 必须再渲染，否则人看到的是旧卡。质量不合格仍出卡，但不把 quality_ok 标真。没有「把卡片退回空白」的正式箭头。禁止把变更金额写进卡片。",
+      "whoPushes": "Skill 1 写主字段并调渲染。fulfillment-card 只回写质检字段并印 HTML，再自动刷请款页。Skill 3 不碰卡片。",
+      "opens": "有付款节点，请款才能对「下一笔待请」。已确认变更金额由 Change Log 直接供给现金流/请款 Excel。",
+      "revoke": "从卡片里删节点不会自动改 Tracker 已请；已请过的节点仍占用。变更不在卡片里。",
+      "gate": "script"
+    },
+    {
+      "id": "obj-ledger",
+      "name": "请款记录",
+      "record": "采购包 Tracker 请款四列是唯一请款状态。03_请款记录/ 只存邮件、Excel、附件档案，不是流水账。",
+      "evidence": "以 Tracker「请款进度」为准。供应商来信只证明「已收到」；真正完成以客户批复为准（已请金额累加）。请款申请.html / Excel 是发给客户前的材料。",
+      "writer": "PM 推进「发QS / 发客户」；供应商/QS/客户来信由 Skill 2 按步骤改 Tracker。",
+      "readers": "提醒、现金流（下一付款节点之前视为已付）、请款 Excel 既往行用已请金额。",
+      "derived": "无第二本机器账。旧 payment_ledger.json 若仍在目录里，忽略。",
+      "retire": "过程中四步不计入已请。returned/rejected 释放进度。",
+      "states": "供应商请款已收到 → 已发QS核对 → QS已确认金额 → 已发客户请款 → 客户已批复（然后请款进度=无在办）",
+      "arrows": "只前进。跳级挂 pending。禁止把客户批复无声改回已收到。",
+      "whoPushes": "步骤1/3/5 常由邮件自动推。步骤2/4 由 PM 声明已发。Skill 2 record_payment 写 Tracker 并归档。payment-form 不写状态。",
+      "opens": "客户批复后提醒不再报这一笔；现金流把下一节点之前当已付。前四步不打开「已请完」的门。",
+      "revoke": "returned/rejected 写在请款进度；已请金额不自动退。",
+      "gate": "script"
+    },
+    {
+      "id": "obj-change",
+      "name": "变更单",
+      "record": "项目根 {项目名}_change_log.csv。主键：变更序号 + 采购包名称。",
+      "evidence": "以 Change Log 里程碑戳为准。COD/PMI/技术/商务邮件是证据；微信截图不能改状态。金额只转录不含税，不定价。PM 可手改 CSV，手改即权威。",
+      "writer": "变更流程上的顾问/商务/PM；落盘主路径走 Skill 3（邮件写入）。PM 可直接手改 Change Log。",
+      "readers": "现金流「已确认变更」、请款页 Excel Variations（直接读本表）；请款页勾选「是否含变更」只复核。履约卡片不读。",
+      "derived": "不再投影到 card-data.change_items。",
+      "retire": "主路径只前进不回退。重复邮件不覆盖已有戳。可停在商务金额确认不发 Change PO（合法）。作废：手改「已取消」；之后 Skill 3 只归档不推进。乱序进 pending。",
+      "states": "COD 已发出 → PMI 已发出 → 技术审核中 → 技术确认 → 商务确认 → 商务金额确认 → Change PO 下发；侧枝终态：已取消",
+      "arrows": "先技术后商务。跳级、无 COD 就来 PMI → 挂 pending，不硬推。顾问确认 ≡ 技术确认。禁止无声把「Change PO 下发」改回 COD。已取消后禁止邮件自动改回主路径。",
+      "whoPushes": "Skill 3 按邮件阶段写入。手改不触发 Skill 3 再判断。Skill 1 不许改这张表。",
+      "opens": "商务金额确认写入「最终确认金额」后，现金流/请款 Excel 下次重算即认。Change PO 下发关闭「先确认后补 PO」类 pending。",
+      "revoke": "手改「已取消」后，Skill 3 不再推进该行；下游下次读台账自然不计这笔钱。",
+      "gate": "script"
+    },
+    {
+      "id": "obj-schedule",
+      "name": "进度关键节点",
+      "record": "项目 .skill/schedule.json（critical_nodes，请款对齐用 window_end）。",
+      "evidence": "源进度表 / MPP 转出的 CSV 是证据。对人对齐「完成时点」。吃不准进 pending，不拿关键词字典当定稿。PM 在时间线里保存的 manual 覆盖推断。",
+      "writer": "Agent 推理后写入；PM 可在时间线改完保存。",
+      "readers": "请款提醒（提前约两周）、履约卡片计划区间、现金流完成锚点。",
+      "derived": "时间线 HTML、critical_nodes.md 是派生。MPP 转出的 Excel/CSV 是源，不是节点真相。",
+      "retire": "新一次 write 覆盖 schedule.json。建包后默认同步只重画时间线，不覆盖已有节点。旧时间线 HTML 没覆盖就是过期。",
+      "states": "仅有源进度 → 已写入节点（含 inferred/pending）→ PM 时间线确认（manual）",
+      "arrows": "推理写入可带 pending。PM 保存可把 inferred 改成 manual。禁止用建包同步把已有节点覆盖掉。没有「批准/驳回」审批态。",
+      "whoPushes": "schedule-critical-nodes（Agent + write 脚本）。Skill 0/1 只负责把源进度归档并触发，不手填日期。MPP 须先经 schedule-mpp-excel。",
+      "opens": "有 window_end，请款才能算「何时该催下一笔」。卡片才能显示计划区间。",
+      "revoke": "PM 改日期后，请款扫描下次会读新 window_end（不缓存旧许可）。已请金额不因日期改动而退账。",
+      "gate": "script"
+    },
+    {
+      "id": "obj-pending",
+      "name": "待确认事项",
+      "record": "项目 .skill/pending.json（open / confirmed）。进度节点自己的 pending 在 schedule.json 里，不在这份。",
+      "evidence": "挂 pending 时尽量带上原邮件路径/字段。人确认后才能当定稿写回对应正式记录。",
+      "writer": "各业务在吃不准时追加自己的条目。",
+      "readers": "PM、Agent 下一回合认领。",
+      "derived": "对话里的「待确认」清单是读这份生成的，不是另一份账。",
+      "retire": "确认或取消后改 status，不要删历史让人找不到当时问过什么。同一封邮件同一原因应复用同一条，不刷屏。",
+      "states": "open → confirmed / 取消",
+      "arrows": "只有人确认后才能写回 Tracker/卡片/变更等。禁止把别人的 pending 直接改成自己的结论。",
+      "whoPushes": "mail-inbox、Skill 0/1/2/3、现金流、通讯录都会写。各自只关自己的 pending_id。",
+      "opens": "pending 未关，对应字段不得当正式定稿（金额冲突、变更乱序等）。",
+      "revoke": "确认写回后若发现确认错了，应新开 pending，不要静默改已确认条目冒充从没问过。",
+      "gate": "script"
+    },
+    {
+      "id": "obj-dir",
+      "name": "项目通讯录",
+      "record": "项目根 {项目名}_项目通讯录.xlsx（及 Skill 5 自己的收录底稿）。",
+      "evidence": "以群里按模板回复（或填写页复制回群）为准。不走邮箱。对不上哪家就 pending，不瞎填手机号。",
+      "writer": "供应商对接人填，PM 把群回复交进来。",
+      "readers": "人；不写 Tracker。Tracker 上的对接人邮箱仍是履约邮件里收的，两套可以并存。",
+      "derived": "群消息文案、填写页.html 是收集工具，不是通讯录真相。",
+      "retire": "同一采购包同一邮箱 → 更新该行，不另起一行。换人就改这一行并看得出是新名字。",
+      "states": "未发群 → 已发收集 → 已收录（按包/邮箱 upsert）",
+      "arrows": "未发群不编造联系人。已收录后新回复覆盖同键行。没有「从通讯录写回 Tracker 邮箱」的箭头。",
+      "whoPushes": "project-directory：compose 出群文案；ingest 吃回复。",
+      "opens": "给人打电话/发消息用。不打开请款或变更的门。",
+      "revoke": "换人覆盖行即收回旧手机号的「现行」地位。不通知其它 Skill。",
+      "gate": "script"
+    },
+    {
+      "id": "obj-cash",
+      "name": "现金流预测",
+      "record": ".skill/cashflow_forecast.json；给人看的是项目根 {项目名}_现金流预测.xlsx。",
+      "evidence": "只读上游：合同付款条件、Tracker 已请、schedule 完成日、Change Log 已确认金额。缺日期或缺金额就 pending，不手猜。",
+      "writer": "没有业务审批人。PM 要求重算时由 Skill 4 覆盖生成。",
+      "readers": "PM 做资金计划。其它 Skill 不读它来写自己的账。",
+      "derived": "这整份就是派生。旧一天可以，重算即跟上。Excel 与 json 同一次写出。",
+      "retire": "每次 --write 覆盖。不要拿上周的 xlsx 去改上游合同额。",
+      "states": "未算 → 已按当前上游重算（可带 pending/warnings）",
+      "arrows": "只能重算覆盖，不能反向改 Tracker/变更。变更增量默认挂尾款。",
+      "whoPushes": "cashflow-forecast 自己。不要在建包/请款同一回合抢跑，除非 PM 要看。",
+      "opens": "只打开「人看下月要出多少钱」，不打开采购或请款许可。",
+      "revoke": "上游一改，旧预测作废，须重算。不存在收回下游许可（没有下游写手）。",
+      "gate": "script"
+    }
+  ],
+  "skills": [
+    {
+      "id": "sk-init",
+      "name": "project-init",
+      "mode": "sys",
+      "soloWrite": "na"
+    },
+    {
+      "id": "sk-fulfill",
+      "name": "contract-fulfillment-struct",
+      "mode": "sys",
+      "soloWrite": "na"
+    },
+    {
+      "id": "sk-pay",
+      "name": "payment-request",
+      "mode": "sys",
+      "soloWrite": "na"
+    },
+    {
+      "id": "sk-change",
+      "name": "change-archive",
+      "mode": "sys",
+      "soloWrite": "na"
+    },
+    {
+      "id": "sk-cash",
+      "name": "cashflow-forecast",
+      "mode": "both",
+      "soloWrite": "no"
+    },
+    {
+      "id": "sk-dir",
+      "name": "project-directory",
+      "mode": "both",
+      "soloWrite": "no"
+    },
+    {
+      "id": "sk-mail",
+      "name": "mail-inbox",
+      "mode": "sys",
+      "soloWrite": "na"
+    },
+    {
+      "id": "sk-card",
+      "name": "fulfillment-card",
+      "mode": "sys",
+      "soloWrite": "na"
+    },
+    {
+      "id": "sk-pform",
+      "name": "payment-form",
+      "mode": "both",
+      "soloWrite": "no"
+    },
+    {
+      "id": "sk-mpp",
+      "name": "schedule-mpp-excel",
+      "mode": "both",
+      "soloWrite": "no"
+    },
+    {
+      "id": "sk-nodes",
+      "name": "schedule-critical-nodes",
+      "mode": "both",
+      "soloWrite": "no"
+    },
+    {
+      "id": "sk-pdf",
+      "name": "pdf-read",
+      "mode": "both",
+      "soloWrite": "no"
+    }
+  ],
+  "cells": {
+    "obj-project:sk-init": "write",
+    "obj-project:sk-fulfill": "read",
+    "obj-project:sk-pay": "read",
+    "obj-project:sk-change": "read",
+    "obj-project:sk-cash": "read",
+    "obj-project:sk-dir": "read",
+    "obj-project:sk-mail": "read",
+    "obj-project:sk-card": "read",
+    "obj-project:sk-pform": "read",
+    "obj-project:sk-mpp": "none",
+    "obj-project:sk-nodes": "read",
+    "obj-project:sk-pdf": "none",
+    "obj-tracker:sk-init": "write",
+    "obj-tracker:sk-fulfill": "write",
+    "obj-tracker:sk-pay": "write",
+    "obj-tracker:sk-change": "none",
+    "obj-tracker:sk-cash": "read",
+    "obj-tracker:sk-dir": "read",
+    "obj-tracker:sk-mail": "none",
+    "obj-tracker:sk-card": "read",
+    "obj-tracker:sk-pform": "read",
+    "obj-tracker:sk-mpp": "none",
+    "obj-tracker:sk-nodes": "read",
+    "obj-tracker:sk-pdf": "none",
+    "obj-card:sk-init": "none",
+    "obj-card:sk-fulfill": "write",
+    "obj-card:sk-pay": "read",
+    "obj-card:sk-change": "none",
+    "obj-card:sk-cash": "read",
+    "obj-card:sk-dir": "none",
+    "obj-card:sk-mail": "none",
+    "obj-card:sk-card": "write",
+    "obj-card:sk-pform": "read",
+    "obj-card:sk-mpp": "none",
+    "obj-card:sk-nodes": "none",
+    "obj-card:sk-pdf": "none",
+    "obj-ledger:sk-init": "none",
+    "obj-ledger:sk-fulfill": "none",
+    "obj-ledger:sk-pay": "write",
+    "obj-ledger:sk-change": "none",
+    "obj-ledger:sk-cash": "read",
+    "obj-ledger:sk-dir": "none",
+    "obj-ledger:sk-mail": "none",
+    "obj-ledger:sk-card": "none",
+    "obj-ledger:sk-pform": "read",
+    "obj-ledger:sk-mpp": "none",
+    "obj-ledger:sk-nodes": "none",
+    "obj-ledger:sk-pdf": "none",
+    "obj-change:sk-init": "none",
+    "obj-change:sk-fulfill": "none",
+    "obj-change:sk-pay": "none",
+    "obj-change:sk-change": "write",
+    "obj-change:sk-cash": "read",
+    "obj-change:sk-dir": "none",
+    "obj-change:sk-mail": "none",
+    "obj-change:sk-card": "none",
+    "obj-change:sk-pform": "read",
+    "obj-change:sk-mpp": "none",
+    "obj-change:sk-nodes": "none",
+    "obj-change:sk-pdf": "none",
+    "obj-schedule:sk-init": "none",
+    "obj-schedule:sk-fulfill": "read",
+    "obj-schedule:sk-pay": "read",
+    "obj-schedule:sk-change": "none",
+    "obj-schedule:sk-cash": "read",
+    "obj-schedule:sk-dir": "none",
+    "obj-schedule:sk-mail": "none",
+    "obj-schedule:sk-card": "read",
+    "obj-schedule:sk-pform": "none",
+    "obj-schedule:sk-mpp": "none",
+    "obj-schedule:sk-nodes": "write",
+    "obj-schedule:sk-pdf": "none",
+    "obj-pending:sk-init": "write",
+    "obj-pending:sk-fulfill": "write",
+    "obj-pending:sk-pay": "write",
+    "obj-pending:sk-change": "write",
+    "obj-pending:sk-cash": "write",
+    "obj-pending:sk-dir": "write",
+    "obj-pending:sk-mail": "write",
+    "obj-pending:sk-card": "none",
+    "obj-pending:sk-pform": "none",
+    "obj-pending:sk-mpp": "none",
+    "obj-pending:sk-nodes": "none",
+    "obj-pending:sk-pdf": "none",
+    "obj-dir:sk-init": "none",
+    "obj-dir:sk-fulfill": "none",
+    "obj-dir:sk-pay": "none",
+    "obj-dir:sk-change": "none",
+    "obj-dir:sk-cash": "none",
+    "obj-dir:sk-dir": "write",
+    "obj-dir:sk-mail": "none",
+    "obj-dir:sk-card": "none",
+    "obj-dir:sk-pform": "none",
+    "obj-dir:sk-mpp": "none",
+    "obj-dir:sk-nodes": "none",
+    "obj-dir:sk-pdf": "none",
+    "obj-cash:sk-init": "none",
+    "obj-cash:sk-fulfill": "none",
+    "obj-cash:sk-pay": "none",
+    "obj-cash:sk-change": "none",
+    "obj-cash:sk-cash": "write",
+    "obj-cash:sk-dir": "none",
+    "obj-cash:sk-mail": "none",
+    "obj-cash:sk-card": "none",
+    "obj-cash:sk-pform": "none",
+    "obj-cash:sk-mpp": "none",
+    "obj-cash:sk-nodes": "none",
+    "obj-cash:sk-pdf": "none"
+  },
+  "cellNotes": {
+    "obj-tracker": "Skill 0 只建空表，之后不准改行。Skill 1 写包身份、金额、履约五列戳，并在改付款节点后同步「下一付款节点」。Skill 2 按五步写请款四列（已请/待请/下一节点/请款进度）；进度每步写，金额仅客户批复后重算。无第二本请款流水账。同一格禁止两人同时改。",
+    "obj-card": "Skill 1 写主数据。Skill 3 不写卡片。fulfillment-card 渲染时只回写 quality_ok/warnings，不改业务字段。",
+    "obj-pending": "共享待办队列，不是业务账。各 Skill 只追加/关闭自己的 pending_id。进度节点的 pending 在 schedule.json，不进这份。"
+  },
+  "cross": {
+    "dup": "pass",
+    "cite": "pass",
+    "wrong": "pass",
+    "solo": "pass",
+    "back": "pass",
+    "gate": "pass"
+  },
+  "killOne": "无。各对象的真相都在项目文件夹里的具体文件（project.json、Tracker csv、card-data.json、Change Log、schedule.json），不在某一份 Skill 说明书里。请款状态在 Tracker，不在 payment_ledger。拿掉编排说明，Agent 可能调乱，但账还在盘上。",
+  "killVerdict": "pass",
+  "addOne": "例 A「结算」：读 Tracker 里程碑 + 已请是否结清；写 Tracker「已结算」戳（采购包对象，Skill 1 写、Skill 2 只读）；合法箭头 PO已发起→已结算；未 PO 不盖戳由 Skill 1 脚本拦。例 B「图纸升版」：现在没有这个对象，要先立「施工图」正式记录和现行版本闸门，不能塞进 Tracker 或 Change Log。",
+  "addVerdict": "pass"
+};
+  function defaultState() {
+    if (typeof FILLED_SEED === "object" && FILLED_SEED) {
+      return JSON.parse(JSON.stringify(FILLED_SEED));
+    }
+    return {
+      intent: "",
+      objects: [emptyObject()],
+      skills: [emptySkill()],
+      cells: {},
+      cellNotes: {},
+      cross: {},
+      killOne: "",
+      killVerdict: "skip",
+      addOne: "",
+      addVerdict: "skip"
+    };
+  }
+
+  let state = defaultState();
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      state = Object.assign(defaultState(), parsed);
+      if (!state.objects.length) state.objects = [emptyObject()];
+      if (!state.skills.length) state.skills = [emptySkill()];
+    } catch (e) { /* ignore */ }
+  }
+
+  function save() {
+    localStorage.setItem(KEY, JSON.stringify(state));
+    const el = document.getElementById("save-hint");
+    const t = new Date();
+    el.textContent = "已保存 " + t.toLocaleTimeString("zh-CN", { hour12: false });
+  }
+
+  function cellKey(oid, sid) { return oid + ":" + sid; }
+
+  function collectFails() {
+    const fails = [];
+    if (!state.intent.trim()) fails.push({ sec: "s0", text: "还没有一句话主心骨。" });
+
+    state.objects.forEach((o, i) => {
+      const n = o.name.trim() || ("对象 " + (i + 1));
+      if (!o.name.trim() || !o.record.trim()) fails.push({ sec: "s1", text: n + "：正式记录还没写清。" });
+      const writers = state.skills.filter((s) => state.cells[cellKey(o.id, s.id)] === "write");
+      if (writers.length > 1 && !(state.cellNotes[o.id] || "").trim()) {
+        fails.push({ sec: "s3", text: n + "：有 " + writers.length + " 个写手，且没写清谁先谁后。" });
+      }
+      if (writers.length === 0 && o.name.trim()) {
+        fails.push({ sec: "s3", text: n + "：还没有指定写手。" });
+      }
+      if (o.name.trim() && (!o.states.trim() || !o.arrows.trim())) {
+        fails.push({ sec: "s4", text: n + "：状态或合法箭头还是空的。" });
+      }
+      if (o.name.trim() && o.gate === "doc") {
+        fails.push({ sec: "s4", text: n + "：非法跳步只靠说明书，没有硬拦。" });
+      }
+      if (o.name.trim() && o.gate === "unset") {
+        fails.push({ sec: "s4", text: n + "：还没决定闸门靠脚本还是靠自觉。" });
+      }
+    });
+
+    state.skills.forEach((s, i) => {
+      const n = s.name.trim() || ("Skill " + (i + 1));
+      if (!s.name.trim()) fails.push({ sec: "s2", text: n + "：还没起名。" });
+      if (s.soloWrite === "yes") {
+        fails.push({ sec: "s2", text: n + "：单独使用时仍可改整套正式记录。" });
+      }
+    });
+
+    CROSS.forEach((c) => {
+      if (state.cross[c.id] === "fail") fails.push({ sec: "s5", text: "联调挂： " + c.q });
+      if (!state.cross[c.id] || state.cross[c.id] === "skip") fails.push({ sec: "s5", text: "联调未测： " + c.q });
+    });
+
+    if (state.killVerdict === "fail") fails.push({ sec: "s6", text: "抽一块实验挂科：有一块是真相的唯一住所。" });
+    if (state.addVerdict === "fail") fails.push({ sec: "s6", text: "加一块实验挂科：新能力指不出该接在哪。" });
+    if (state.killVerdict === "skip") fails.push({ sec: "s6", text: "抽一块还没试。" });
+    if (state.addVerdict === "skip") fails.push({ sec: "s6", text: "加一块还没试。" });
+
+    return fails;
+  }
+
+  function stampFor(sec, fails) {
+    const mine = fails.filter((f) => f.sec === sec);
+    if (sec === "s7") {
+      return fails.length ? ["fail", "挂"] : ["ok", "过"];
+    }
+    if (sec === "s0") return state.intent.trim() ? ["ok", "过"] : ["mid", "待填"];
+    if (!mine.length) return ["ok", "过"];
+    const onlyEmpty = mine.every((f) => /还没|未测|待填|空的|没起名|没写清|没指定|没决定/.test(f.text));
+    return onlyEmpty ? ["mid", "待填"] : ["fail", "挂"];
+  }
+
+  function refreshStamps(fails) {
+    ["s0","s1","s2","s3","s4","s5","s6","s7"].forEach((sec) => {
+      const el = document.querySelector('[data-stamp="' + sec + '"]');
+      if (!el) return;
+      const [cls, text] = stampFor(sec, fails);
+      el.className = "stamp " + cls;
+      el.textContent = text;
+    });
+    const dock = document.getElementById("dock-text");
+    const hang = fails.filter((f) => !/还没|未测|待填|空的|没起名|没写清|没指定|没决定/.test(f.text));
+    if (!fails.length) {
+      dock.innerHTML = "<strong class='ok'>本轮结构检查通过。</strong> 可以再拿真实过手题走一遍。";
+    } else if (!hang.length) {
+      dock.innerHTML = "还有 <strong>" + fails.length + "</strong> 格没填完。先填，再谈改 Skill。";
+    } else {
+      dock.innerHTML = "挂科 <strong class='fail'>" + hang.length + "</strong> 项，未填 " + (fails.length - hang.length) + " 项。先改结构。";
+    }
+    const ul = document.getElementById("summary-list");
+    if (!fails.length) {
+      ul.innerHTML = "<li>没有自动抓到的挂科项。仍建议用真实邮件/变更走一遍第 5 步。</li>";
+    } else {
+      ul.innerHTML = fails.map((f) => "<li>" + escapeHtml(f.text) + "</li>").join("");
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  function renderObjects() {
+    const root = document.getElementById("objects");
+    root.innerHTML = state.objects.map((o, i) => `
+      <article class="card" data-id="${o.id}">
+        <div class="card-top">
+          <span class="idx">对象 ${i + 1}</span>
+          <button type="button" class="danger" data-del-object="${o.id}">删除</button>
+        </div>
+        <label class="field"><span>名称</span>
+          <input type="text" data-o="${o.id}" data-k="name" value="${escapeHtml(o.name)}" placeholder="例如：变更单 / 施工图 / 请款" />
+        </label>
+        <div class="grid-2">
+          <label class="field"><span>正式记录在哪（唯一真相）</span>
+            <textarea data-o="${o.id}" data-k="record" placeholder="哪一份文件/台账是准的，别人只能引用">${escapeHtml(o.record)}</textarea>
+          </label>
+          <label class="field"><span>原始证据是什么？和正式记录冲突听谁的？</span>
+            <textarea data-o="${o.id}" data-k="evidence" placeholder="例如：以已批变更单为准，不以微信截图为准">${escapeHtml(o.evidence)}</textarea>
+          </label>
+          <label class="field"><span>谁能改内容（人 / 角色，暂时不写 Skill）</span>
+            <input type="text" data-o="${o.id}" data-k="writer" value="${escapeHtml(o.writer)}" placeholder="越少越好" />
+          </label>
+          <label class="field"><span>谁只能看、只能引用</span>
+            <input type="text" data-o="${o.id}" data-k="readers" value="${escapeHtml(o.readers)}" />
+          </label>
+          <label class="field"><span>哪些是派生（报表等）？旧一天可不可以？</span>
+            <input type="text" data-o="${o.id}" data-k="derived" value="${escapeHtml(o.derived)}" />
+          </label>
+          <label class="field"><span>旧版如何作废？别人怎么知道拿的是旧的？</span>
+            <input type="text" data-o="${o.id}" data-k="retire" value="${escapeHtml(o.retire)}" />
+          </label>
+        </div>
+      </article>
+    `).join("");
+  }
+
+  function renderSkills() {
+    const root = document.getElementById("skills");
+    root.innerHTML = state.skills.map((s, i) => `
+      <article class="card" data-id="${s.id}">
+        <div class="card-top">
+          <span class="idx">Skill ${i + 1}</span>
+          <button type="button" class="danger" data-del-skill="${s.id}">删除</button>
+        </div>
+        <label class="field"><span>名称</span>
+          <input type="text" data-s="${s.id}" data-k="name" value="${escapeHtml(s.name)}" placeholder="就用文件夹里的名字" />
+        </label>
+        <div class="grid-2">
+          <label class="field"><span>怎么用</span>
+            <select data-s="${s.id}" data-k="mode">
+              <option value="solo" ${s.mode === "solo" ? "selected" : ""}>只单独用，不进系列</option>
+              <option value="sys" ${s.mode === "sys" ? "selected" : ""}>只在整套系列里用</option>
+              <option value="both" ${s.mode === "both" ? "selected" : ""}>两种都能</option>
+            </select>
+          </label>
+          <label class="field"><span>单独使用时，许不许改整套正式记录</span>
+            <select data-s="${s.id}" data-k="soloWrite">
+              <option value="no" ${s.soloWrite === "no" ? "selected" : ""}>不许（默认应选这个）</option>
+              <option value="yes" ${s.soloWrite === "yes" ? "selected" : ""}>允许——选这个几乎必挂</option>
+              <option value="na" ${s.soloWrite === "na" ? "selected" : ""}>从不单独用</option>
+            </select>
+          </label>
+        </div>
+      </article>
+    `).join("");
+  }
+
+  function renderMatrix() {
+    const table = document.getElementById("matrix");
+    const thead = table.querySelector("thead");
+    const tbody = table.querySelector("tbody");
+    if (!state.skills.length || !state.objects.length) {
+      thead.innerHTML = "";
+      tbody.innerHTML = "<tr><td>先在上面添加对象和 Skill。</td></tr>";
+      return;
+    }
+    thead.innerHTML = "<tr><th class='rowhead'>对象 \\ Skill</th>" +
+      state.skills.map((s) => "<th>" + escapeHtml(s.name || "未命名") + "</th>").join("") +
+      "<th>备注（多写手时必填）</th></tr>";
+    tbody.innerHTML = state.objects.map((o) => {
+      const writers = state.skills.filter((s) => state.cells[cellKey(o.id, s.id)] === "write").length;
+      const hot = writers > 1 ? " class='hot'" : "";
+      const cells = state.skills.map((s) => {
+        const v = state.cells[cellKey(o.id, s.id)] || "unset";
+        return `<td><select data-cell="${cellKey(o.id, s.id)}">
+          <option value="unset" ${v === "unset" ? "selected" : ""}>—</option>
+          <option value="write" ${v === "write" ? "selected" : ""}>写</option>
+          <option value="read" ${v === "read" ? "selected" : ""}>读</option>
+          <option value="none" ${v === "none" ? "selected" : ""}>不许</option>
+        </select></td>`;
+      }).join("");
+      return `<tr${hot}><td class="rowhead">${escapeHtml(o.name || "未命名对象")}</td>${cells}
+        <td><input type="text" data-note="${o.id}" value="${escapeHtml(state.cellNotes[o.id] || "")}" placeholder="${writers > 1 ? "必须写清谁先谁后" : "可空"}" /></td></tr>`;
+    }).join("");
+    const hotRows = state.objects.filter((o) =>
+      state.skills.filter((s) => state.cells[cellKey(o.id, s.id)] === "write").length > 1
+    );
+    const failEl = document.getElementById("matrix-fail");
+    if (hotRows.length) {
+      failEl.hidden = false;
+      failEl.textContent = "标红的行有多个写手。要么砍到一个，要么在备注写死：凭什么状态、谁先谁后、禁止同时写。";
+    } else {
+      failEl.hidden = true;
+    }
+  }
+
+  function renderStates() {
+    const root = document.getElementById("states");
+    const named = state.objects.filter((o) => o.name.trim());
+    if (!named.length) {
+      root.innerHTML = "<p class='hint'>先在第 1 步给对象起名字，这里会按对象展开。</p>";
+      return;
+    }
+    root.innerHTML = named.map((o) => `
+      <article class="card">
+        <div class="card-top"><span class="idx">${escapeHtml(o.name)}</span></div>
+        <label class="field"><span>状态有哪些（不超过 8 个，别把备注和百分比塞进来）</span>
+          <input type="text" data-o="${o.id}" data-k="states" value="${escapeHtml(o.states)}" placeholder="草稿 → 已提交 → 评审中 → 已批准 / 已驳回 → 已关闭" />
+        </label>
+        <label class="field"><span>哪些箭头合法（尤其要写退回、作废）</span>
+          <textarea data-o="${o.id}" data-k="arrows" placeholder="已批准不能无声回到草稿；要回必须走「重开」，且留痕迹">${escapeHtml(o.arrows)}</textarea>
+        </label>
+        <div class="grid-2">
+          <label class="field"><span>每条箭头谁能推（人 / Skill）</span>
+            <textarea data-o="${o.id}" data-k="whoPushes">${escapeHtml(o.whoPushes)}</textarea>
+          </label>
+          <label class="field"><span>进入「已批准」打开哪些下游的门</span>
+            <textarea data-o="${o.id}" data-k="opens" placeholder="采购可下单、请款可引用、现场可施工">${escapeHtml(o.opens)}</textarea>
+          </label>
+          <label class="field"><span>从已批准退回时，收回哪些许可</span>
+            <textarea data-o="${o.id}" data-k="revoke">${escapeHtml(o.revoke)}</textarea>
+          </label>
+          <label class="field"><span>非法跳步谁硬拦</span>
+            <select data-o="${o.id}" data-k="gate">
+              <option value="unset" ${o.gate === "unset" ? "selected" : ""}>还没定</option>
+              <option value="script" ${o.gate === "script" ? "selected" : ""}>脚本硬拦（推荐）</option>
+              <option value="doc" ${o.gate === "doc" ? "selected" : ""}>只写在说明书里</option>
+            </select>
+          </label>
+        </div>
+      </article>
+    `).join("");
+  }
+
+  function renderCross() {
+    const root = document.getElementById("cross-checks");
+    root.innerHTML = CROSS.map((c, i) => {
+      const v = state.cross[c.id] || "skip";
+      return `<li>
+        <p class="check-q">${i + 1}. ${escapeHtml(c.q)}</p>
+        <div class="verdicts">
+          <label><input type="radio" name="${c.id}" value="pass" ${v === "pass" ? "checked" : ""} /> 过</label>
+          <label><input type="radio" name="${c.id}" value="fail" ${v === "fail" ? "checked" : ""} /> 挂</label>
+          <label><input type="radio" name="${c.id}" value="skip" ${v === "skip" ? "checked" : ""} /> 未测</label>
+        </div>
+      </li>`;
+    }).join("");
+  }
+
+  function bindSimpleFields() {
+    document.getElementById("intent").value = state.intent;
+    document.getElementById("kill-one").value = state.killOne;
+    document.getElementById("add-one").value = state.addOne;
+    ["killVerdict", "addVerdict"].forEach((name) => {
+      const val = state[name];
+      document.querySelectorAll('input[name="' + name + '"]').forEach((el) => {
+        el.checked = el.value === val;
+      });
+    });
+  }
+
+  function renderAll() {
+    renderObjects();
+    renderSkills();
+    renderMatrix();
+    renderStates();
+    renderCross();
+    bindSimpleFields();
+    refreshStamps(collectFails());
+  }
+
+  function findObject(id) { return state.objects.find((o) => o.id === id); }
+  function findSkill(id) { return state.skills.find((s) => s.id === id); }
+
+  document.body.addEventListener("input", (e) => {
+    const t = e.target;
+    if (t.id === "intent") state.intent = t.value;
+    else if (t.id === "kill-one") state.killOne = t.value;
+    else if (t.id === "add-one") state.addOne = t.value;
+    else if (t.dataset.o && t.dataset.k) {
+      const o = findObject(t.dataset.o);
+      if (o) o[t.dataset.k] = t.value;
+    } else if (t.dataset.s && t.dataset.k) {
+      const s = findSkill(t.dataset.s);
+      if (s) s[t.dataset.k] = t.value;
+    } else if (t.dataset.note) {
+      state.cellNotes[t.dataset.note] = t.value;
+    }
+    save();
+    refreshStamps(collectFails());
+  });
+
+  document.body.addEventListener("change", (e) => {
+    const t = e.target;
+    if (t.dataset.cell) {
+      state.cells[t.dataset.cell] = t.value;
+      save();
+      renderMatrix();
+      refreshStamps(collectFails());
+      return;
+    }
+    if (t.dataset.o && t.dataset.k) {
+      const o = findObject(t.dataset.o);
+      if (o) o[t.dataset.k] = t.value;
+    }
+    if (t.dataset.s && t.dataset.k) {
+      const s = findSkill(t.dataset.s);
+      if (s) s[t.dataset.k] = t.value;
+      if (t.dataset.k === "name") renderMatrix();
+    }
+    if (t.name && CROSS.some((c) => c.id === t.name)) {
+      state.cross[t.name] = t.value;
+    }
+    if (t.name === "killVerdict") state.killVerdict = t.value;
+    if (t.name === "addVerdict") state.addVerdict = t.value;
+    save();
+    refreshStamps(collectFails());
+  });
+
+  document.body.addEventListener("click", (e) => {
+    const delO = e.target.closest("[data-del-object]");
+    const delS = e.target.closest("[data-del-skill]");
+    if (delO) {
+      state.objects = state.objects.filter((o) => o.id !== delO.dataset.delObject);
+      if (!state.objects.length) state.objects.push(emptyObject());
+      save(); renderAll();
+    }
+    if (delS) {
+      state.skills = state.skills.filter((s) => s.id !== delS.dataset.delSkill);
+      if (!state.skills.length) state.skills.push(emptySkill());
+      save(); renderAll();
+    }
+  });
+
+  document.getElementById("add-object").onclick = () => {
+    state.objects.push(emptyObject());
+    save(); renderAll();
+  };
+  document.getElementById("add-skill").onclick = () => {
+    state.skills.push(emptySkill());
+    save(); renderAll();
+  };
+  document.getElementById("btn-print").onclick = () => window.print();
+  document.getElementById("btn-summary").onclick = () => {
+    document.getElementById("s7").scrollIntoView({ behavior: "smooth" });
+  };
+  document.getElementById("btn-reset").onclick = () => {
+    if (!confirm("清空这张表？浏览器里的填写会删掉，不影响你的 Skill 文件。")) return;
+    const empty = {
+      intent: "",
+      objects: [emptyObject()],
+      skills: [emptySkill()],
+      cells: {},
+      cellNotes: {},
+      cross: {},
+      killOne: "",
+      killVerdict: "skip",
+      addOne: "",
+      addVerdict: "skip"
+    };
+    state = empty;
+    save();
+    renderAll();
+  };
+  document.getElementById("btn-load-seed").onclick = () => {
+    if (!confirm("用仓库里填好的底稿覆盖当前填写？")) return;
+    state = JSON.parse(JSON.stringify(FILLED_SEED));
+    save();
+    renderAll();
+  };
+  document.getElementById("btn-export").onclick = () => {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "skill-series-audit.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+  document.getElementById("import-file").onchange = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result);
+        state = Object.assign(defaultState(), parsed);
+        save();
+        renderAll();
+      } catch (err) {
+        alert("这个文件读不出来，确认是本表导出的 JSON。");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  };
+
+  load();
+  renderAll();
+})();
+</script>
+</body>
+</html>

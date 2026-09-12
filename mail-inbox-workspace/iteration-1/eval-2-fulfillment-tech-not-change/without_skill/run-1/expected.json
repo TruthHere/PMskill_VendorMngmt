@@ -1,0 +1,4 @@
+{
+  "intent": "fulfillment.tech_confirm",
+  "route_to": "contract-fulfillment-struct"
+}

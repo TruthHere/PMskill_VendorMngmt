@@ -1,0 +1,66 @@
+{
+  "skill_name": "change-archive",
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0
+      },
+      "passed": 15,
+      "total": 15
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.1333
+      },
+      "passed": 2,
+      "total": 15
+    },
+    "delta": {
+      "pass_rate": 0.8667
+    }
+  },
+  "evals": [
+    {
+      "eval": "cod-create",
+      "config": "with_skill",
+      "passed": 6,
+      "total": 6,
+      "pass_rate": 1.0
+    },
+    {
+      "eval": "cod-create",
+      "config": "without_skill",
+      "passed": 0,
+      "total": 6,
+      "pass_rate": 0.0
+    },
+    {
+      "eval": "lifecycle-close",
+      "config": "with_skill",
+      "passed": 6,
+      "total": 6,
+      "pass_rate": 1.0
+    },
+    {
+      "eval": "lifecycle-close",
+      "config": "without_skill",
+      "passed": 2,
+      "total": 6,
+      "pass_rate": 0.3333
+    },
+    {
+      "eval": "out-of-order",
+      "config": "with_skill",
+      "passed": 3,
+      "total": 3,
+      "pass_rate": 1.0
+    },
+    {
+      "eval": "out-of-order",
+      "config": "without_skill",
+      "passed": 0,
+      "total": 3,
+      "pass_rate": 0.0
+    }
+  ]
+}

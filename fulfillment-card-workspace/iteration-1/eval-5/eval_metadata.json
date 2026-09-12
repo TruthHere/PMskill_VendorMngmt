@@ -1,0 +1,20 @@
+{
+  "eval_id": 5,
+  "eval_name": "quality-gap",
+  "eval_kind": "diagnostic",
+  "prompt": "渲染夹具 quality-gap.json：故意残缺（空供应商、无中英节点名、比例合计非 100%、金额无含税标注）。用于诊断判卷是否抓住质量问题。",
+  "assertions": [
+    "card HTML exists",
+    "card-data.json exists",
+    "payment nodes render as payment-table",
+    "change items render as change-table",
+    "data_sources live in footer-meta",
+    "no unresolved template placeholders",
+    "validate_rendered_card passes",
+    "supplier_name is non-empty",
+    "payment node names are bilingual",
+    "payment pct sum is about 100%",
+    "total_amount marks 含税 or 不含税",
+    "each payment node has attachments after enrich"
+  ]
+}

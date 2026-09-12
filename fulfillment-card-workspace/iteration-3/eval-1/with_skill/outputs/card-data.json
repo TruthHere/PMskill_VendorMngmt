@@ -1,0 +1,44 @@
+{
+  "package_name": "Fitout",
+  "supplier_name": "Shanghai General Contractor Co., Ltd.",
+  "package_type": "总包",
+  "package_type_label": "总包",
+  "project_name": "Sample Project",
+  "contact_email": "pm@gc-example.com",
+  "total_amount": "¥8,500,000 CNY 含税",
+  "scope_summary": "实验室装修总承包",
+  "delivery_schedule": "按总进度计划",
+  "payment_nodes": [
+    {
+      "name": "预付款 / Advance",
+      "pct": "10%",
+      "condition": "合同签订后",
+      "source": "合同提取",
+      "payment_attachments": "请款单；PO/合同复印件；发票（如适用）；预付款保函（如合同要求）"
+    },
+    {
+      "name": "进度款 / Progress",
+      "pct": "85%",
+      "condition": "按附件 B 施工进度目标分期",
+      "source": "合同提取",
+      "payment_attachments": "请款单；经签认的月度对账单/进度款申请单；工程量清单；现场进度照片；发票"
+    },
+    {
+      "name": "质保金 / Retention",
+      "pct": "5%",
+      "condition": "缺陷责任期满",
+      "source": "合同提取",
+      "payment_attachments": "请款单；最终验收/质保期满证明；发票；保函释放申请（如适用）"
+    }
+  ],
+  "change_items": [],
+  "acceptance_items": [
+    "按合同验收标准"
+  ],
+  "constraint_clauses": "未经甲方书面同意不得转包；延期按合同违约金条款执行。",
+  "data_sources": "总包合同 PDF",
+  "contract_or_quote_no": "GC-SAMPLE-001",
+  "contract_or_quote_date": "2026-03-01",
+  "quality_warnings": [],
+  "quality_ok": true
+}

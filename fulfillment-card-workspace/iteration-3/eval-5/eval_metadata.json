@@ -1,0 +1,19 @@
+{
+  "eval_id": 5,
+  "eval_name": "quality-gap",
+  "eval_kind": "diagnostic",
+  "prompt": "渲染夹具 quality-gap.json：故意残缺（空供应商、无中英节点名、比例合计非 100%、金额无含税标注）。系统仍应出卡，但必须识别并提示数据质量问题。",
+  "assertions": [
+    "card HTML exists",
+    "card-data.json exists",
+    "payment nodes render as payment-table",
+    "card has no change section",
+    "data_sources live in footer-meta",
+    "no unresolved template placeholders",
+    "validate_rendered_card passes",
+    "quality_ok is false when data is poor",
+    "quality warnings recorded when data is poor",
+    "quality banner visible when warnings present",
+    "quality banner sits above card header"
+  ]
+}

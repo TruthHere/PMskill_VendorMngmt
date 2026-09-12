@@ -1,0 +1,5 @@
+{
+  "eval_id": 1,
+  "eval_name": "change-po-real",
+  "prompt": "主题含 (change PO)，正文 raise Change PO + COT-003。应判 change.change_po → Skill 3。"
+}

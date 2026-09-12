@@ -1,0 +1,28 @@
+{
+  "scanned_at": "2026-07-26T14:50:41+08:00",
+  "lead_days": 14,
+  "items": [
+    {
+      "package_name": "Glazing",
+      "supplier_name": "JEB Partition Co.",
+      "package_dir": "02_Glazing_JEB",
+      "node": "安装完成 / Installation Complete",
+      "pct": "60%",
+      "window_end": "2026-07-21",
+      "urgency": "overdue",
+      "next_payment_no": 1,
+      "form_hint": "企微表单；字段见 references/wecom-form.md"
+    },
+    {
+      "package_name": "BMS",
+      "supplier_name": "Schneider Electric (China) Co., Ltd.",
+      "package_dir": "01_BMS_Schneider",
+      "node": "到货 / Delivery",
+      "pct": "30%",
+      "window_end": "2026-07-29",
+      "urgency": "due_soon",
+      "next_payment_no": 2,
+      "form_hint": "企微表单；字段见 references/wecom-form.md"
+    }
+  ]
+}

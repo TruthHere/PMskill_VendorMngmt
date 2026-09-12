@@ -1,0 +1,5 @@
+{
+  "eval_id": 8,
+  "eval_name": "rfp-with-payment-terms-enrichment",
+  "prompt": "RFP 夹带付款条件：主意图仍 fulfillment.rfp，enrichment.payment_terms=true。"
+}

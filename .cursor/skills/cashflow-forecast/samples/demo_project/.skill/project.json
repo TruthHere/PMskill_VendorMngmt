@@ -1,0 +1,11 @@
+{
+  "project_name": "Skill4 Demo Project",
+  "project_code": "SKILL4-DEMO",
+  "division": "212-4",
+  "billing_entity": "Demo Billing Entity",
+  "vat_pct": 9,
+  "currency": "CNY",
+  "start_date": "2026-01-01",
+  "end_date": "2026-12-31",
+  "tracker_filename": "Skill4 Demo Project_procurement_packages_status_tracker.csv"
+}

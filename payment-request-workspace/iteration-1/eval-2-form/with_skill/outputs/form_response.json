@@ -1,0 +1,18 @@
+{
+  "payment_no": 2,
+  "division": "212-4",
+  "vendor_ref": "SE-BMS-2026-02",
+  "po_number": "PO-F26651-BMS",
+  "po_value_excl_tax": 1000000,
+  "contract_value_excl_tax": 1000000,
+  "contact_name": "Wang Lei",
+  "contact_mobile": "13900001111",
+  "office_phone": "010-88886666",
+  "office_address": "北京市朝阳区示例路 1 号",
+  "claim_node": "到货 / Delivery",
+  "claim_amount_excl_tax": 300000,
+  "variations_to_date": 0,
+  "previously_certified": 100000,
+  "nodes_overview": "1. 预付款 / Advance 10%\n2. 到货 / Delivery 30%\n3. 验收 / Acceptance 60%",
+  "vat_note_pct": 9
+}

@@ -1,0 +1,29 @@
+{
+  "expectations": [
+    {
+      "text": "intent is fulfillment.raise_po",
+      "passed": true,
+      "evidence": "got 'fulfillment.raise_po'"
+    },
+    {
+      "text": "route_to is contract-fulfillment-struct",
+      "passed": true,
+      "evidence": "got 'contract-fulfillment-struct'"
+    },
+    {
+      "text": "not change.change_po",
+      "passed": true,
+      "evidence": "got 'fulfillment.raise_po'"
+    },
+    {
+      "text": "not change.*",
+      "passed": true,
+      "evidence": "got 'fulfillment.raise_po'"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "total": 4,
+    "pass_rate": 1.0
+  }
+}

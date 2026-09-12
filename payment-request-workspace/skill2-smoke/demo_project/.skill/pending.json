@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "step": "payment_claim.inbound",
+      "fields": {
+        "subject": "[SAMPLE] BMS · Schneider — Payment Application No.3",
+        "change_no": ""
+      },
+      "subject": "[SAMPLE] BMS · Schneider — Payment Application No.3",
+      "eml_path": "/private/tmp/payment_claim_test.eml",
+      "reason": "package_ambiguous",
+      "note": "请款邮件已分类，但无法唯一匹配采购包目录。",
+      "pending_id": "p-8T2247340800",
+      "status": "open",
+      "created_at": "2026-07-28T22:47:34+08:00"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# Local secrets & registry — never commit
+.mailbox.secret
+**/.mailbox.secret
+*.secret
+mailbox-registry.json

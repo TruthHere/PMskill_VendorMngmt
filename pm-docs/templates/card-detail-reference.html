@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>履约条件卡片 — 具体字段 &amp; 三种类型示例</title>
+<style>
+  :root {
+    --bg: #1a1a1e;
+    --card: #242429;
+    --card2: #2a2a30;
+    --border: #3a3a40;
+    --text: #e0e0e8;
+    --muted: #9898a8;
+    --blue: #378ADD;
+    --teal: #1D9E75;
+    --amber: #BA7517;
+    --coral: #D85A30;
+    --purple: #7F77DD;
+    --red: #E24B4A;
+    --gold: #EF9F27;
+    --green: #639922;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg); color: var(--text);
+    padding: 40px; line-height: 1.7;
+  }
+  .header { text-align:center; margin-bottom:40px; }
+  .header h1 { font-size:22px; font-weight:500; color:#fff; margin-bottom:6px; }
+  .header p { color:var(--muted); font-size:13px; }
+
+  .update-banner {
+    background: rgba(55,138,221,0.08);
+    border: 1px solid rgba(55,138,221,0.2);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+    font-size: 13px;
+  }
+  .update-banner .ub-title {
+    font-size: 13px; font-weight: 500; color: var(--blue);
+    margin-bottom: 10px;
+  }
+  .update-banner .ub-item {
+    display: flex; gap: 8px; margin-bottom: 6px; color: var(--text);
+  }
+  .update-banner .ub-tag {
+    font-size: 10px; padding: 2px 8px; border-radius: 4px;
+    font-weight: 500; flex-shrink: 0; height: fit-content; margin-top: 3px;
+  }
+
+  .section-title {
+    font-size: 16px; font-weight: 500; margin: 48px 0 20px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+
+  .card-mockup {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .card-mockup-header {
+    padding: 16px 24px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-type-badge {
+    font-size: 11px; font-weight: 500; padding: 3px 10px;
+    border-radius: 4px; flex-shrink: 0;
+  }
+  .card-mockup-title {
+    font-size: 16px; font-weight: 500; color: #fff;
+  }
+  .card-mockup-sub {
+    font-size: 12px; color: var(--muted);
+    margin-left: auto;
+  }
+  .card-body { padding: 24px; }
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .field {
+    background: var(--card2);
+    padding: 12px 16px;
+  }
+  .field-label {
+    font-size: 10px; color: var(--muted); margin-bottom: 4px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .field-value {
+    font-size: 14px; color: #fff; font-weight: 400;
+  }
+  .field-value .unit { color: var(--muted); font-size: 12px; }
+
+  .payment-section {
+    margin-bottom: 20px;
+  }
+  .payment-title {
+    font-size: 12px; font-weight: 500; color: var(--gold);
+    margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .payment-flow {
+    display: flex; align-items: center; gap: 4px;
+    flex-wrap: wrap;
+  }
+  .pay-node {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: center;
+    min-width: 110px;
+  }
+  .pay-node-name {
+    font-size: 12px; color: #fff; font-weight: 500; margin-bottom: 2px;
+  }
+  .pay-node-pct {
+    font-size: 18px; font-weight: 500; color: var(--gold);
+  }
+  .pay-node-cond {
+    font-size: 10px; color: var(--muted); margin-top: 4px;
+  }
+  .pay-arrow {
+    color: var(--muted); font-size: 16px; flex-shrink: 0;
+  }
+
+  .acceptance-section { margin-bottom: 20px; }
+  .acc-item {
+    display: flex; gap: 10px; margin-bottom: 8px; font-size: 13px;
+  }
+  .acc-item .acc-check {
+    width: 16px; height: 16px; border: 1.5px solid var(--green);
+    border-radius: 3px; flex-shrink: 0; margin-top: 3px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--green); font-size: 10px;
+  }
+
+  .penalty-box {
+    background: rgba(226,75,74,0.06);
+    border: 1px solid rgba(226,75,74,0.2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+  }
+  .penalty-box .pl {
+    font-size: 11px; font-weight: 500; color: var(--red);
+    margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .penalty-formula {
+    font-family: monospace; font-size: 13px; color: #F09595;
+    background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 4px;
+    display: inline-block; margin-top: 4px;
+  }
+
+  .source-doc {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+  }
+  .source-doc .sd-label { color: var(--muted); }
+  .source-doc .sd-value { color: var(--text); }
+
+  .diff-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 16px;
+  }
+  .diff-table th {
+    text-align: left; padding: 10px 14px;
+    font-size: 11px; color: var(--muted); font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  .diff-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--text);
+  }
+  .diff-table tr:last-child td { border-bottom: none; }
+  .diff-table .has { color: var(--green); }
+  .diff-table .no { color: var(--muted); }
+  .diff-table .type-tag {
+    font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 500;
+  }
+
+  @media (max-width: 800px) {
+    .field-grid { grid-template-columns: 1fr; }
+    .pay-node { min-width: 90px; }
+    body { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>履约条件卡片 — 字段拆解 &amp; 三种类型示例</h1>
+  <p>用真实场景的示例数据填充，直观看卡片上到底有什么</p>
+</div>
+
+<div class="update-banner">
+  <div class="ub-title">根据你的反馈，Skill 1 输入设计更新</div>
+  <div class="ub-item">
+    <span class="ub-tag" style="background:rgba(55,138,221,0.15);color:var(--blue)">新增</span>
+    <span>输入不只限于「合同PDF」—— 报价单、工作界面要求文件、图纸均可作为输入源。系统根据上传的文件类型自动判断采购包类型并选择对应字段模板。</span>
+  </div>
+  <div class="ub-item">
+    <span class="ub-tag" style="background:rgba(29,158,117,0.15);color:var(--teal)">变更</span>
+    <span>字段模板从「一套通用」改为「三套分型」：纯供应 / 供应+安装 / 顾问服务，每种类型的付款节点和验收标准结构不同。</span>
+  </div>
+  <div class="ub-item">
+    <span class="ub-tag" style="background:rgba(239,159,39,0.15);color:var(--gold)">澄清</span>
+    <span>履约条件卡片 = 一个直采包的「结构化档案」，把散落在合同/报价单/图纸里的关键管理信息提取成一张可查询的卡片。下面用三个示例展示。</span>
+  </div>
+</div>
+
+<!-- ===== 字段总览 ===== -->
+<div class="section-title">
+  <span class="section-dot" style="background:var(--blue)"></span>
+  卡片字段总览（通用 + 分型字段）
+</div>
+
+<table class="diff-table">
+  <thead>
+    <tr>
+      <th style="width:22%">字段分类</th>
+      <th style="width:22%">具体字段</th>
+      <th style="width:14%">纯供应</th>
+      <th style="width:14%">供应+安装</th>
+      <th style="width:14%">顾问服务</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="5" style="color:var(--blue);font-weight:500">通用信息<br><span style="font-size:11px;color:var(--muted)">所有类型都有</span></td>
+      <td>供应商名称</td>
+      <td class="has">✓</td><td class="has">✓</td><td class="has">✓</td>
+      <td style="font-size:12px;color:var(--muted)">自动关联供应商库</td>
+    </tr>
+    <tr>
+      <td>采购包名称</td>
+      <td class="has">✓</td><td class="has">✓</td><td class="has">✓</td>
+      <td style="font-size:12px;color:var(--muted)">项目+楼栋+分包</td>
+    </tr>
+    <tr>
+      <td>合同/报价单编号</td>
+      <td class="has">✓</td><td class="has">✓</td><td class="has">✓</td>
+      <td style="font-size:12px;color:var(--muted)">有合同填合同号，无合同填报价单号</td>
+    </tr>
+    <tr>
+      <td>总金额</td>
+      <td class="has">✓</td><td class="has">✓</td><td class="has">✓</td>
+      <td style="font-size:12px;color:var(--muted)">含税/不含税需标注</td>
+    </tr>
+    <tr>
+      <td>签约/报价日期</td>
+      <td class="has">✓</td><td class="has">✓</td><td class="has">✓</td>
+      <td style="font-size:12px;color:var(--muted)">用于计算质保期起算</td>
+    </tr>
+
+    <tr style="background:rgba(55,138,221,0.03)">
+      <td rowspan="4" style="color:var(--gold);font-weight:500">付款节点<br><span style="font-size:11px;color:var(--muted)">分型差异最大</span></td>
+      <td>预付款</td>
+      <td class="has">✓ 10-30%</td><td class="has">✓ 10-30%</td><td class="has">✓ 20-40%</td>
+      <td style="font-size:12px;color:var(--muted)">签约后X日内付</td>
+    </tr>
+    <tr style="background:rgba(55,138,221,0.03)">
+      <td>到货款</td>
+      <td class="has">✓ 核心节点</td><td class="has">✓ 有</td><td class="no">— 无</td>
+      <td style="font-size:12px;color:var(--muted)">材料到现场验收后付</td>
+    </tr>
+    <tr style="background:rgba(55,138,221,0.03)">
+      <td>安装完成款</td>
+      <td class="no">— 无</td><td class="has">✓ 核心节点</td><td class="no">— 无</td>
+      <td style="font-size:12px;color:var(--muted)">安装完成+初步验收后付</td>
+    </tr>
+    <tr style="background:rgba(55,138,221,0.03)">
+      <td>验收款/终稿款</td>
+      <td class="has">✓ 有</td><td class="has">✓ 有</td><td class="has">✓ 核心节点</td>
+      <td style="font-size:12px;color:var(--muted)">供应=验收合格；顾问=终稿交付</td>
+    </tr>
+    <tr style="background:rgba(55,138,221,0.03)">
+      <td></td>
+      <td>质保金</td>
+      <td class="has">✓ 3-5%</td><td class="has">✓ 3-5%</td><td class="has">✓ 5-10%</td>
+      <td style="font-size:12px;color:var(--muted)">质保期满后返还</td>
+    </tr>
+
+    <tr>
+      <td rowspan="3" style="color:var(--green);font-weight:500">验收标准<br><span style="font-size:11px;color:var(--muted)">分型差异大</span></td>
+      <td>数量验收</td>
+      <td class="has">✓</td><td class="has">✓</td><td class="no">— 无</td>
+      <td style="font-size:12px;color:var(--muted)">按送货单清点</td>
+    </tr>
+    <tr>
+      <td>质量/安装验收</td>
+      <td class="has">✓ 材料质检</td><td class="has">✓ 材料+安装</td><td class="no">— 无</td>
+      <td style="font-size:12px;color:var(--muted)">安装类需两阶段验收</td>
+    </tr>
+    <tr>
+      <td>交付物验收</td>
+      <td class="no">— 无</td><td class="no">— 无</td><td class="has">✓ 核心节点</td>
+      <td style="font-size:12px;color:var(--muted)">报告/图纸/审查意见的质量标准</td>
+    </tr>
+
+    <tr>
+      <td rowspan="3" style="color:var(--red);font-weight:500">约束条款<br><span style="font-size:11px;color:var(--muted)">通用但表述不同</span></td>
+      <td>延期罚款</td>
+      <td class="has">✓</td><td class="has">✓</td><td class="has">✓</td>
+      <td style="font-size:12px;color:var(--muted)">公式不同，需结构化</td>
+    </tr>
+    <tr>
+      <td>质保期</td>
+      <td class="has">✓ 1-2年</td><td class="has">✓ 2-5年</td><td class="has">✓ 服务期</td>
+      <td style="font-size:12px;color:var(--muted)">起算点不同</td>
+    </tr>
+    <tr>
+      <td>特殊条件</td>
+      <td class="has">✓</td><td class="has">✓</td><td class="has">✓</td>
+      <td style="font-size:12px;color:var(--muted)">如破坏性试验、防火检测等</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ===== 示例1: 纯供应 ===== -->
+<div class="section-title">
+  <span class="section-dot" style="background:var(--blue)"></span>
+  示例一：纯供应类（石材供应包）
+</div>
+
+<div class="card-mockup">
+  <div class="card-mockup-header" style="background:rgba(55,138,221,0.06)">
+    <span class="card-type-badge" style="background:rgba(55,138,221,0.15);color:var(--blue)">纯供应</span>
+    <span class="card-mockup-title">灰色大理石地面石材供应</span>
+    <span class="card-mockup-sub">施耐德 · 石材供应</span>
+  </div>
+  <div class="card-body">
+    <div class="field-grid">
+      <div class="field">
+        <div class="field-label">供应商</div>
+        <div class="field-value">福建XX石材有限公司</div>
+      </div>
+      <div class="field">
+        <div class="field-label">项目 / 楼栋</div>
+        <div class="field-value">XX总部大楼 / 1F大堂+走廊</div>
+      </div>
+      <div class="field">
+        <div class="field-label">文件编号</div>
+        <div class="field-value">报价单 Q-2026-0312 <span class="unit">(无正式合同)</span></div>
+      </div>
+      <div class="field">
+        <div class="field-label">总金额</div>
+        <div class="field-value">¥486,000 <span class="unit">含税</span></div>
+      </div>
+      <div class="field">
+        <div class="field-label">供应范围</div>
+        <div class="field-value">灰麻花岗岩 600×600×20mm，约 1,350㎡</div>
+      </div>
+      <div class="field">
+        <div class="field-label">交货时间</div>
+        <div class="field-value">2026-08-15 前全部到货</div>
+      </div>
+    </div>
+
+    <div class="payment-section">
+      <div class="payment-title">付款节点</div>
+      <div class="payment-flow">
+        <div class="pay-node">
+          <div class="pay-node-name">预付款</div>
+          <div class="pay-node-pct">30%</div>
+          <div class="pay-node-cond">下单后7日内</div>
+        </div>
+        <span class="pay-arrow">→</span>
+        <div class="pay-node">
+          <div class="pay-node-name">到货验收款</div>
+          <div class="pay-node-pct">65%</div>
+          <div class="pay-node-cond">到货清点+质量验收合格</div>
+        </div>
+        <span class="pay-arrow">→</span>
+        <div class="pay-node">
+          <div class="pay-node-name">质保金</div>
+          <div class="pay-node-pct">5%</div>
+          <div class="pay-node-cond">质保期满(2年)后返还</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acceptance-section">
+      <div class="payment-title" style="color:var(--green)">验收标准</div>
+      <div class="acc-item"><span class="acc-check">✓</span>数量验收：按送货单逐批清点，允许±2%损耗</div>
+      <div class="acc-item"><span class="acc-check">✓</span>质量验收：色差≤一级标准，无裂纹、缺角，厚度偏差≤0.5mm</div>
+      <div class="acc-item"><span class="acc-check">✓</span>特殊条件：需提供放射性检测报告（A类）</div>
+    </div>
+
+    <div class="penalty-box">
+      <div class="pl">延期罚款</div>
+      <div>每延期1天，按合同总价的 0.3‰ 扣罚，上限10%</div>
+      <div class="penalty-formula">罚款 = 总价 × 0.3‰ × 延期天数（≤10%）</div>
+    </div>
+
+    <div class="source-doc">
+      <span class="sd-label">数据来源文件：</span>
+      <span class="sd-value">报价单 Q-2026-0312.pdf + 工作界面要求_v2.docx + 地面石材铺贴图.dwg</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 示例2: 供应+安装 ===== -->
+<div class="section-title">
+  <span class="section-dot" style="background:var(--amber)"></span>
+  示例二：供应+安装类（木饰面供应安装包）
+</div>
+
+<div class="card-mockup">
+  <div class="card-mockup-header" style="background:rgba(186,117,23,0.06)">
+    <span class="card-type-badge" style="background:rgba(186,117,23,0.15);color:var(--amber)">供应+安装</span>
+    <span class="card-mockup-title">木饰面墙面供应及安装</span>
+    <span class="card-mockup-sub">MF 家具 · 供应+安装</span>
+  </div>
+  <div class="card-body">
+    <div class="field-grid">
+      <div class="field">
+        <div class="field-label">供应商</div>
+        <div class="field-value">上海XX木业装饰工程有限公司</div>
+      </div>
+      <div class="field">
+        <div class="field-label">项目 / 楼栋</div>
+        <div class="field-value">XX总部大楼 / 2F-5F办公区</div>
+      </div>
+      <div class="field">
+        <div class="field-label">文件编号</div>
+        <div class="field-value">合同 PO-2026-0078</div>
+      </div>
+      <div class="field">
+        <div class="field-label">总金额</div>
+        <div class="field-value">¥1,280,000 <span class="unit">含税（材料费¥820k + 安装费¥460k）</span></div>
+      </div>
+      <div class="field">
+        <div class="field-label">供应+安装范围</div>
+        <div class="field-value">科技木饰面板 1220×2440×8mm，约 2,800㎡（含基层龙骨+安装）</div>
+      </div>
+      <div class="field">
+        <div class="field-label">交货 / 安装完成时间</div>
+        <div class="field-value">到货 2026-09-01 / 安装完成 2026-10-15</div>
+      </div>
+    </div>
+
+    <div class="payment-section">
+      <div class="payment-title">付款节点（5个，比纯供应多2个）</div>
+      <div class="payment-flow">
+        <div class="pay-node" style="min-width:95px">
+          <div class="pay-node-name">预付款</div>
+          <div class="pay-node-pct">20%</div>
+          <div class="pay-node-cond">签约后7日</div>
+        </div>
+        <span class="pay-arrow">→</span>
+        <div class="pay-node" style="min-width:95px">
+          <div class="pay-node-name">到货款</div>
+          <div class="pay-node-pct">40%</div>
+          <div class="pay-node-cond">材料到货验收</div>
+        </div>
+        <span class="pay-arrow">→</span>
+        <div class="pay-node" style="min-width:95px">
+          <div class="pay-node-name">安装完成款</div>
+          <div class="pay-node-pct">25%</div>
+          <div class="pay-node-cond">安装完成+初验</div>
+        </div>
+        <span class="pay-arrow">→</span>
+        <div class="pay-node" style="min-width:95px">
+          <div class="pay-node-name">验收款</div>
+          <div class="pay-node-pct">10%</div>
+          <div class="pay-node-cond">竣工验收合格</div>
+        </div>
+        <span class="pay-arrow">→</span>
+        <div class="pay-node" style="min-width:95px">
+          <div class="pay-node-name">质保金</div>
+          <div class="pay-node-pct">5%</div>
+          <div class="pay-node-cond">质保期满(3年)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acceptance-section">
+      <div class="payment-title" style="color:var(--green)">验收标准（两阶段）</div>
+      <div style="font-size:12px;color:var(--gold);margin-bottom:6px">第一阶段：材料验收</div>
+      <div class="acc-item"><span class="acc-check">✓</span>数量：按送货单清点，允许±1%损耗</div>
+      <div class="acc-item"><span class="acc-check">✓</span>质量：色差一致、无划痕、厚度偏差≤0.3mm、含水率8-12%</div>
+      <div style="font-size:12px;color:var(--gold);margin:12px 0 6px">第二阶段：安装验收</div>
+      <div class="acc-item"><span class="acc-check">✓</span>平整度：2m靠尺≤2mm</div>
+      <div class="acc-item"><span class="acc-check">✓</span>接缝：缝宽均匀≤1mm，高低差≤0.5mm</div>
+      <div class="acc-item"><span class="acc-check">✓</span>特殊条件：需提供甲醛释放量检测报告（E0级）</div>
+    </div>
+
+    <div class="penalty-box">
+      <div class="pl">延期罚款</div>
+      <div>交货延期：0.5‰/天；安装延期：0.3‰/天，合计上限15%</div>
+      <div class="penalty-formula">交货罚款 = 总价×0.5‰×天数 + 安装罚款 = 总价×0.3‰×天数（≤15%）</div>
+    </div>
+
+    <div class="source-doc">
+      <span class="sd-label">数据来源文件：</span>
+      <span class="sd-value">合同 PO-2026-0078.pdf + 木饰面深化设计图.pdf + 施工技术要求.docx</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 示例3: 顾问服务 ===== -->
+<div class="section-title">
+  <span class="section-dot" style="background:var(--purple)"></span>
+  示例三：顾问服务类（灯光设计顾问）
+</div>
+
+<div class="card-mockup">
+  <div class="card-mockup-header" style="background:rgba(127,119,221,0.06)">
+    <span class="card-type-badge" style="background:rgba(127,119,221,0.15);color:var(--purple)">顾问服务</span>
+    <span class="card-mockup-title">室内灯光设计顾问服务</span>
+    <span class="card-mockup-sub">顾问 · 室内设计</span>
+  </div>
+  <div class="card-body">
+    <div class="field-grid">
+      <div class="field">
+        <div class="field-label">顾问方</div>
+        <div class="field-value">XX lighting design studio</div>
+      </div>
+      <div class="field">
+        <div class="field-label">项目</div>
+        <div class="field-value">XX总部大楼 全楼灯光设计</div>
+      </div>
+      <div class="field">
+        <div class="field-label">文件编号</div>
+        <div class="field-value">合同 CN-2026-002</div>
+      </div>
+      <div class="field">
+        <div class="field-label">总金额</div>
+        <div class="field-value">¥360,000 <span class="unit">含税</span></div>
+      </div>
+      <div class="field">
+        <div class="field-label">服务范围</div>
+        <div class="field-value">大堂+办公区+公共区域灯光方案设计、灯具选型、施工配合、调试验收</div>
+      </div>
+      <div class="field">
+        <div class="field-label">服务周期</div>
+        <div class="field-value">2026-07-01 ~ 2026-12-31（6个月）</div>
+      </div>
+    </div>
+
+    <div class="payment-section">
+      <div class="payment-title">付款节点（按交付物节点付）</div>
+      <div class="payment-flow">
+        <div class="pay-node">
+          <div class="pay-node-name">签约款</div>
+          <div class="pay-node-pct">30%</div>
+          <div class="pay-node-cond">合同签署后7日</div>
+        </div>
+        <span class="pay-arrow">→</span>
+        <div class="pay-node">
+          <div class="pay-node-name">方案交付款</div>
+          <div class="pay-node-pct">30%</div>
+          <div class="pay-node-cond">灯光方案+效果图通过</div>
+        </div>
+        <span class="pay-arrow">→</span>
+        <div class="pay-node">
+          <div class="pay-node-name">施工图款</div>
+          <div class="pay-node-pct">25%</div>
+          <div class="pay-node-cond">灯具布置图+节点图交付</div>
+        </div>
+        <span class="pay-arrow">→</span>
+        <div class="pay-node">
+          <div class="pay-node-name">验收款</div>
+          <div class="pay-node-pct">10%</div>
+          <div class="pay-node-cond">现场调试完成+验收</div>
+        </div>
+        <span class="pay-arrow">→</span>
+        <div class="pay-node">
+          <div class="pay-node-name">质保金</div>
+          <div class="pay-node-pct">5%</div>
+          <div class="pay-node-cond">服务期满(1年)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acceptance-section">
+      <div class="payment-title" style="color:var(--green)">验收标准（按交付物）</div>
+      <div class="acc-item"><span class="acc-check">✓</span>方案阶段：效果图≥3个方案比选、照度计算书、符合GB50034标准</div>
+      <div class="acc-item"><span class="acc-check">✓</span>施工图阶段：灯具选型表（含规格/功率/光通量/色温）、布置图、安装节点详图</div>
+      <div class="acc-item"><span class="acc-check">✓</span>验收阶段：现场实测照度达标、色温一致性、调光系统功能正常</div>
+      <div class="acc-item"><span class="acc-check">✓</span>特殊条件：需提供DIALux模拟报告</div>
+    </div>
+
+    <div class="penalty-box">
+      <div class="pl">延期罚款</div>
+      <div>每延期1天按服务费的 0.5‰ 扣罚，上限10%</div>
+      <div class="penalty-formula">罚款 = 服务费 × 0.5‰ × 延期天数（≤10%）</div>
+    </div>
+
+    <div class="source-doc">
+      <span class="sd-label">数据来源文件：</span>
+      <span class="sd-value">合同 CN-2026-002.pdf + 设计任务书.docx + 建筑平面图.dwg</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 三种类型对比 ===== -->
+<div class="section-title">
+  <span class="section-dot" style="background:var(--coral)"></span>
+  三种类型核心差异对比
+</div>
+
+<table class="diff-table">
+  <thead>
+    <tr>
+      <th>维度</th>
+      <th>纯供应</th>
+      <th>供应+安装</th>
+      <th>顾问服务</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="color:var(--gold);font-weight:500">付款节点数</td>
+      <td>3个（预付→到货→质保）</td>
+      <td>5个（预付→到货→安装→验收→质保）</td>
+      <td>4-5个（签约→方案→施工图→验收→质保）</td>
+    </tr>
+    <tr>
+      <td style="color:var(--green);font-weight:500">验收阶段</td>
+      <td>1阶段（到货验收）</td>
+      <td>2阶段（材料验收+安装验收）</td>
+      <td>按交付物分阶段验收</td>
+    </tr>
+    <tr>
+      <td style="color:var(--blue);font-weight:500">输入文件</td>
+      <td>报价单+工作界面要求+图纸<br><span style="font-size:11px;color:var(--muted)">可能无正式合同</span></td>
+      <td>合同+深化设计图+施工技术要求</td>
+      <td>合同+设计任务书+建筑图纸</td>
+    </tr>
+    <tr>
+      <td style="color:var(--red);font-weight:500">罚款公式</td>
+      <td>单一公式（按总价）</td>
+      <td>双公式（交货+安装分别算）</td>
+      <td>单一公式（按服务费）</td>
+    </tr>
+    <tr>
+      <td style="color:var(--purple);font-weight:500">质保期</td>
+      <td>1-2年（材料质保）</td>
+      <td>2-5年（含安装工艺质保）</td>
+      <td>服务期（通常6个月-1年）</td>
+    </tr>
+    <tr>
+      <td style="font-weight:500">核心管理重点</td>
+      <td>到货数量+质量</td>
+      <td>到货数量+安装进度+两阶段验收</td>
+      <td>交付物质量+节点准时</td>
+    </tr>
+  </tbody>
+</table>
+
+
+</body>
+</html>

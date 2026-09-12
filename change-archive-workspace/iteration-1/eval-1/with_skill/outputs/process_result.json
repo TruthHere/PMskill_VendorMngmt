@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "auto": true,
+  "intent": "change.change_po",
+  "change_no": "COT003",
+  "package_name": "Glazing partition",
+  "status": "Change PO 下发",
+  "change_log": "/Users/truth_here/Documents/AI Projects/PMskills/change-archive-workspace/iteration-1/_tmp/lifecycle-close-with/ChangeEval_change_log.csv",
+  "archived": {
+    "eml": [
+      "/Users/truth_here/Documents/AI Projects/PMskills/change-archive-workspace/iteration-1/_tmp/lifecycle-close-with/01_Glazingpartition_Facade/07_往来文件/Glazingpartition_邮件_20260907_CHPO_COT003.eml",
+      "/Users/truth_here/Documents/AI Projects/PMskills/change-archive-workspace/iteration-1/_tmp/lifecycle-close-with/01_Glazingpartition_Facade/04_变更洽商/Glazingpartition_变更_20260907_CHPO_COT003.eml"
+    ],
+    "attachments_04": [],
+    "attachments_02": []
+  },
+  "did": [
+    "change-archive.handle_change_email"
+  ],
+  "_elapsed_ms": 339,
+  "_eval_type": "lifecycle"
+}

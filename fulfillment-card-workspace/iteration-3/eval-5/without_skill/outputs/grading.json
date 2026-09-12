@@ -1,0 +1,83 @@
+{
+  "expectations": [
+    {
+      "text": "card HTML exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/fulfillment-card-workspace/iteration-3/eval-5/without_skill/outputs/履约条件卡片.html",
+      "tier": "format"
+    },
+    {
+      "text": "card-data.json exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/fulfillment-card-workspace/iteration-3/eval-5/without_skill/outputs/card-data.json",
+      "tier": "format"
+    },
+    {
+      "text": "payment nodes render as payment-table",
+      "passed": false,
+      "evidence": "missing",
+      "tier": "format"
+    },
+    {
+      "text": "card has no change section",
+      "passed": true,
+      "evidence": "clean",
+      "tier": "format"
+    },
+    {
+      "text": "data_sources live in footer-meta",
+      "passed": false,
+      "evidence": "missing",
+      "tier": "format"
+    },
+    {
+      "text": "no unresolved template placeholders",
+      "passed": true,
+      "evidence": "clean",
+      "tier": "format"
+    },
+    {
+      "text": "validate_rendered_card passes",
+      "passed": false,
+      "evidence": "package_name must appear in subtitle package-name span; missing footer-meta (data_sources must be in footer); payment nodes must render as payment-table",
+      "tier": "format"
+    },
+    {
+      "text": "quality_ok is false when data is poor",
+      "passed": false,
+      "evidence": "quality_ok=None n=0",
+      "tier": "quality"
+    },
+    {
+      "text": "quality warnings recorded when data is poor",
+      "passed": false,
+      "evidence": "n=0 codes=[]",
+      "tier": "quality"
+    },
+    {
+      "text": "quality banner visible when warnings present",
+      "passed": false,
+      "evidence": "warnings=0 banner=False",
+      "tier": "quality"
+    },
+    {
+      "text": "quality banner sits above card header",
+      "passed": false,
+      "evidence": "before_header=False",
+      "tier": "quality"
+    }
+  ],
+  "passed": 4,
+  "total": 11,
+  "pass_rate": 0.3636,
+  "format": {
+    "passed": 4,
+    "total": 7,
+    "pass_rate": 0.5714
+  },
+  "quality": {
+    "passed": 0,
+    "total": 4,
+    "pass_rate": 0.0
+  }
+}

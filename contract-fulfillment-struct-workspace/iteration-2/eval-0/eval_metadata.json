@@ -1,0 +1,13 @@
+{
+  "eval_id": 0,
+  "eval_name": "misroute-init",
+  "prompt": "项目已完成阶段 0。请用 Skill 1 处理「项目初始化」邮件（不应由 Skill 1 建项）。",
+  "assertions": [
+    "process_result.json exists (pipeline evidence)",
+    "process_result came from mail classification path",
+    "process_result reason is routed_to_skill0",
+    "note tells user to use Skill 0 / project-init",
+    "no procurement package created by this mail",
+    "no 01_* package folder created"
+  ]
+}

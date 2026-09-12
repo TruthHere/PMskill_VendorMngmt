@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/truth_here/.cursor/skills/skill-creator/eval-viewer/generate_review.py", line 85, in <module>
+    def build_run(root: Path, run_dir: Path) -> dict | None:
+TypeError: unsupported operand type(s) for |: 'type' and 'NoneType'

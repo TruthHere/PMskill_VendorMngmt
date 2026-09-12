@@ -1,0 +1,10 @@
+{
+  "eval_id": 2,
+  "eval_name": "out-of-order",
+  "prompt": "仅有 COD 建行后，收到商务确认邮件（技术未确认）。应挂 pending，不推进到商务确认。",
+  "assertions": [
+    "process result is pending out_of_order",
+    "row status remains COD 已发出",
+    "procurement tracker unchanged"
+  ]
+}

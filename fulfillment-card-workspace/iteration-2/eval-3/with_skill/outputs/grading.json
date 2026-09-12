@@ -1,0 +1,71 @@
+{
+  "expectations": [
+    {
+      "text": "card HTML exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/fulfillment-card-workspace/iteration-2/eval-3/with_skill/outputs/履约条件卡片.html",
+      "tier": "format"
+    },
+    {
+      "text": "validate_rendered_card passes",
+      "passed": true,
+      "evidence": "ok",
+      "tier": "format"
+    },
+    {
+      "text": "payment_attachments appear in table",
+      "passed": true,
+      "evidence": "nodes_with_attachments=3",
+      "tier": "format"
+    },
+    {
+      "text": "each payment node has attachments after enrich",
+      "passed": true,
+      "evidence": "ok",
+      "tier": "quality"
+    },
+    {
+      "text": "payment node names are bilingual",
+      "passed": true,
+      "evidence": "预付款 / Advance, 到货 / Delivery, 安装验收 / Installation Acceptance",
+      "tier": "quality"
+    },
+    {
+      "text": "payment pct sum is about 100%",
+      "passed": true,
+      "evidence": "sum=100.0",
+      "tier": "quality"
+    },
+    {
+      "text": "total_amount marks 含税 or 不含税",
+      "passed": true,
+      "evidence": "¥560,000 CNY 不含税",
+      "tier": "quality"
+    },
+    {
+      "text": "quality_ok is true",
+      "passed": true,
+      "evidence": "quality_ok=True n=0",
+      "tier": "quality"
+    },
+    {
+      "text": "no quality warnings when data is good",
+      "passed": true,
+      "evidence": "warnings=0 banner=False",
+      "tier": "quality"
+    }
+  ],
+  "passed": 9,
+  "total": 9,
+  "pass_rate": 1.0,
+  "format": {
+    "passed": 3,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "quality": {
+    "passed": 6,
+    "total": 6,
+    "pass_rate": 1.0
+  }
+}

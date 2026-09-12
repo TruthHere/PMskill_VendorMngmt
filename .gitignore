@@ -1,0 +1,21 @@
+# Secrets — never upload
+.env*
+*.secret
+.mailbox.secret
+.somark.secret
+mailbox-registry.json
+
+# Machine junk
+.DS_Store
+__pycache__/
+*.pyc
+.tmp/
+.tmp_pycache/
+
+# Packaged / local-only artifacts
+dist/
+docs.zip
+test-runs/
+
+# Real client mail used only for local smoke tests — do not upload
+change-archive-workspace/real-mail-smoke/

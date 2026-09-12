@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>contract-fulfillment-struct · Eval Review</title>
+<style>
+body { font-family: system-ui, sans-serif; margin: 2rem; max-width: 960px; color: #0f172a; }
+h1 { margin-bottom: 0.2rem; }
+.summary { background: #f1f5f9; padding: 1rem 1.2rem; border-radius: 8px; margin: 1rem 0 2rem; }
+section { border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 1.5rem; }
+.prompt { background: #f8fafc; padding: 0.8rem; white-space: pre-wrap; font-size: 0.9rem; }
+.config { margin-top: 1rem; }
+.pass { color: #15803d; } .fail { color: #b91c1c; }
+.evidence { display: block; font-size: 0.85rem; color: #64748b; margin-left: 1.2rem; }
+</style>
+</head>
+<body>
+<h1>contract-fulfillment-struct</h1>
+<p>Eval workspace：<code>/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1</code></p>
+<div class="summary">
+  <strong>Benchmark</strong><br/>
+  with_skill：100% ± 0%<br/>
+  without_skill：50% ± 27%<br/>
+  delta：+0.50
+</div>
+<section><h2>project-init</h2><pre class="prompt">请处理以下项目初始化邮件，在 /tmp/eval-sample-init 创建项目结构。
+
+主题：[项目初始化] Sample Project - SAMPLE
+
+项目名称：Sample Project
+项目编号：SAMPLE
+项目类型：实验室
+项目地址：上海市浦东新区张江路 100 号
+甲方名称：样例业主有限公司
+项目经理：张三
+币种/含税：CNY 含税
+本地根文件夹路径：/tmp/eval-sample-init
+
+附件：进度计划文件 schedule.txt（内容：开工 2026-05-01，竣工 2026-12-31）</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (6/6)</p><ul><li class="pass"><strong>✓</strong> project.json exists<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/project-init-with/.skill/project.json</span></li>
+<li class="pass"><strong>✓</strong> project_code is SAMPLE<span class="evidence">project_code=SAMPLE</span></li>
+<li class="pass"><strong>✓</strong> tracker file exists<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/project-init-with/Sample Project_procurement_packages_status_tracker.csv</span></li>
+<li class="pass"><strong>✓</strong> tracker packages list readable<span class="evidence">count=0</span></li>
+<li class="pass"><strong>✓</strong> progress plan archived<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/project-init-with/项目档案/00_进度计划</span></li>
+<li class="pass"><strong>✓</strong> empty packages for init-only eval<span class="evidence">packages=0</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：20% (1/5)</p><ul><li class="fail"><strong>✗</strong> project.json exists<span class="evidence">missing</span></li>
+<li class="fail"><strong>✗</strong> tracker file exists<span class="evidence">missing</span></li>
+<li class="pass"><strong>✓</strong> tracker packages list readable<span class="evidence">count=0</span></li>
+<li class="fail"><strong>✗</strong> progress plan archived<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/project-init-without/项目档案/00_进度计划</span></li>
+<li class="fail"><strong>✗</strong> empty packages for init-only eval<span class="evidence">packages=0</span></li></ul></div></section><section><h2>rfp-forward</h2><pre class="prompt">项目 /tmp/eval-sample-rfp 已完成阶段 0。请处理以下 RFP 转发邮件，初始化采购包 BMS。
+
+主题：SAMPLE · BMS · BOSCH — RFP
+
+项目：SAMPLE
+采购包：BMS（楼宇自控系统）
+供应商：BOSCH Building Technologies
+对接人邮箱：procurement@bosch-build.example.com
+类型：纯供应
+
+附件：tech_spec.txt（技术要求：DDC 控制器型号 FX-160）</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (13/13)</p><ul><li class="pass"><strong>✓</strong> project.json exists<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-with/.skill/project.json</span></li>
+<li class="pass"><strong>✓</strong> project_code is SAMPLE<span class="evidence">project_code=SAMPLE</span></li>
+<li class="pass"><strong>✓</strong> tracker file exists<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-with/Sample Project_procurement_packages_status_tracker.csv</span></li>
+<li class="pass"><strong>✓</strong> tracker packages list readable<span class="evidence">count=1</span></li>
+<li class="pass"><strong>✓</strong> progress plan archived<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-with/项目档案/00_进度计划</span></li>
+<li class="pass"><strong>✓</strong> milestone RFP 发出 or later<span class="evidence">RFP 发出=2026-07-19 status=</span></li>
+<li class="pass"><strong>✓</strong> milestone PO 已发起 when payment eval<span class="evidence">PO 已发起= status=</span></li>
+<li class="pass"><strong>✓</strong> package has 01~07 subfolders<span class="evidence">06_结算资料, 07_往来文件, 05_验收记录, 04_变更洽商, 03_请款记录, 02_图纸, 01_合同报价</span></li>
+<li class="pass"><strong>✓</strong> 履约条件卡片.html exists<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-with/01_BMS_BOSCH/履约条件卡片.html</span></li>
+<li class="pass"><strong>✓</strong> card mentions 预付款<span class="evidence">not found</span></li>
+<li class="pass"><strong>✓</strong> card mentions 30%<span class="evidence">not found</span></li>
+<li class="pass"><strong>✓</strong> payment_nodes has 3 entries when PO eval<span class="evidence">count=0</span></li>
+<li class="pass"><strong>✓</strong> empty packages for init-only eval<span class="evidence">packages=1</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：57% (4/7)</p><ul><li class="fail"><strong>✗</strong> project.json exists<span class="evidence">missing</span></li>
+<li class="pass"><strong>✓</strong> tracker file exists<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-without/tracker.csv</span></li>
+<li class="pass"><strong>✓</strong> tracker packages list readable<span class="evidence">count=1</span></li>
+<li class="fail"><strong>✗</strong> progress plan archived<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/rfp-forward-without/项目档案/00_进度计划</span></li>
+<li class="fail"><strong>✗</strong> milestone RFP 发出 or later<span class="evidence">RFP 发出= status=</span></li>
+<li class="pass"><strong>✓</strong> milestone PO 已发起 when payment eval<span class="evidence">PO 已发起= status=</span></li>
+<li class="pass"><strong>✓</strong> empty packages for init-only eval<span class="evidence">packages=1</span></li></ul></div></section><section><h2>po-payment</h2><pre class="prompt">项目 /tmp/eval-sample-po 已有 BMS 采购包（供应类型，技术方案已确认）。请处理：
+
+1) Raise PO 邮件：最终金额 ¥1,280,000 CNY 含税，交期 2026-09-30
+2) 付款指示邮件：预付款30%/到货60%/尾款10%，来源邮件指示
+
+更新 tracker PO 已发起里程碑，卡片含付款节点。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (14/14)</p><ul><li class="pass"><strong>✓</strong> project.json exists<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-with/.skill/project.json</span></li>
+<li class="pass"><strong>✓</strong> project_code is SAMPLE<span class="evidence">project_code=SAMPLE</span></li>
+<li class="pass"><strong>✓</strong> tracker file exists<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-with/Sample Project_procurement_packages_status_tracker.csv</span></li>
+<li class="pass"><strong>✓</strong> tracker packages list readable<span class="evidence">count=1</span></li>
+<li class="pass"><strong>✓</strong> progress plan archived<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-with/项目档案/00_进度计划</span></li>
+<li class="pass"><strong>✓</strong> milestone RFP 发出 or later<span class="evidence">RFP 发出= status=</span></li>
+<li class="pass"><strong>✓</strong> milestone PO 已发起 when payment eval<span class="evidence">PO 已发起=2026-07-19 status=</span></li>
+<li class="pass"><strong>✓</strong> next_payment_node populated<span class="evidence">预付款 30%</span></li>
+<li class="pass"><strong>✓</strong> package has 01~07 subfolders<span class="evidence">06_结算资料, 07_往来文件, 05_验收记录, 04_变更洽商, 03_请款记录, 02_图纸, 01_合同报价</span></li>
+<li class="pass"><strong>✓</strong> 履约条件卡片.html exists<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-with/01_BMS_BOSCH/履约条件卡片.html</span></li>
+<li class="pass"><strong>✓</strong> card mentions 预付款<span class="evidence">预付款 in html</span></li>
+<li class="pass"><strong>✓</strong> card mentions 30%<span class="evidence">30% in html</span></li>
+<li class="pass"><strong>✓</strong> payment_nodes has 3 entries when PO eval<span class="evidence">count=3</span></li>
+<li class="pass"><strong>✓</strong> empty packages for init-only eval<span class="evidence">packages=1</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：71% (5/7)</p><ul><li class="fail"><strong>✗</strong> project.json exists<span class="evidence">missing</span></li>
+<li class="pass"><strong>✓</strong> tracker file exists<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-without/tracker.csv</span></li>
+<li class="pass"><strong>✓</strong> tracker packages list readable<span class="evidence">count=1</span></li>
+<li class="pass"><strong>✓</strong> progress plan archived<span class="evidence">/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/po-payment-without/项目档案/00_进度计划</span></li>
+<li class="pass"><strong>✓</strong> milestone RFP 发出 or later<span class="evidence">RFP 发出= status=</span></li>
+<li class="fail"><strong>✗</strong> milestone PO 已发起 when payment eval<span class="evidence">PO 已发起= status=</span></li>
+<li class="pass"><strong>✓</strong> empty packages for init-only eval<span class="evidence">packages=1</span></li></ul></div></section>
+</body>
+</html>

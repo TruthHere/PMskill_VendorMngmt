@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "eml_path": "",
+  "intent": "fulfillment.rfp",
+  "route_to": "contract-fulfillment-struct",
+  "confidence": "high",
+  "project_root": "",
+  "hints": {
+    "package_name": "Door Package",
+    "supplier_hint": "SupplierA",
+    "subject": "RFP for Door Package (SupplierA)",
+    "change_no": ""
+  },
+  "enrichment": {
+    "payment_terms": false,
+    "has_quote_attachment": false,
+    "has_drawing": false,
+    "schedule_attachment": false
+  },
+  "attachments": [],
+  "pending": null,
+  "did": [
+    "ingest",
+    "classify"
+  ],
+  "next": {
+    "skill": "contract-fulfillment-struct",
+    "action": "handle_fulfillment_rfp",
+    "note": "业务 Skill 消费本 JSON；mail-inbox 不改业务数据"
+  }
+}

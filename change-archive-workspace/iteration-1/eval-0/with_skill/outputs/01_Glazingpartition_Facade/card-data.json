@@ -1,0 +1,16 @@
+{
+  "package_name": "Glazing partition",
+  "supplier_name": "Facade Co",
+  "package_type": "供应",
+  "package_type_label": "纯供应",
+  "project_name": "ChangeEval",
+  "contact_email": "a@b.com",
+  "total_amount": "",
+  "scope_summary": "",
+  "delivery_schedule": "",
+  "payment_nodes": [],
+  "change_items": [],
+  "acceptance_items": [],
+  "constraint_clauses": "",
+  "data_sources": ""
+}

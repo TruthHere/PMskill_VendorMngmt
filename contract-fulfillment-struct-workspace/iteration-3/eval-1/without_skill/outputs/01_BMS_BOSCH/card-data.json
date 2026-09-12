@@ -1,0 +1,16 @@
+{
+  "package_name": "BMS",
+  "supplier_name": "BOSCH Building Technologies",
+  "package_type": "供应",
+  "package_type_label": "纯供应",
+  "project_name": "Sample Project",
+  "contact_email": "procurement@bosch-build.example.com",
+  "total_amount": "",
+  "scope_summary": "",
+  "delivery_schedule": "",
+  "payment_nodes": [],
+  "change_items": [],
+  "acceptance_items": [],
+  "constraint_clauses": "",
+  "data_sources": "邮件 SAMPLE · BMS · BOSCH — RFP"
+}

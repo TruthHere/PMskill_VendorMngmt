@@ -1,0 +1,16 @@
+{
+  "eval_id": 4,
+  "eval_name": "no-change-on-card",
+  "eval_kind": "standard",
+  "prompt": "渲染夹具 change-items.json：card-data 里仍有旧 change_items，确认卡片不再展示变更章节。",
+  "assertions": [
+    "card HTML exists",
+    "card has no change section",
+    "validate_rendered_card passes",
+    "supplier_name is non-empty",
+    "payment node names are bilingual",
+    "payment pct sum is about 100%",
+    "quality_ok is true",
+    "no quality warnings when data is good"
+  ]
+}

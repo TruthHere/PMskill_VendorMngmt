@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PM Skills - 供应商管理系列</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #1a1f24;
+    --muted: #66727d;
+    --faint: #939ca6;
+    --bg: #f7f8f9;
+    --panel: #fff;
+    --line: #e2e6ea;
+    --accent: #216e68;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+    line-height: 1.55;
+    background: var(--bg);
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 40px 20px 64px; }
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+  .series-intro {
+    margin: 0 0 28px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+  .series-intro p {
+    margin: 0;
+  }
+  .series-intro strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .intent-box {
+    margin: 0 0 14px;
+    padding: 12px 14px;
+    border-left: 3px solid var(--accent);
+    background: #f7f5f1;
+  }
+  .intent-box .t {
+    margin: 0 0 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .intent-box .b {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 14px 18px; margin: 0 0 12px; }
+  a.demo {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+  }
+  a.demo:hover { border-bottom-color: var(--accent); }
+  a.demo:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .tabs {
+    display: flex; gap: 4px; margin: 0 0 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .pill {
+    appearance: none; border: 0; background: transparent;
+    padding: 10px 12px 9px; margin-bottom: -1px;
+    font: 500 14px/1 "Noto Sans SC", sans-serif;
+    color: var(--muted); cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .pill:hover { color: var(--ink); }
+  .pill.active { color: var(--ink); border-bottom-color: var(--ink); }
+  .pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .filters .pill {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin: 0;
+    font-size: 12px;
+    background: var(--panel);
+  }
+  .filters .pill.active {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+
+  .card, .demo-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 18px 18px 16px;
+    margin-bottom: 12px;
+  }
+  .demo-card .title { font-weight: 600; font-size: 16px; margin: 0 0 6px; }
+  .demo-card .meta { font-size: 14px; color: var(--muted); margin: 0 0 12px; }
+
+  .card-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: 600; margin-bottom: 6px; gap: 8px; font-size: 15px;
+  }
+  .badge {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px; color: var(--muted);
+    font-weight: 400;
+  }
+
+  h2 { font-size: 16px; margin: 0 0 10px; font-weight: 600; }
+  h3 { font-size: 13px; margin: 14px 0 6px; color: var(--muted); font-weight: 600; }
+  .sub { color: var(--muted); margin: 0 0 12px; font-size: 14px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 14px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 500; font-size: 12px; }
+  tr.info td { background: #fafbfc; }
+
+  .step-block { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .step-block:last-child { border-bottom: 0; }
+  .step-block .n { font-size: 13px; font-weight: 600; }
+  .step-block .d { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  .list { margin: 0; padding: 0; list-style: none; }
+  .list li { font-size: 13px; margin: 3px 0; }
+  .list.muted li { color: var(--muted); }
+
+  .io-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  @media (max-width: 720px) { .io-grid { grid-template-columns: 1fr; } }
+  .io-box { background: var(--bg); padding: 12px; }
+  .io-box .k { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+  .io-box ul { margin: 0; padding: 0; list-style: none; }
+  .io-box li { font-size: 13px; margin: 5px 0; }
+  .io-box .fmt {
+    font-family: "IBM Plex Mono", monospace;
+    color: var(--faint); font-size: 11px; margin-left: 4px;
+  }
+  .io-box a.io-demo {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .io-box a.io-demo:hover { border-bottom-color: var(--accent); }
+
+  .note-box { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .note-box .t { font-size: 13px; font-weight: 600; }
+  .note-box .b { font-size: 13px; color: var(--muted); }
+
+
+  .detail-summary {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.45;
+    margin: 4px 0 10px;
+  }
+  .detail-meta {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+  .detail-meta code {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--ink);
+    background: #eef1f3;
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+  .detail-section {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+  .detail-section.is-primary {
+    border-top: 0;
+    padding-top: 4px;
+    margin-top: 10px;
+  }
+  .detail-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--faint);
+    margin: 0 0 10px;
+  }
+  .detail-section.is-primary .detail-label {
+    color: var(--ink);
+    font-size: 13px;
+  }
+  .detail-section.is-secondary .detail-label,
+  .detail-section.is-secondary li,
+  .detail-section.is-secondary .note-box .b {
+    color: var(--muted);
+  }
+  .flow-steps { margin: 0; padding: 0; list-style: none; }
+  .flow-step {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .flow-step:last-child { border-bottom: 0; }
+  .flow-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    display: grid;
+    place-items: center;
+    margin-top: 1px;
+  }
+  .flow-step .n { font-size: 14px; font-weight: 600; margin: 0 0 2px; }
+  .flow-step .d { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.45; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 12px 18px; margin: 10px 0;
+    font-size: 12px; color: var(--muted);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .diagram-hint { margin: 0 0 14px; font-size: 12px; color: var(--muted); max-width: 52em; }
+  .swatch-solid { width: 22px; height: 2px; background: var(--accent); }
+  .swatch-dash { width: 22px; border-top: 2px dashed var(--faint); }
+  .swatch-data { width: 22px; border-top: 1.5px dashed #a65b32; }
+  .swatch-create { width: 22px; height: 2.5px; background: #b45309; }
+  .swatch-input { width: 22px; border-top: 2px dotted #7c3aed; }
+  .swatch-out-file {
+    width: 18px; height: 12px; box-sizing: border-box;
+    border: 1.5px dashed #c45c26; background: #fffaf5; border-radius: 2px;
+  }
+  .swatch-out-skill {
+    width: 18px; height: 12px; box-sizing: border-box;
+    border: 1.5px solid #0f766e; background: #ffffff; border-radius: 2px;
+  }
+
+  .diagram-wrap {
+    overflow-x: auto; background: var(--panel);
+    border: 1px solid var(--line); padding: 12px 10px 8px;
+    position: relative;
+  }
+  .edge-tip {
+    display: none;
+    position: absolute;
+    z-index: 30;
+    max-width: 260px;
+    padding: 8px 10px;
+    background: #1a1f24;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.45;
+    border-radius: 4px;
+    pointer-events: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  }
+  .edge-tip.is-on { display: block; }
+  .edge-hit { cursor: help; }
+  .edge-stroke { pointer-events: stroke; }
+  svg text { font-family: inherit; pointer-events: none; }
+  .node { cursor: pointer; }
+  .node.dim { opacity: 0.18; }
+  .aux-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 12px 14px 14px;
+  }
+  .aux-panel .aux-title {
+    margin: 0 0 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .aux-panel .aux-sub {
+    margin: 0 0 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .aux-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .aux-chip {
+    appearance: none;
+    border: 1px dashed #c5d0da;
+    background: #f3f6f8;
+    color: #5a6b78;
+    font: 500 12px/1.2 "Noto Sans SC", sans-serif;
+    padding: 9px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .aux-chip:hover { border-color: var(--accent); color: var(--ink); }
+  .aux-chip.active {
+    border-style: solid;
+    border-color: var(--accent);
+    background: #d8efec;
+    color: var(--ink);
+  }
+  .aux-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .conn { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .conn-item {
+    font-size: 12px; background: var(--bg); border: 1px solid var(--line);
+    padding: 3px 7px;
+  }
+  .foot {
+    margin-top: 32px; font-size: 12px; color: var(--faint);
+    border-top: 1px solid var(--line); padding-top: 14px;
+  }
+  .stack { display: flex; flex-direction: column; gap: 12px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>PM Skills - 供应商管理系列</h1>
+    <div class="series-intro">
+      <p>面向多直采包的供应商管理，本系列把建项、履约、请款、变更、出账预测与通讯录沉淀为可复用的 Skill，用来做进度跟踪、台账记录、风险预判、节点提醒与资金计划。设计上<strong>不另起一套流程</strong>：以项目为单位<strong>绑定公司邮箱</strong>，各方正式往来只需<strong>抄送该地址</strong>，关键节点邮件即可进入系统；邮局前台收信分拣，Skill 0–3 各管一段履约链路，现金流只读算出账、通讯录用群消息收联系人——<strong>人继续写邮件</strong>，系统跟在后面完成跟踪、记录与提醒。</p>
+    </div>
+
+    <div id="panels"></div>
+
+    <p class="foot">有示例的产出项可直接点开查看</p>
+  </div>
+
+<script>
+const SKILLS = [
+  { id:"mail", short:"邮局前台", skillName:"mail-inbox", layer:"前台",
+    role:"系列入口：项目专用邮箱收到的正式往来，先进这里分类，再派给 Skill 0–3。自己不改台账。",
+    intent:"各方正式邮件抄送项目专用邮箱即可接入；不要求人改习惯，也不另建一套申报入口。",
+    does:["盯项目专用邮箱收信","归档邮件原件","判断这封信该给谁办","拿不准就先问人"],
+    doesNot:["不写采购包台账","不生成履约卡片","不算进度节点","不收通讯录（那是群消息 · project-directory）"],
+    takes:[{what:"抄送到项目专用邮箱的正式往来", fmt:"邮件原件"}],
+    gives:[{what:"分好类的待办，交给新建项目 / 采购包创建 / 请款登记 / 变更管理", fmt:"派单结果"},{what:"拿不准的事项", fmt:"待确认清单"}],
+    },
+  { id:"s0", short:"Skill 0 · 新建项目", skillName:"project-init", layer:"业务",
+    role:"新建空项目：文件夹、空台账，并绑定项目专用邮箱——之后正式往来抄送该地址即可进系统。",
+    does:["建项目档案","生成空采购包台账","绑定项目专用邮箱","有总进度时可先挂上"],
+    doesNot:["不建采购包","不做询价 / 下单 / 请款 / 变更"],
+    takes:[{what:"项目名称、编号、甲方、项目经理等基本信息", fmt:"文字"},{what:"本地项目文件夹位置", fmt:"路径"},{what:"项目专用邮箱", fmt:"邮箱账号"},{what:"可选：总进度计划", fmt:"Project 或表格"}],
+    gives:[{what:"空项目壳 + 空台账 + 已绑定邮箱", fmt:"项目文件夹 / Excel 台账", demo:{label:"空采购包台账", href:"demos/empty-tracker.html"}}] },
+  { id:"s1", short:"Skill 1 · 采购包创建", skillName:"contract-fulfillment-struct", layer:"业务",
+    role:"从建采购包开始：询价 → 技术确认 → 下单 → 付款条件 → 合同；写台账与 card-data，调履约卡片（并自动刷请款页）。",
+    does:["建采购包并记里程碑","归档报价、技术文件、合同","写履约卡片与付款条件","建包时同步关键节点时间线"],
+    doesNot:["不当邮件总前台","不请款入账","不维护变更台账","不精调请款页（归 payment-form）"],
+    takes:[{what:"履约相关邮件与附件", fmt:"邮件 + PDF / Excel 等"},{what:"项目进度计划", fmt:"Project 或表格"}],
+    gives:[{what:"采购包状态台账", fmt:"Excel", demo:{label:"采购包状态台账", href:"demos/package-tracker.html"}},{what:"履约条件卡片", fmt:"网页", demo:{label:"履约条件卡片", href:"demos/fulfillment-card.html"}},{what:"请款申请页（经 payment-form）", fmt:"网页", demo:{label:"请款申请页", href:"demos/payment-claim-form.html"}},{what:"关键节点时间线", fmt:"网页", demo:{label:"关键节点时间线", href:"demos/critical-nodes-timeline.html"}}] },
+  { id:"s2", short:"Skill 2 · 请款登记", skillName:"payment-request", layer:"业务",
+    role:"到点提醒下一笔待请；按五步推进请款进度，只写采购包台账。仅客户批复后才算已请。03 只归档，不另开流水账。",
+    does:["提前约两周提醒下一笔待请","五步写进台账「请款进度」","客户批复后累加已请、切下一节点","03_请款记录只存档"],
+    doesNot:["不定付款比例","不生成/精调付款申请页（归 payment-form）","不另开 payment_ledger / 第二套账"],
+    takes:[{what:"履约卡片上的付款节点", fmt:"卡片网页"},{what:"关键节点完成时点", fmt:"时间线"},{what:"请款相关邮件与附件", fmt:"邮件"},{what:"客户批复", fmt:"邮件"}],
+    gives:[{what:"更新后的采购包状态台账", fmt:"Excel", demo:{label:"采购包状态台账", href:"demos/package-tracker.html"}}] },
+  { id:"s3", short:"Skill 3 · 变更管理", skillName:"change-archive", layer:"业务",
+    role:"变更从 COD 到 Change PO：只维护变更台账 + 双归档。不定价。不改采购包台账、不写履约卡片。",
+    does:["维护变更台账与状态（可手改已取消）","归档变更邮件与图纸","商务金额确认只写台账最终确认金额"],
+    doesNot:["不定价、不自算金额","不改采购包主台账","不写履约卡片 / change_items","不直接写现金流"],
+    takes:[{what:"变更相关邮件与附件", fmt:"邮件 + 图纸 / 报价"},{what:"变更序号", fmt:"如 COD 号"}],
+    gives:[{what:"项目变更台账", fmt:"Excel", demo:{label:"项目变更台账", href:"demos/change-log.html"}}] },
+  { id:"s4", short:"现金流", skillName:"cashflow-forecast", layer:"产出",
+    role:"独立 Skill：只读采购包台账、关键节点、变更台账最终确认金额，重算按月出账。流程不直接改这张表。",
+    does:["只读聚合上游","按月出账预测","变更增量默认挂尾款"],
+    doesNot:["不算甲方收入侧","不手猜缺日期的金额","不改 Tracker / 请款 / 变更台账"],
+    takes:[{what:"采购包台账（合同额 / 付款条件 / 已请）", fmt:"只读"},{what:"关键节点完成时点", fmt:"只读"},{what:"变更台账最终确认金额", fmt:"只读"}],
+    gives:[{what:"按月出账预测", fmt:"Excel / JSON", demo:{label:"现金流预测", href:"demos/cashflow-forecast.html"}}] },
+  { id:"s5", short:"通讯录", skillName:"project-directory", layer:"产出",
+    role:"新建项目时先落一张空通讯录表；之后用企微群消息 + 填写页收集对接人，合成项目通讯录。不走邮箱。",
+    does:["新建项目时输出空通讯录表","生成群填空文案与填写页","解析群回复并入表"],
+    doesNot:["不发邮件 / 不走邮局","不改 Tracker / 请款 / 变更","不跟采购包创建绑死（建包不刷通讯录）"],
+    takes:[{what:"新建项目时的项目壳", fmt:"项目档案"},{what:"群里按模板的回复", fmt:"文字 / 填写页"}],
+    gives:[{what:"项目通讯录", fmt:"Excel", demo:{label:"项目通讯录", href:"demos/project-directory.html"}},{what:"填写页", fmt:"网页", demo:{label:"填写页", href:"demos/directory-fill-form.html"}}] },
+  { id:"payform", short:"付款申请", skillName:"payment-form", layer:"产出",
+    role:"给供应商填的请款申请页，并可下载公司请款单 Excel。Skill 1 建包后生成；已请写在台账，本页不展示；变更金额读变更台账。",
+    does:["生成/刷新请款申请页","页内下载公司模板 Excel","Excel 既往请款读台账已请；变更合计读 Change Log"],
+    doesNot:["不入账、不改 Tracker","不渲染履约卡片","不预填本次请款金额","不读已废除的 payment_ledger"],
+    takes:[{what:"card-data 与台账合同额", fmt:"结构化数据"},{what:"变更台账最终确认金额", fmt:"只读"}],
+    gives:[{what:"请款申请页", fmt:"网页", demo:{label:"请款申请页", href:"demos/payment-claim-form.html"}}] },
+  { id:"tracker", short:"采购包台账", skillName:"", layer:"产出",
+    role:"单纯产出：项目级采购包状态台账。Skill 0 建空表，Skill 1/2 往里写——没有单独的「台账 Skill」。",
+    does:["承接空表与包行","记录履约里程碑与合同金额","记录已请 / 待请 / 下一付款节点"],
+    doesNot:["变更不写这张表（走变更 Tracker）","自己不是一门独立 Skill"],
+    takes:[{what:"Skill 0 / 1 / 2 的业务动作", fmt:"创建或写入"}],
+    gives:[{what:"采购包状态台账", fmt:"Excel", demo:{label:"采购包状态台账", href:"demos/package-tracker.html"}},{what:"空台账样子", fmt:"Excel", demo:{label:"空采购包台账", href:"demos/empty-tracker.html"}}] },
+  { id:"chglog", short:"变更台账", skillName:"", layer:"产出",
+    role:"单纯产出：项目变更台账，整张表就是 Skill 3 的活。现金流与请款页直接读「最终确认金额」，不经履约卡片。",
+    does:["承接 COD 起的变更行","推进技术 / 商务 / Change PO 状态","记下最终确认不含税金额","可手改已取消"],
+    doesNot:["不定价","不改采购包 Tracker","不写履约卡片","不是独立 Skill"],
+    takes:[{what:"Skill 3 变更流程", fmt:"创建或写入"}],
+    gives:[{what:"项目变更台账", fmt:"Excel", demo:{label:"项目变更台账", href:"demos/change-log.html"}}] },
+  { id:"mpp", short:"进度转 Excel", skillName:"schedule-mpp-excel", layer:"辅助",
+    role:"把 Project 进度变成人能打开的甘特表，并导出机器可读表格。",
+    does:["读 Project 文件","输出带甘特的 Excel","导出任务表供下游用"],
+    doesNot:["不判断关键节点完成时点"],
+    takes:[{what:"总进度计划", fmt:"Project 文件或粗表"}],
+    gives:[
+      {what:"给人看的甘特表", fmt:"Excel", demo:{label:"下载 Project 视图 Excel", href:"demos/mpp-project-view.xlsx"}},
+      {what:"给下游用的任务表", fmt:"表格", demo:{label:"机读任务表示例", href:"demos/mpp-schedule-csv.html"}}
+    ] },
+  { id:"critical", short:"关键节点", skillName:"schedule-critical-nodes", layer:"产出",
+    role:"按采购包推出到货/安装/验收等完成时点；建包写入现金流时会带上这些完成日。",
+    does:["理解进度并推理节点（明示 / 倒推）","写入 schedule.json","生成可拖动时间线"],
+    doesNot:["不直接读原生 Project 文件（先转表）","不写付款比例","不渲染履约卡片"],
+    takes:[{what:"进度任务表", fmt:"表格"},{what:"采购包清单", fmt:"台账或列表"}],
+    gives:[{what:"各包关键节点完成时点", fmt:"schedule.json"},{what:"全采购包时间线", fmt:"网页", demo:{label:"关键节点时间线", href:"demos/critical-nodes-timeline.html"}}] },
+  { id:"pdf-read", short:"读 PDF", skillName:"pdf-read", layer:"辅助",
+    role:"把合同/报价/扫描件读成文字（JSON/Markdown）。本包唯一的 PDF 读字能力；不抽付款节点。",
+    does:["区分文本件与扫描件","读出正文交给履约或用户"],
+    doesNot:["不抽付款节点（归 Skill 1）","不直接改台账","不做合并拆分等通用 PDF 编辑（不在本包）"],
+    takes:[{what:"合同或报价 PDF", fmt:"PDF"}],
+    gives:[{what:"可读正文", fmt:"JSON / Markdown"}],
+    },
+];
+
+const FLOW_IDS = ["s0", "s1", "s2", "s3"];
+// 产出：点选只看谁在创建 / 写入 / 只读
+const OUTPUT_IDS = ["tracker", "chglog", "critical", "payform", "s4", "s5"];
+// 单纯产出 = 流程顺手写下的表，无独立 Skill；独立 Skill 产出 = 有自己算法/入口
+const OUTPUT_ARTIFACT_IDS = ["tracker", "chglog"];
+const OUTPUT_SKILL_IDS = ["critical", "payform", "s4", "s5"];
+// 本包辅助工具：只留进度转换 + 读 PDF（履约卡片渲染归 Skill 1 链路内部；通用 PDF 不在本包）
+const AUX_IDS = ["mpp", "pdf-read"];
+
+function isOutputArtifact(id) { return OUTPUT_ARTIFACT_IDS.includes(id); }
+function isOutputSkill(id) { return OUTPUT_SKILL_IDS.includes(id); }
+
+const KIND_LABEL = {
+  "创建": "创建",
+  "写入": "写入",
+  "只读": "只读",
+  "流程": "流程",
+  "派单": "派单",
+};
+
+const EDGES = [
+  // 核心流程流：新建 → 建包 → 分叉到请款 / 变更
+  { from: "s0", to: "s1", kind: "流程", label: "空项目就绪", zone: "flow" },
+  { from: "s1", to: "s2", kind: "流程", label: "卡片与付款条件", zone: "flow" },
+  { from: "s1", to: "s3", kind: "流程", label: "包已建好可开变更", zone: "flow" },
+  // 邮局派单（默认淡）
+  { from: "mail", to: "s0", kind: "派单", label: "建项目", zone: "mail" },
+  { from: "mail", to: "s1", kind: "派单", label: "履约邮件", zone: "mail" },
+  { from: "mail", to: "s2", kind: "派单", label: "请款进度邮件", zone: "mail" },
+  { from: "mail", to: "s3", kind: "派单", label: "变更邮件", zone: "mail" },
+  // 采购包 Tracker
+  { from: "s0", to: "tracker", kind: "创建", label: "空台账", zone: "feed" },
+  { from: "s1", to: "tracker", kind: "写入", label: "包行 / 里程碑 / 金额", zone: "feed" },
+  { from: "s2", to: "tracker", kind: "写入", label: "请款进度 / 已请（仅客户批复）", zone: "feed" },
+  // 变更台账：只归 Skill 3；现金流 / 请款页直接读最终确认金额
+  { from: "s3", to: "chglog", kind: "写入", label: "变更台账 / 最终确认金额", zone: "feed" },
+  // 关键节点
+  { from: "s0", to: "critical", kind: "创建", label: "可选挂进度底座", zone: "feed" },
+  { from: "s1", to: "critical", kind: "写入", label: "建包时同步完成时点", zone: "feed" },
+  // 付款申请
+  { from: "s1", to: "payform", kind: "创建", label: "生成请款申请页（给供应商填）", zone: "feed" },
+  // 现金流（独立 Skill）：只读上游重算，流程不直接改现金流表
+  { from: "tracker", to: "s4", kind: "只读", label: "合同额 / 付款条件 / 已请", zone: "feed" },
+  { from: "critical", to: "s4", kind: "只读", label: "完成时点 window_end", zone: "feed" },
+  { from: "chglog", to: "s4", kind: "只读", label: "最终确认金额（非已取消）", zone: "feed" },
+  // 通讯录：仅新建项目
+  { from: "s0", to: "s5", kind: "创建", label: "空通讯录表", zone: "feed" },
+];
+
+const VIEW_W = 1000;
+const VIEW_H = 510;
+const OUT_Y = 400;
+const OUT_H = 52;
+const OUT_W = 138;
+const LABEL_DX = 10;  // 竖线旁标签与线的间距
+const LABEL_DY = 11;  // （横线场景备用）
+
+const BANDS = [
+  { y: 8, h: 66, label: "入口", tone: "#f3f5f7" },
+  { y: 74, h: 170, label: "核心流程", tone: "#eef6f5" },
+  { y: 244, h: 130, label: "", tone: "#f7f8f9" },
+  { y: 374, h: 110, label: "产出", tone: "#f7f5f1" },
+];
+// 流程→产出的横折线统一走这条 Y（留白带正中）
+const WIRE_Y = BANDS[2].y + BANDS[2].h / 2;
+
+function layoutOutputsCentered() {
+  const n = OUTPUT_IDS.length;
+  const sidePad = 48;
+  const usable = VIEW_W - sidePad * 2;
+  const gap = n > 1 ? (usable - OUT_W * n) / (n - 1) : 0;
+  const pos = {};
+  OUTPUT_IDS.forEach((id, i) => {
+    pos[id] = { x: sidePad + i * (OUT_W + gap), y: OUT_Y, w: OUT_W, h: OUT_H };
+  });
+  return pos;
+}
+
+const LAYOUT = {
+  mail: { x: (VIEW_W - 200) / 2, y: 20, w: 200, h: 46 },
+  s0: { x: 40, y: 120, w: 200, h: 58 },
+  s1: { x: 300, y: 120, w: 200, h: 58 },
+  s3: { x: 560, y: 168, w: 190, h: 58 },
+  s2: { x: 680, y: 80, w: 190, h: 58 },
+  ...layoutOutputsCentered(),
+};
+
+
+const BIZ = [
+  {
+    id:"s0", title:"Skill 0 · 新建项目", skillName:"project-init",
+    one:"先有一个空项目：档案、空台账，并绑定项目专用邮箱。之后正式往来抄送该地址即可进系统。",
+    when:"新建项目、绑邮箱、项目刚立项时",
+    steps:[
+      {n:"建项目档案", d:"写入项目名、编号、甲方、项目经理等基本信息。"},
+      {n:"空台账就绪", d:"采购包状态表先建好，但一行供应商都还没有。"},
+      {n:"绑项目专用邮箱", d:"各方正式邮件抄送此地址；邮局收信后分拣给后续业务。"},
+      {n:"可选挂总进度", d:"若已有总进度计划，可先归档并生成关键节点底座。"},
+    ],
+    takes:[{what:"项目基本信息", fmt:"文字"},{what:"本地存放位置", fmt:"文件夹"},{what:"项目专用邮箱", fmt:"邮箱账号"},{what:"可选总进度", fmt:"Project 或表格"}],
+    gives:[{what:"空项目 + 空台账 + 已绑定邮箱", fmt:"项目文件夹 / Excel", demo:{label:"空采购包台账", href:"demos/empty-tracker.html"}}],
+    not:["不建采购包","不做询价、下单、请款、变更"],
+    tip:"新建项目只造壳并接通邮箱入口；真正开始管供应商，是 Skill 1 · 采购包创建。",
+    intent:"项目专用邮箱在此绑定：之后各方正式邮件抄送该地址，系统才有入口可跟。",
+  },
+  {
+    id:"s1", title:"Skill 1 · 采购包创建", skillName:"contract-fulfillment-struct",
+    one:"管一个采购包怎么从询价走到合同：建包、记里程碑、归档附件、写履约卡片与付款条件。",
+    when:"询价发出、技术确认、下单、付款条件、合同到达时",
+    steps:[
+      {n:"建包 / 询价发出", d:"建采购包文件夹与台账行，并同步该包在进度上的请款完成时点。"},
+      {n:"技术确认", d:"归档技术文件，更新台账与卡片。"},
+      {n:"商务下单", d:"归档报价、写入金额，标记订单已发起。"},
+      {n:"付款条件 / 合同", d:"把怎么分几笔、各付多少写进卡片；合同归档；渲卡片时自动刷请款页。"},
+    ],
+    takes:[{what:"履约相关邮件与附件", fmt:"邮件 + PDF / Excel"},{what:"总进度计划", fmt:"Project 或表格"}],
+    gives:[{what:"采购包状态台账", fmt:"Excel", demo:{label:"采购包状态台账", href:"demos/package-tracker.html"}},{what:"履约条件卡片", fmt:"网页", demo:{label:"履约条件卡片", href:"demos/fulfillment-card.html"}},{what:"请款申请页", fmt:"网页", demo:{label:"请款申请页", href:"demos/payment-claim-form.html"}},{what:"关键节点时间线", fmt:"时间线网页", demo:{label:"关键节点时间线", href:"demos/critical-nodes-timeline.html"}}],
+    not:["不代发询价或订单","不请款入账","不维护变更台账","不手猜进度日期"],
+    tip:"这里定「有几笔、各多少」；请款页归 payment-form；入账归 Skill 2。",
+  },
+  {
+    id:"s2", title:"Skill 2 · 请款登记", skillName:"payment-request",
+    one:"提醒下一笔待请；五步推进只写采购包台账。仅客户批复后才算已请。03 只归档，不另开流水账。",
+    when:"临近完成时点、收到请款材料要推进进度时",
+    steps:[
+      {n:"扫描提醒", d:"按关键节点完成日提前约两周，只报每包「下一付款节点」。"},
+      {n:"五步推进", d:"供应商来请 → 发 QS → QS 确认 → 发客户 → 客户批复；进度写在台账「请款进度」。"},
+      {n:"客户批复才入账", d:"只有批复才累加已请金额、切下一节点；邮件/Excel 副本进 03_请款记录。"},
+    ],
+    takes:[{what:"履约卡片上的付款节点", fmt:"卡片"},{what:"请款相关邮件", fmt:"邮件"},{what:"关键节点完成时点", fmt:"时间线"},{what:"客户批复", fmt:"邮件"}],
+    gives:[{what:"更新后的采购包状态台账", fmt:"Excel", demo:{label:"采购包状态台账", href:"demos/package-tracker.html"}}],
+    not:["不定付款比例","不另开 payment_ledger","不生成请款申请页","不做变更存档"],
+    tip:"请款申请页给填表用；真正「已请」只认客户批复写进同一张采购包台账。",
+  },
+  {
+    id:"s3", title:"Skill 3 · 变更管理", skillName:"change-archive",
+    one:"变更从 COD 到 Change PO：只维护变更台账 + 双归档。不定价；不写履约卡片。",
+    when:"变更指令、技术送审、商务确认、Change PO 等邮件到来时",
+    steps:[
+      {n:"建行并推进状态", d:"按变更序号记入变更台账；可手改「已取消」。"},
+      {n:"双归档", d:"往来邮件与变更资料分别归档到约定位置。"},
+      {n:"金额只写台账", d:"商务金额确认 → 台账「最终确认金额」；不写卡片 change_items。"},
+      {n:"Change PO 闭环", d:"盖戳结束该条变更，不改采购包主台账。"},
+    ],
+    takes:[{what:"变更相关邮件与附件", fmt:"邮件 + 图纸 / 报价"},{what:"变更序号", fmt:"如 COD 号"}],
+    gives:[{what:"项目变更台账", fmt:"Excel", demo:{label:"项目变更台账", href:"demos/change-log.html"}}],
+    not:["不定价、不自算核定","不改采购包主台账","不写履约卡片","不代发变更指令"],
+    tip:"变更台账是权威源；现金流和请款页直接读「最终确认金额」，不再经卡片中转。",
+  },
+  {
+    id:"s4", title:"现金流预测", skillName:"cashflow-forecast",
+    one:"独立 Skill：只读台账、关键节点、变更台账最终确认金额，拼出按月供应商出账。",
+    when:"要看资金计划、按月出账、现金流预测时",
+    steps:[
+      {n:"读上游", d:"采购包台账（合同额/付款条件/已请）、关键节点完成日、变更台账最终确认金额。"},
+      {n:"按月预测", d:"应请 vs 实请；变更增量默认挂尾款；出账滞后默认 30 天。"},
+      {n:"写出表", d:"生成现金流预测 Excel / JSON（本 Skill 自己的产物）。"},
+    ],
+    takes:[{what:"台账 / 关键节点 / 变更台账", fmt:"只读"}],
+    gives:[{what:"按月出账预测", fmt:"Excel / JSON", demo:{label:"现金流预测", href:"demos/cashflow-forecast.html"}}],
+    not:["不算甲方收入","不改 Tracker / 请款 / 变更","不手猜缺项","不读已废除的 payment_ledger / change_items"],
+    tip:"已请在台账上；已确认变更在变更台账上。箭头指向现金流 = 它来读，不是别人去改它。",
+  },  {
+    id:"s5", title:"项目通讯录", skillName:"project-directory",
+    one:"新建项目时先落空通讯录表；之后用群消息/填写页收对接人，合成项目通讯录。",
+    when:"新建项目后要收联系人、Project Directory 时",
+    steps:[
+      {n:"建空表", d:"跟新建项目一起输出空通讯录（不跟建包绑死）。"},
+      {n:"出群消息 + 填写页", d:"发可复制群文案和手机填写页。"},
+      {n:"收群回复并入表", d:"把回复写进通讯录；对不上哪家就 pending 问人。"},
+    ],
+    takes:[{what:"新建项目时的项目壳", fmt:"项目档案"},{what:"群回复 / 填写页", fmt:"文字"}],
+    gives:[{what:"项目通讯录", fmt:"Excel", demo:{label:"项目通讯录", href:"demos/project-directory.html"}},{what:"填写页", fmt:"网页", demo:{label:"填写页", href:"demos/directory-fill-form.html"}}],
+    not:["不走邮箱","不改 Tracker","不跟采购包创建自动关联"],
+    tip:"通讯录只跟新建项目挂钩（先有空表）；收集走群，不是邮局。",
+  },
+];
+
+const skillById = Object.fromEntries(SKILLS.map((s) => [s.id, s]));
+let selected = null;
+
+
+function demoHref(file) {
+  const raw = String(file || "");
+  if (/^https?:\/\//i.test(raw) || raw.startsWith("/")) return raw;
+  const name = raw.split("/").pop();
+  try { return new URL("demos/" + name, location.href).href; }
+  catch (e) { return "demos/" + name; }
+}
+function demoLink(label, file, cls) {
+  const klass = cls ? ` class="${cls}"` : "";
+  const href = demoHref(file);
+  const name = String(file || "").split("/").pop() || "";
+  const isHtml = /\.html?$/i.test(name);
+  const dl = isHtml ? "" : ` download="${esc(name)}"`;
+  return `<a${klass} href="${esc(href)}"${dl}>${esc(label)}</a>`;
+}
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+}
+function ioRow(items, withDemo) {
+  return items.map((x) => {
+    const demo = withDemo && x.demo
+      ? demoLink(x.demo.label, x.demo.href, "io-demo")
+      : "";
+    return `<li>${esc(x.what)} <span class="fmt">${esc(x.fmt)}</span>${demo ? " " + demo : ""}</li>`;
+  }).join("");
+}
+function ioBoxes(takes, gives) {
+  return `<div class="io-grid">
+    <div class="io-box"><div class="k">输入</div><ul>${ioRow(takes, false)}</ul></div>
+    <div class="io-box"><div class="k">产出</div><ul>${ioRow(gives, true)}</ul></div>
+  </div>`;
+}
+function flowSteps(steps) {
+  return `<ol class="flow-steps">${steps.map((s, i) =>
+    `<li class="flow-step"><div class="flow-num">${i + 1}</div><div><p class="n">${esc(s.n)}</p><p class="d">${esc(s.d)}</p></div></li>`
+  ).join("")}</ol>`;
+}
+
+function centerOf(id) {
+  const n = LAYOUT[id];
+  return { x: n.x + n.w / 2, y: n.y + n.h / 2 };
+}
+function borderPoint(id, toward) {
+  const box = LAYOUT[id];
+  const cx = box.x + box.w / 2, cy = box.y + box.h / 2;
+  const dx = toward.x - cx, dy = toward.y - cy;
+  if (Math.abs(dx) < 1e-6 && Math.abs(dy) < 1e-6) return { x: cx, y: cy };
+  const hw = box.w / 2, hh = box.h / 2;
+  const sx = Math.abs(dx) < 1e-6 ? Infinity : hw / Math.abs(dx);
+  const sy = Math.abs(dy) < 1e-6 ? Infinity : hh / Math.abs(dy);
+  const t = Math.min(sx, sy);
+  return { x: cx + dx * t, y: cy + dy * t };
+}
+function edgeGeometry(from, to, zone, opts) {
+  const fromBox = LAYOUT[from], toBox = LAYOUT[to];
+  const ac = centerOf(from), bc = centerOf(to);
+  const slot = (opts && opts.slot) || 0;
+  const slotCount = Math.max(1, (opts && opts.slotCount) || 1);
+
+  // 核心流程：一律从右出、从左进；同行直连，不同行统一直角折线
+  if (zone === "flow") {
+    const a = { x: fromBox.x + fromBox.w, y: fromBox.y + fromBox.h / 2 };
+    const tip = { x: toBox.x, y: toBox.y + toBox.h / 2 };
+    let d, mid, midFrom, label;
+    if (Math.abs(a.y - tip.y) < 8) {
+      d = `M ${a.x} ${a.y} L ${tip.x} ${tip.y}`;
+      mid = { x: (a.x + tip.x) / 2, y: a.y };
+      midFrom = { x: mid.x - 8, y: a.y };
+      label = { x: mid.x, y: a.y - LABEL_DY, anchor: "middle" };
+    } else {
+      const midX = a.x + Math.max(36, (tip.x - a.x) * 0.42);
+      d = `M ${a.x} ${a.y} L ${midX} ${a.y} L ${midX} ${tip.y} L ${tip.x} ${tip.y}`;
+      mid = { x: midX, y: (a.y + tip.y) / 2 };
+      midFrom = { x: (midX + tip.x) / 2, y: tip.y };
+      label = { x: midX + LABEL_DX, y: mid.y, anchor: "start" };
+    }
+    return { mid, midFrom, tip, d, label };
+  }
+
+  // 产出连线
+  if (zone === "feed") {
+    // 同行产出（如台账→现金流）：从顶边出、顶边进；横折走在产出框上方
+    if (Math.abs(ac.y - bc.y) < 24 && Math.abs(ac.x - bc.x) > 40) {
+      const a = { x: ac.x, y: fromBox.y };
+      const tip = { x: bc.x, y: toBox.y };
+      const midY = OUT_Y - 28;
+      const d = `M ${a.x} ${a.y} L ${a.x} ${midY} L ${tip.x} ${midY} L ${tip.x} ${tip.y}`;
+      const lx = (a.x + tip.x) / 2;
+      return {
+        mid: { x: lx, y: midY },
+        midFrom: { x: tip.x, y: (midY + tip.y) / 2 },
+        tip,
+        d,
+        label: { x: lx, y: midY - LABEL_DY, anchor: "middle" },
+      };
+    }
+
+    // 流程 → 产出：竖下到连线区正中 → 横走 → 再竖下
+    // 标签规则（避免重叠）：
+    // - 同一核心流程连出多条 → 字在「下半截」竖线左侧（通向各产出，x 不同）
+    // - 多条汇入同一产出 → 字在「上半截」竖线左侧，且 Y 限制在连线区内
+    // - 只有一条 → 字也可在上半截，但仍须落在连线区内（别钻进核心流程模块）
+    const slotFrom = (opts && opts.slotFrom) || 0;
+    const countFrom = Math.max(1, (opts && opts.countFrom) || 1);
+    const aTop = { x: ac.x, y: fromBox.y + fromBox.h };
+    const tipBot = { x: bc.x, y: toBox.y };
+    const midY = WIRE_Y;
+    const d = Math.abs(aTop.x - tipBot.x) < 6
+      ? `M ${aTop.x} ${aTop.y} L ${tipBot.x} ${tipBot.y}`
+      : `M ${aTop.x} ${aTop.y} L ${aTop.x} ${midY} L ${tipBot.x} ${midY} L ${tipBot.x} ${tipBot.y}`;
+
+    const wireTop = BANDS[2].y;
+    const upperY0 = Math.max(aTop.y, wireTop);
+    const upperMidY = (upperY0 + midY) / 2;
+    // 默认先放上半截；点选后再由 placeFeedLabels 按「点流程多出口 / 点产出」改到下半截或保持上半截
+    return {
+      mid: { x: (aTop.x + tipBot.x) / 2, y: midY },
+      midFrom: { x: tipBot.x, y: (midY + tipBot.y) / 2 },
+      tip: tipBot,
+      d,
+      label: { x: aTop.x - LABEL_DX, y: upperMidY, anchor: "end" },
+    };
+  }
+
+  const a = borderPoint(from, bc), tip = borderPoint(to, ac);
+  const mx = (a.x + tip.x) / 2, my = (a.y + tip.y) / 2;
+  const dx = tip.x - a.x, dy = tip.y - a.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const bend = Math.min(22, len * 0.1);
+  const ox = (-dy / len) * bend, oy = (dx / len) * bend;
+  const c = { x: mx + ox, y: my + oy };
+  const mid = { x: 0.25 * a.x + 0.5 * c.x + 0.25 * tip.x, y: 0.25 * a.y + 0.5 * c.y + 0.25 * tip.y };
+  const midFrom = { x: 0.5 * (a.x + c.x), y: 0.5 * (a.y + c.y) };
+  return { mid, midFrom, tip, d: `M ${a.x} ${a.y} Q ${c.x} ${c.y} ${tip.x} ${tip.y}`, label: { x: mid.x, y: mid.y - LABEL_DY, anchor: "middle" } };
+}
+function arrowHeadPath(tip, from, size = 8) {
+  const dx = tip.x - from.x, dy = tip.y - from.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const ux = dx / len, uy = dy / len, px = -uy, py = ux;
+  const base = { x: tip.x - ux * size, y: tip.y - uy * size };
+  const left = { x: base.x + px * size * 0.55, y: base.y + py * size * 0.55 };
+  const right = { x: base.x - px * size * 0.55, y: base.y - py * size * 0.55 };
+  return `M ${tip.x} ${tip.y} L ${left.x} ${left.y} L ${right.x} ${right.y} Z`;
+}
+function nodeZone(id) {
+  if (id === "mail") return "mail";
+  if (FLOW_IDS.includes(id)) return "flow";
+  if (OUTPUT_IDS.includes(id)) return "output";
+  if (AUX_IDS.includes(id)) return "aux";
+  return "other";
+}
+function feedEdgesOf(outputId) {
+  return EDGES.filter((e) => e.zone === "feed" && e.to === outputId);
+}
+function feedersOf(outputId) {
+  return feedEdgesOf(outputId).map((e) => e.from);
+}
+function feederNoteHtml(outputId) {
+  const edges = feedEdgesOf(outputId);
+  if (!edges.length) return "";
+  const lines = edges.map((e) => {
+    const name = skillById[e.from]?.short || e.from;
+    return `${name} · ${e.kind}：${e.label}`;
+  }).join("；");
+  const extra = outputId === "critical"
+    ? " 进度原始表通常先经「进度转 Excel」再进来（辅助工具）。"
+    : "";
+  return `<div class="intent-box"><p class="t">谁在喂它（创建 / 写入 / 只读）</p><p class="b">${esc(lines)}。${esc(extra)}图上只显示短标签；鼠标移到线上可看明细。</p></div>`;
+}
+
+function renderSkillDetail(id) {
+  if (!id) {
+    return `<div class="card">
+      <p class="detail-meta" style="margin:0 0 8px">点上方图里的节点看流程；点产出只看短标签。鼠标移到线上才显示写了什么 / 读了什么。</p>
+      <p class="detail-meta" style="margin:0;color:var(--muted)">不会自动往下跳。想看文字说明时，自己滑到下方即可。</p>
+    </div>`;
+  }
+
+  const biz = BIZ.find((b) => b.id === id);
+  if (biz) {
+    const feederNote = OUTPUT_IDS.includes(id) ? feederNoteHtml(id) : "";
+    return renderBizPanel(biz, feederNote);
+  }
+
+  const s = skillById[id];
+  const related = EDGES.filter((e) => e.from === id || e.to === id);
+  const conns = related.map((e) => {
+    const peer = e.from === id ? e.to : e.from;
+    const dir = e.from === id ? "→" : "←";
+    return `<span class="conn-item">${dir} ${esc(skillById[peer].short)}：${esc(e.label)}</span>`;
+  }).join("");
+  const intentBlock = s.intent
+    ? `<div class="intent-box"><p class="t">设计意图</p><p class="b">${esc(s.intent)}</p></div>`
+    : "";
+  const feederBlock = OUTPUT_IDS.includes(id) ? feederNoteHtml(id) : "";
+  const primaryLabel = id === "mail" ? "流程顺序" : "输入与产出";
+  const primaryBody = id === "mail"
+    ? `<ol class="flow-steps">
+        <li class="flow-step"><span class="flow-num">1</span><div><p class="n">正式邮件抄送项目专用邮箱</p><p class="d">人不改习惯，关键节点往来多抄一个地址。</p></div></li>
+        <li class="flow-step"><span class="flow-num">2</span><div><p class="n">邮局收信并归档原件</p><p class="d">先留底，再判断这封信属于哪一类业务。</p></div></li>
+        <li class="flow-step"><span class="flow-num">3</span><div><p class="n">派给对应流程</p><p class="d">新建 / 建包 / 请款 / 变更各办各的；输出与辅助工具不经邮局派单。</p></div></li>
+      </ol>
+      <div style="margin-top:14px">${ioBoxes(s.takes, s.gives)}</div>`
+    : ioBoxes(s.takes, s.gives);
+
+  return `<div class="card">
+    <div class="card-head"><span>${esc(s.short)}</span><span class="badge">${esc(s.layer)}</span></div>
+    ${s.skillName ? `<p class="detail-meta" style="margin-top:-4px">技能名：<code>${esc(s.skillName)}</code></p>` : ""}
+    <p class="detail-summary">${esc(s.role)}</p>
+    ${intentBlock}${feederBlock}
+    <div class="detail-section is-primary">
+      <p class="detail-label">${primaryLabel}</p>
+      ${primaryBody}
+    </div>
+    <div class="detail-section">
+      <p class="detail-label">职责范围</p>
+      <ul class="list">${s.does.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
+    </div>
+    <div class="detail-section is-secondary">
+      <p class="detail-label">边界</p>
+      <ul class="list muted">${s.doesNot.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
+      ${related.length ? `<div class="conn" style="margin-top:10px">${conns}</div>` : ""}
+    </div>
+  </div>`;
+}
+
+function renderConstellationSvg() {
+  const viewW = VIEW_W, viewH = VIEW_H;
+  const colorFlow = "#216e68", colorMail = "#8a9aaa";
+  const colorCreate = "#b45309", colorWrite = "#c45c26", colorInput = "#7c3aed";
+  const kindStroke = (kind) => {
+    if (kind === "创建") return colorCreate;
+    if (kind === "写入") return colorWrite;
+    if (kind === "只读") return colorInput;
+    return colorWrite;
+  };
+  let bandsHtml = "";
+  BANDS.forEach((band) => {
+    bandsHtml += `<rect x="0" y="${band.y}" width="${viewW}" height="${band.h}" fill="${band.tone}" opacity="0.95"/>`;
+    if (band.label) {
+      bandsHtml += `<text x="14" y="${band.y + 18}" fill="#8a9aaa" font-size="11">${esc(band.label)}</text>`;
+    }
+  });
+
+  const feedCountTo = {}, feedCountFrom = {};
+  EDGES.forEach((e) => {
+    if (e.zone !== "feed") return;
+    feedCountTo[e.to] = (feedCountTo[e.to] || 0) + 1;
+    feedCountFrom[e.from] = (feedCountFrom[e.from] || 0) + 1;
+  });
+  const feedSlotTo = {}, feedSlotFrom = {};
+  let edgesHtml = "";
+  EDGES.forEach((e) => {
+    const zone = e.zone || "flow";
+    let slot = 0, slotCount = 1, slotFrom = 0, countFrom = 1;
+    if (zone === "feed") {
+      slot = feedSlotTo[e.to] || 0;
+      feedSlotTo[e.to] = slot + 1;
+      slotCount = feedCountTo[e.to] || 1;
+      slotFrom = feedSlotFrom[e.from] || 0;
+      feedSlotFrom[e.from] = slotFrom + 1;
+      countFrom = feedCountFrom[e.from] || 1;
+    }
+    const geo = edgeGeometry(e.from, e.to, zone, { slot, slotCount, slotFrom, countFrom });
+    let stroke = colorFlow, width = 2.6, dash = "";
+    if (zone === "mail") {
+      stroke = colorMail; width = 1.4; dash = ' stroke-dasharray="5 4"';
+    } else if (zone === "feed") {
+      stroke = kindStroke(e.kind);
+      width = e.kind === "创建" ? 2.4 : 2;
+      if (e.kind === "只读") dash = ' stroke-dasharray="2 4"';
+      else if (e.kind === "写入") dash = ' stroke-dasharray="6 4"';
+      else dash = "";
+    }
+    const fromName = skillById[e.from]?.short || e.from;
+    const toName = skillById[e.to]?.short || e.to;
+    const tip = zone === "feed"
+      ? (e.kind === "只读"
+          ? `${toName} ← 只读 — ${fromName}：${e.label}`
+          : `${fromName} → ${toName} · ${e.kind}：${e.label}`)
+      : `${fromName} → ${toName} · ${e.label}`;
+    const tipAttr = esc(tip);
+
+    if (zone === "feed") {
+      const tag = KIND_LABEL[e.kind] || e.kind;
+      const lb = geo.label || { x: geo.mid.x, y: geo.mid.y - LABEL_DY, anchor: "middle" };
+      const arrow = arrowHeadPath(geo.tip, geo.midFrom, 7);
+      edgesHtml += `<g class="edge-hit" data-from="${e.from}" data-to="${e.to}" data-zone="${zone}" data-tip="${tipAttr}" style="pointer-events:none">
+        <path class="edge edge-stroke" data-from="${e.from}" data-to="${e.to}" data-zone="${zone}" data-kind="${e.kind}" d="${geo.d}" fill="none" stroke="${stroke}" stroke-width="${width}"${dash} style="pointer-events:stroke"/>
+        <path class="edge edge-arrow" data-from="${e.from}" data-to="${e.to}" data-zone="${zone}" d="${arrow}" fill="${stroke}" stroke="${stroke}" stroke-width="1" style="pointer-events:none"/>
+        <text class="edge-label" data-from="${e.from}" data-to="${e.to}" data-zone="${zone}" x="${lb.x}" y="${lb.y}" text-anchor="${lb.anchor}" fill="${stroke}" font-size="11" font-weight="700" stroke="#fff" stroke-width="4" paint-order="stroke fill" style="pointer-events:none">${esc(tag)}</text>
+      </g>`;
+    } else {
+      edgesHtml += `<path class="edge" data-from="${e.from}" data-to="${e.to}" data-zone="${zone}" data-kind="${e.kind}" d="${geo.d}" fill="none" stroke="${stroke}" stroke-width="${width}"${dash}/>`;
+      if (zone === "flow") {
+        edgesHtml += `<path class="edge" data-from="${e.from}" data-to="${e.to}" data-zone="${zone}" d="${arrowHeadPath(geo.tip, geo.midFrom, 8)}" fill="${colorFlow}" stroke="${colorFlow}"/>`;
+      }
+    }
+  });
+
+  const diagramIds = ["mail", ...FLOW_IDS, ...OUTPUT_IDS];
+  let nodesHtml = "";
+  diagramIds.forEach((id) => {
+    const s = skillById[id];
+    const box = LAYOUT[id];
+    const zone = nodeZone(id);
+    const isMail = zone === "mail";
+    const isFlow = zone === "flow";
+    const isOut = zone === "output";
+    const outArtifact = isOut && isOutputArtifact(id);
+    const outSkill = isOut && isOutputSkill(id);
+    const fill = isMail ? colorFlow : outArtifact ? "#fffaf5" : outSkill ? "#ffffff" : "#ffffff";
+    const stroke = isMail ? colorFlow : isFlow ? "#15232e" : outSkill ? "#0f766e" : "#c45c26";
+    const sw = isMail || isFlow ? 2 : 1.5;
+    const dashAttr = outArtifact ? ` stroke-dasharray="4 3"` : "";
+    const titleColor = isMail ? "#fff" : "#15232e";
+    const subColor = isMail ? "#d8efec" : "#8a9aaa";
+    const titleY = isOut ? 24 : 22;
+    const subY = isOut ? 42 : 40;
+    const titleSize = isMail ? 13 : isFlow ? 12 : (isOut ? 10.5 : 11);
+    const subText = outArtifact ? "单纯产出" : (s.skillName || (isOut ? "产出" : s.layer));
+    nodesHtml += `<g class="node" data-id="${id}" data-zone="${zone}" data-out="${outArtifact ? "artifact" : outSkill ? "skill" : ""}">
+      <rect x="${box.x}" y="${box.y}" width="${box.w}" height="${box.h}" rx="3" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"${dashAttr}/>
+      <text x="${box.x + box.w / 2}" y="${box.y + titleY}" text-anchor="middle" fill="${titleColor}" font-size="${titleSize}" font-weight="600">${esc(s.short)}</text>
+      <text x="${box.x + box.w / 2}" y="${box.y + subY}" text-anchor="middle" fill="${subColor}" font-size="9" font-family="IBM Plex Mono, monospace">${esc(subText)}</text>
+    </g>`;
+  });
+
+  return `<svg id="constellation" viewBox="0 0 ${viewW} ${viewH}" width="100%" style="display:block;min-width:900px">
+    ${bandsHtml}${edgesHtml}${nodesHtml}
+  </svg>`;
+}
+
+function placeFeedLabels(selZone) {
+  // 按当前点选决定字在上半截还是下半截（避免点产出时误用「流程多出口」逻辑）
+  const visible = Array.from(document.querySelectorAll(".edge-hit")).filter(
+    (g) => parseFloat(g.style.opacity || "0") > 0.5
+  );
+  const fromCount = {};
+  visible.forEach((g) => {
+    fromCount[g.dataset.from] = (fromCount[g.dataset.from] || 0) + 1;
+  });
+
+  visible.forEach((g) => {
+    const a = g.dataset.from, b = g.dataset.to;
+    const label = g.querySelector(".edge-label");
+    if (!label || !LAYOUT[a] || !LAYOUT[b]) return;
+
+    // 产出↔产出：字固定在横线正上方居中（不要被卡片挡住）
+    if (OUTPUT_IDS.includes(a) && OUTPUT_IDS.includes(b)) {
+      const ac = centerOf(a), bc = centerOf(b);
+      const midY = OUT_Y - 28;
+      const lx = (ac.x + bc.x) / 2;
+      label.setAttribute("x", String(lx));
+      label.setAttribute("y", String(midY - LABEL_DY));
+      label.setAttribute("text-anchor", "middle");
+      return;
+    }
+
+    const fromBox = LAYOUT[a], toBox = LAYOUT[b];
+    const ac = centerOf(a), bc = centerOf(b);
+    const midY = WIRE_Y;
+    const wireTop = BANDS[2].y;
+    const upperMidY = (Math.max(fromBox.y + fromBox.h, wireTop) + midY) / 2;
+    const lowerMidY = (midY + toBox.y) / 2;
+
+    // 只有「点的是核心流程，且该流程当前可见连出多于 1 条」才用下半截
+    const useLower = selZone === "flow" && (fromCount[a] || 0) > 1;
+    if (useLower) {
+      label.setAttribute("x", String(bc.x - LABEL_DX));
+      label.setAttribute("y", String(lowerMidY));
+    } else {
+      label.setAttribute("x", String(ac.x - LABEL_DX));
+      label.setAttribute("y", String(upperMidY));
+    }
+    label.setAttribute("text-anchor", "end");
+  });
+}
+
+function applySelection() {
+  const tipEl = document.getElementById("edge-tip");
+  if (tipEl) {
+    tipEl.hidden = true;
+    tipEl.classList.remove("is-on");
+    tipEl.textContent = "";
+  }
+  const zone = selected ? nodeZone(selected) : null;
+  const linked = new Set();
+  if (selected) {
+    linked.add(selected);
+    if (zone === "output") {
+      feedersOf(selected).forEach((id) => linked.add(id));
+      EDGES.forEach((e) => {
+        if (e.zone === "feed" && e.from === selected) linked.add(e.to);
+      });
+    } else if (zone === "flow") {
+      FLOW_IDS.forEach((id) => linked.add(id));
+      EDGES.forEach((e) => {
+        if (e.zone === "feed" && e.from === selected) linked.add(e.to);
+      });
+    } else if (zone === "mail") {
+      FLOW_IDS.forEach((id) => linked.add(id));
+      linked.add("mail");
+    } else if (zone === "aux") {
+      linked.add(selected);
+    }
+  }
+
+  document.querySelectorAll(".node").forEach((n) => {
+    const id = n.dataset.id;
+    const dim = !!selected && !linked.has(id);
+    n.classList.toggle("dim", dim);
+    const rect = n.querySelector("rect");
+    if (!rect) return;
+    const z = nodeZone(id);
+    const isSel = selected === id;
+    const isLinked = !!selected && linked.has(id) && !isSel;
+    const outKind = n.dataset.out || "";
+    if (isSel || isLinked) {
+      rect.setAttribute("stroke", "#0f766e");
+      rect.setAttribute("stroke-width", "2.6");
+      rect.removeAttribute("stroke-dasharray");
+      if (isSel && z !== "mail") rect.setAttribute("fill", "#d8efec");
+      else if (isLinked && z === "output") rect.setAttribute("fill", "#fff3e8");
+      else if (z === "mail") rect.setAttribute("fill", "#0f766e");
+      else rect.setAttribute("fill", "#ffffff");
+    } else {
+      if (z === "mail") {
+        rect.setAttribute("stroke", "#216e68");
+        rect.setAttribute("stroke-width", "2");
+        rect.removeAttribute("stroke-dasharray");
+        rect.setAttribute("fill", "#216e68");
+      } else if (z === "flow") {
+        rect.setAttribute("stroke", "#15232e");
+        rect.setAttribute("stroke-width", "2");
+        rect.removeAttribute("stroke-dasharray");
+        rect.setAttribute("fill", "#ffffff");
+      } else if (outKind === "skill") {
+        rect.setAttribute("stroke", "#0f766e");
+        rect.setAttribute("stroke-width", "1.5");
+        rect.removeAttribute("stroke-dasharray");
+        rect.setAttribute("fill", "#ffffff");
+      } else {
+        rect.setAttribute("stroke", "#c45c26");
+        rect.setAttribute("stroke-width", "1.5");
+        rect.setAttribute("stroke-dasharray", "4 3");
+        rect.setAttribute("fill", "#fffaf5");
+      }
+    }
+  });
+
+  document.querySelectorAll(".edge-hit").forEach((g) => {
+    const a = g.dataset.from, b = g.dataset.to;
+    let opacity = 0;
+    if (!selected) opacity = 0;
+    else if (zone === "output") opacity = (b === selected || a === selected) ? 1 : 0;
+    else if (zone === "flow") opacity = a === selected ? 1 : 0;
+    else opacity = 0;
+    g.style.opacity = String(opacity);
+    g.style.pointerEvents = opacity > 0.5 ? "auto" : "none";
+    const stroke = g.querySelector(".edge-stroke");
+    if (stroke) stroke.style.pointerEvents = opacity > 0.5 ? "stroke" : "none";
+  });
+
+  placeFeedLabels(zone);
+
+  document.querySelectorAll(".edge").forEach((e) => {
+    if (e.closest(".edge-hit")) return;
+    const a = e.dataset.from, b = e.dataset.to;
+    const ez = e.dataset.zone || "flow";
+    let opacity = 0;
+    if (!selected) {
+      if (ez === "flow") opacity = 1;
+      else if (ez === "mail") opacity = 0.18;
+      else opacity = 0;
+    } else if (zone === "output") {
+      opacity = ez === "flow" ? 0.18 : 0;
+    } else if (zone === "flow") {
+      opacity = ez === "flow" ? 1 : 0;
+    } else if (zone === "mail") {
+      opacity = (ez === "mail") ? 1 : (ez === "flow" ? 0.35 : 0);
+    } else {
+      opacity = ez === "flow" ? 0.15 : 0;
+    }
+    e.style.opacity = String(opacity);
+  });
+
+  document.querySelectorAll(".aux-chip").forEach((chip) => {
+    chip.classList.toggle("active", chip.dataset.id === selected);
+  });
+
+  const detail = document.getElementById("skill-detail");
+  if (detail) detail.innerHTML = renderSkillDetail(selected);
+}
+
+function renderAuxPanel() {
+  const chips = AUX_IDS.map((id) => {
+    const s = skillById[id];
+    return `<button type="button" class="aux-chip" data-id="${id}">${esc(s.short)}</button>`;
+  }).join("");
+  return `<div class="aux-panel">
+    <p class="aux-title">辅助工具</p>
+    <p class="aux-sub">本包只有两个：进度转 Excel、读 PDF。被上面流程按需调用，一般不当主入口。履约卡片渲染跟在 Skill 1 里；通用 PDF 编辑不在本包。</p>
+    <div class="aux-row">${chips}</div>
+  </div>`;
+}
+
+function renderStar() {
+  return `<div class="stack">
+    <div class="diagram-wrap">
+      ${renderConstellationSvg()}
+      <div class="edge-tip" id="edge-tip" hidden></div>
+    </div>
+    <div class="legend">
+      <span><i class="swatch-solid"></i>绿实线 = 核心流程</span>
+      <span><i class="swatch-create"></i>橙实线 = 创建（第一次造出来）</span>
+      <span><i class="swatch-data"></i>橙虚线 = 写入（往已有东西里改）</span>
+      <span><i class="swatch-input"></i>紫点线 = 只读（箭头指向谁在读）</span>
+      <span><i class="swatch-dash"></i>灰虚线 = 邮局派单</span>
+      <span><i class="swatch-out-file"></i>橙虚框 = 单纯产出（无独立 Skill）</span>
+      <span><i class="swatch-out-skill"></i>绿实框 = 独立 Skill 产出</span>
+    </div>
+    <p class="diagram-hint">产出分两类：虚框是流程顺手写下的表；实框绿边是有自己算法/入口的 Skill。连线箭头指向去向：创建/写入 = 数据写进谁；只读 = 谁来读（如台账 → 现金流，是现金流在读台账）。</p>
+    ${renderAuxPanel()}
+    <div id="skill-detail">${renderSkillDetail(selected)}</div>
+  </div>`;
+}
+
+
+function renderBizPanel(biz, extraHtml) {
+  const intentBlock = biz.intent
+    ? `<div class="intent-box"><p class="t">设计意图</p><p class="b">${esc(biz.intent)}</p></div>`
+    : "";
+  return `<div class="card">
+    <div class="card-head"><span>${esc(biz.title)}</span><span class="badge">${biz.id.toUpperCase()}</span></div>
+    ${biz.skillName ? `<p class="detail-meta" style="margin-top:-4px">技能名：<code>${esc(biz.skillName)}</code></p>` : ""}
+    <p class="detail-summary">${esc(biz.one)}</p>
+    ${intentBlock}${extraHtml || ""}
+    <p class="detail-meta">适用：${esc(biz.when)}</p>
+    <div class="detail-section is-primary">
+      <p class="detail-label">流程顺序</p>
+      ${flowSteps(biz.steps)}
+    </div>
+    <div class="detail-section">
+      <p class="detail-label">输入与产出</p>
+      ${ioBoxes(biz.takes, biz.gives)}
+    </div>
+    <div class="detail-section is-secondary">
+      <p class="detail-label">边界与分工</p>
+      <ul class="list muted">${biz.not.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+      <div class="note-box" style="margin-top:10px"><div class="b">${esc(biz.tip)}</div></div>
+    </div>
+  </div>`;
+}
+
+function bindEdgeTips() {
+  const svg = document.getElementById("constellation");
+  const wrap = document.querySelector(".diagram-wrap");
+  const tip = document.getElementById("edge-tip");
+  if (!svg || !wrap || !tip) return;
+
+  const hide = () => {
+    tip.hidden = true;
+    tip.classList.remove("is-on");
+    tip.textContent = "";
+  };
+
+  const showAt = (text, clientX, clientY) => {
+    tip.textContent = text;
+    tip.hidden = false;
+    tip.classList.add("is-on");
+    const rect = wrap.getBoundingClientRect();
+    const pad = 12;
+    let left = clientX - rect.left + wrap.scrollLeft + pad;
+    let top = clientY - rect.top + wrap.scrollTop + pad;
+    // 先显示再量宽，避免贴出边界
+    tip.style.left = "0px";
+    tip.style.top = "0px";
+    const tw = tip.offsetWidth || 160;
+    const th = tip.offsetHeight || 40;
+    if (left + tw > wrap.scrollLeft + rect.width - 8) left = clientX - rect.left + wrap.scrollLeft - tw - pad;
+    if (top + th > wrap.scrollTop + rect.height - 8) top = clientY - rect.top + wrap.scrollTop - th - pad;
+    if (left < wrap.scrollLeft + 4) left = wrap.scrollLeft + 4;
+    if (top < wrap.scrollTop + 4) top = wrap.scrollTop + 4;
+    tip.style.left = left + "px";
+    tip.style.top = top + "px";
+  };
+
+  const toSvgPoint = (clientX, clientY) => {
+    const pt = svg.createSVGPoint();
+    pt.x = clientX;
+    pt.y = clientY;
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return null;
+    return pt.matrixTransform(ctm.inverse());
+  };
+
+  const nearestVisible = (svgX, svgY) => {
+    let best = null;
+    let bestDist = 10; // 只认贴线附近，空白处不弹
+    document.querySelectorAll(".edge-hit").forEach((g) => {
+      if (parseFloat(g.style.opacity || "0") < 0.5) return;
+      const path = g.querySelector(".edge-stroke");
+      if (!path || typeof path.getTotalLength !== "function") return;
+      const len = path.getTotalLength();
+      if (!len) return;
+      const steps = Math.max(12, Math.ceil(len / 8));
+      for (let i = 0; i <= steps; i++) {
+        const p = path.getPointAtLength((len * i) / steps);
+        const d = Math.hypot(p.x - svgX, p.y - svgY);
+        if (d < bestDist) {
+          bestDist = d;
+          best = g;
+        }
+      }
+    });
+    return best;
+  };
+
+  svg.addEventListener("mousemove", (ev) => {
+    // 落在节点上时不抢说明
+    if (ev.target.closest && ev.target.closest(".node")) {
+      hide();
+      return;
+    }
+    const loc = toSvgPoint(ev.clientX, ev.clientY);
+    if (!loc) { hide(); return; }
+    const hit = nearestVisible(loc.x, loc.y);
+    if (!hit) { hide(); return; }
+    showAt(hit.dataset.tip || "", ev.clientX, ev.clientY);
+  });
+  svg.addEventListener("mouseleave", hide);
+  wrap.addEventListener("scroll", hide);
+}
+
+function mount() {
+  document.getElementById("panels").innerHTML = renderStar();
+  document.querySelectorAll(".node").forEach((n) => {
+    n.addEventListener("click", () => {
+      const id = n.dataset.id;
+      selected = selected === id ? null : id;
+      applySelection();
+    });
+  });
+  document.querySelectorAll(".aux-chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const id = chip.dataset.id;
+      selected = selected === id ? null : id;
+      applySelection();
+    });
+  });
+  bindEdgeTips();
+  applySelection();
+}
+
+mount();
+
+
+</script>
+</body>
+</html>

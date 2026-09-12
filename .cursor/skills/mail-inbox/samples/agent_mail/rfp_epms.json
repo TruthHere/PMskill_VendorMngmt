@@ -1,0 +1,11 @@
+{
+  "message_id": "msg_smoke_rfp_001",
+  "subject": "SARL Ph5 - Procurement - RFP for EPMS (Schneider)",
+  "from": "buyer@example.com",
+  "to": ["ai-project@example.com"],
+  "cc": [],
+  "date": "2026-08-09T10:00:00+08:00",
+  "body_format": "text",
+  "body": "Dear Supplier,\n\nPlease submit quotation for EPMS package.\nPayment terms: 30/40/30.\n\nBest regards\n",
+  "attachments": []
+}

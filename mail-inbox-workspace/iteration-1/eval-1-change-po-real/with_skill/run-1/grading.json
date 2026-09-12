@@ -1,0 +1,24 @@
+{
+  "expectations": [
+    {
+      "text": "intent is change.change_po",
+      "passed": true,
+      "evidence": "got 'change.change_po'"
+    },
+    {
+      "text": "route_to is change-archive",
+      "passed": true,
+      "evidence": "got 'change-archive'"
+    },
+    {
+      "text": "change_no is COT003",
+      "passed": true,
+      "evidence": "got 'COT003'"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 3,
+    "pass_rate": 1.0
+  }
+}

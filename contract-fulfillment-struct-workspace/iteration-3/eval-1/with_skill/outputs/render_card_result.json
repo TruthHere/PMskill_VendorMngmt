@@ -1,0 +1,23 @@
+{
+  "card_path": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-1/with_skill/outputs/01_BMS_BOSCH/履约条件卡片.html",
+  "card_data_path": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-1/with_skill/outputs/01_BMS_BOSCH/card-data.json",
+  "claim_form_path": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-1/with_skill/outputs/01_BMS_BOSCH/请款申请.html",
+  "needs_claim_sync": false,
+  "quality_ok": false,
+  "quality_warnings": [
+    {
+      "code": "total_amount_tax_unclear",
+      "field": "total_amount",
+      "message": "总金额为空或未填，请从报价/合同补全并标注含税或不含税。"
+    },
+    {
+      "code": "payment_nodes_empty",
+      "field": "payment_nodes",
+      "message": "付款节点为空：卡片仅显示「待补充」，请写入合同或邮件中的付款里程碑。"
+    }
+  ],
+  "did": [
+    "fulfillment-card.render",
+    "fulfillment-card.sync_claim_form"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "total_tokens": 0,
+  "duration_ms": 0,
+  "total_duration_seconds": 0,
+  "agent_ids": [
+    "70e74230-7a32-4dd8-9cd0-ad2c3f295f4a",
+    "fbc46478-5d20-4b1c-b1d4-4427f64feeeb"
+  ],
+  "note": "timing not provided in task notification; fill after aggregate if needed"
+}

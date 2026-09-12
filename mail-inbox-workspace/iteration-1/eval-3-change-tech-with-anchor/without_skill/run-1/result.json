@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "intent": "change.tech_confirm",
+  "route_to": "change-archive",
+  "confidence": "high",
+  "hints": {
+    "subject": "COT-003 技术文件提交",
+    "change_no": "",
+    "package_name": ""
+  },
+  "enrichment": {
+    "payment_terms": false
+  },
+  "attachments": [],
+  "pending": null,
+  "did": [
+    "naive_classify"
+  ],
+  "next": {
+    "skill": "change-archive",
+    "action": "naive"
+  }
+}

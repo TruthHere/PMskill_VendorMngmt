@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample Project · 项目变更台账 · 示例</title>
+<style>
+  :root { --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --hdr:#334155; --page:#f8fafc; --done:#dbeafe; --done-text:#1d4ed8; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; background:var(--page); color:var(--ink); padding:32px 20px 48px; line-height:1.5; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+  .meta { font-size:12px; color:var(--muted); margin-bottom:14px; padding:10px 14px; background:#fff; border:1px solid var(--line); border-radius:8px; }
+  h1 { font-size:22px; margin:0 0 6px; }
+  .project-name { font-size:13px; color:var(--muted); margin:0 0 6px; }
+  .project-name strong { color:var(--ink); font-size:16px; font-weight:700; }
+  .sub { font-size:14px; color:var(--muted); margin:0 0 18px; }
+  .sheet { background:#fff; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+  table { border-collapse:collapse; font-size:12px; }
+  th, td { border:1px solid var(--line); padding:8px 10px; vertical-align:top; }
+  .meta-row td { background:#fff; color:var(--muted); }
+  .head-row th { background:var(--hdr); color:#fff; font-weight:600; text-align:center; white-space:nowrap; }
+  .status { background:var(--done); color:var(--done-text); font-weight:600; text-align:center; white-space:nowrap; }
+  .left { text-align:left; }
+  .num { text-align:right; white-space:nowrap; }
+</style>
+<link rel="stylesheet" href="resizable-table.css">
+</head>
+<body>
+<div class="wrap">
+  <p class="meta">示例 · Skill 3 变更管理产出 · 对应 Excel：<code>Sample Project_change_log.csv</code></p>
+  <p class="project-name">项目 · <strong>Sample Project</strong></p>
+  <h1>项目变更台账</h1>
+  <p class="sub">一条变更从 COD 到 Change PO 的状态推进；金额确认后同步到履约卡片。</p>
+  <p class="resize-hint">表头右缘可拖动调节列宽。</p>
+  <div class="sheet">
+    <table class="resizable-table" data-col-widths="76,112,88,168,92,96,72,108,88,88,96,88,80,80,96,96,144,128">
+      <tr class="meta-row"><td colspan="18">Sample Project · 最后更新：2026-08-09 16:05</td></tr>
+      <tr class="head-row">
+        <th>变更序号</th><th>采购包</th><th>供应商</th><th>变更内容</th><th>预估金额</th><th>最终确认金额</th><th>时间影响</th><th>当前状态</th>
+        <th>COD已发出</th><th>PMI已发出</th><th>技术文件提交</th><th>技术审核中</th><th>技术确认</th><th>商务确认</th><th>商务金额确认</th><th>Change PO下发</th><th>归档路径</th><th>备注</th>
+      </tr>
+      <tr>
+        <td class="left">COT003</td>
+        <td class="left">Glazing partition</td>
+        <td class="left">Facade Co</td>
+        <td class="left">增加一道防火门</td>
+        <td class="num">¥15,000.00</td>
+        <td class="num">¥16,800.00</td>
+        <td></td>
+        <td class="status">Change PO 下发</td>
+        <td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td>
+        <td class="left">01_Glazingpartition_Facade/04_变更洽商/</td>
+        <td class="left">不改采购包 Tracker；金额来源邮件</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<script src="resizable-table.js"></script>
+</body>
+</html>

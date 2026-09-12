@@ -1,0 +1,39 @@
+{
+  "expectations": [
+    {
+      "text": "project.json exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/project-init-with/.skill/project.json"
+    },
+    {
+      "text": "project_code is SAMPLE",
+      "passed": true,
+      "evidence": "project_code=SAMPLE"
+    },
+    {
+      "text": "tracker file exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/project-init-with/Sample Project_procurement_packages_status_tracker.csv"
+    },
+    {
+      "text": "tracker packages list readable",
+      "passed": true,
+      "evidence": "count=0"
+    },
+    {
+      "text": "progress plan archived",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-1/_tmp/project-init-with/项目档案/00_进度计划"
+    },
+    {
+      "text": "empty packages for init-only eval",
+      "passed": true,
+      "evidence": "packages=0"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 6,
+    "pass_rate": 1.0
+  }
+}

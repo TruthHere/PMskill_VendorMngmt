@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "intent": "payment_claim.inbound",
+  "route_to": "payment-request",
+  "confidence": "high",
+  "hints": {
+    "subject": "Invoice for July",
+    "change_no": "",
+    "package_name": ""
+  },
+  "enrichment": {
+    "payment_terms": false
+  },
+  "attachments": [],
+  "pending": null,
+  "did": [
+    "naive_classify"
+  ],
+  "next": {
+    "skill": "payment-request",
+    "action": "naive"
+  }
+}

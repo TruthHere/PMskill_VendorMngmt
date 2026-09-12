@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Demo · 机读任务表 · 示例</title>
+<style>
+  :root { --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --hdr:#334155; --page:#f8fafc; --key:#ecfdf5; --key-h:#0f766e; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; background:var(--page); color:var(--ink); padding:32px 20px 48px; line-height:1.5; }
+  .wrap { max-width: 1000px; margin: 0 auto; }
+  .meta { font-size:12px; color:var(--muted); margin-bottom:14px; padding:10px 14px; background:#fff; border:1px solid var(--line); border-radius:8px; }
+  h1 { font-size:22px; margin:0 0 6px; }
+  .project-name { font-size:13px; color:var(--muted); margin:0 0 6px; }
+  .project-name strong { color:var(--ink); font-size:16px; font-weight:700; }
+  .sub { font-size:14px; color:var(--muted); margin:0 0 16px; }
+  .sheet { background:#fff; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+  table { border-collapse:collapse; font-size:12px; min-width:720px; width:100%; }
+  th, td { border:1px solid var(--line); padding:8px 10px; vertical-align:middle; }
+  th { background:var(--hdr); color:#fff; font-weight:600; text-align:center; white-space:nowrap; }
+  th.key { background:var(--key-h); }
+  td.key { background:var(--key); }
+  .left { text-align:left; }
+  .note { font-size:12px; color:var(--muted); margin-top:12px; }
+</style>
+<link rel="stylesheet" href="resizable-table.css">
+</head>
+<body>
+<div class="wrap">
+  <p class="meta">示例 · schedule-mpp-excel 产出 · 对应文件：<code>project_schedule_schedule.csv</code>（下游关键节点用）</p>
+  <p class="project-name">项目 · <strong>Mini Demo</strong></p>
+  <h1>机读任务表</h1>
+  <p class="sub">给下游用的扁平原表。前四列（任务名称、开始、结束、采购包）是固定约定；其余列可选。</p>
+  <div class="sheet">
+    <table class="resizable-table" data-col-widths="168,100,100,100,56,72,64,56,88,72">
+      <thead>
+        <tr>
+          <th class="key">任务名称</th>
+          <th class="key">开始日期</th>
+          <th class="key">结束日期</th>
+          <th class="key">采购包</th>
+          <th>ID</th>
+          <th>WBS</th>
+          <th>大纲级别</th>
+          <th>工期</th>
+          <th>是否里程碑</th>
+          <th>是否关键</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="left key">数据中心机电工程</td><td class="key">2026-05-01</td><td class="key">2026-07-29</td><td class="key"></td><td>1</td><td>1</td><td>1</td><td>90d</td><td>否</td><td>否</td></tr>
+        <tr><td class="left key">BMS 系统</td><td class="key">2026-05-01</td><td class="key">2026-06-29</td><td class="key">BMS</td><td>2</td><td>1.1</td><td>2</td><td>60d</td><td>否</td><td>否</td></tr>
+        <tr><td class="left key">BMS 设计确认</td><td class="key">2026-05-01</td><td class="key">2026-05-05</td><td class="key">BMS</td><td>3</td><td>1.1.1</td><td>3</td><td>5d</td><td>否</td><td>否</td></tr>
+        <tr><td class="left key">BMS 到货</td><td class="key">2026-06-01</td><td class="key">2026-06-01</td><td class="key">BMS</td><td>4</td><td>1.1.2</td><td>3</td><td>0d</td><td>是</td><td>是</td></tr>
+        <tr><td class="left key">BMS 安装调试</td><td class="key">2026-06-02</td><td class="key">2026-06-21</td><td class="key">BMS</td><td>5</td><td>1.1.3</td><td>3</td><td>20d</td><td>否</td><td>是</td></tr>
+        <tr><td class="left key">IT 布线</td><td class="key">2026-05-15</td><td class="key">2026-06-28</td><td class="key">IT-cabling</td><td>6</td><td>1.2</td><td>2</td><td>45d</td><td>否</td><td>否</td></tr>
+        <tr><td class="left key">IT-cabling 到货</td><td class="key">2026-05-20</td><td class="key">2026-05-20</td><td class="key">IT-cabling</td><td>7</td><td>1.2.1</td><td>3</td><td>0d</td><td>是</td><td>否</td></tr>
+        <tr><td class="left key">IT-cabling 安装完成</td><td class="key">2026-05-21</td><td class="key">2026-06-14</td><td class="key">IT-cabling</td><td>8</td><td>1.2.2</td><td>3</td><td>25d</td><td>否</td><td>否</td></tr>
+        <tr><td class="left key">竣工移交</td><td class="key">2026-07-29</td><td class="key">2026-07-29</td><td class="key"></td><td>9</td><td>1.3</td><td>1</td><td>0d</td><td>是</td><td>是</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">绿列 = 约定前四列，给 <code>schedule-critical-nodes</code> 等下游直接吃。</p>
+</div>
+<script src="resizable-table.js"></script>
+</body>
+</html>

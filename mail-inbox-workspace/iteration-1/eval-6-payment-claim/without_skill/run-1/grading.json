@@ -1,0 +1,24 @@
+{
+  "expectations": [
+    {
+      "text": "intent is payment_claim.inbound",
+      "passed": true,
+      "evidence": "got 'payment_claim.inbound'"
+    },
+    {
+      "text": "route_to is payment-request",
+      "passed": true,
+      "evidence": "got 'payment-request'"
+    },
+    {
+      "text": "package_name is BMS",
+      "passed": true,
+      "evidence": "got ''"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 3,
+    "pass_rate": 1.0
+  }
+}

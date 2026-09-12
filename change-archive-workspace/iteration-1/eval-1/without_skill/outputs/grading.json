@@ -1,0 +1,40 @@
+{
+  "eval_type": "lifecycle",
+  "expectations": [
+    {
+      "text": "row status is Change PO 下发",
+      "passed": true,
+      "evidence": "Change PO 下发"
+    },
+    {
+      "text": "final amount is ¥16,800.00 not ¥3.00",
+      "passed": false,
+      "evidence": "¥3.00"
+    },
+    {
+      "text": "COD已发出 and PMI已发出 timestamps filled",
+      "passed": false,
+      "evidence": "COD=empty PMI=empty"
+    },
+    {
+      "text": "Skill 3 did not write change_items to card",
+      "passed": true,
+      "evidence": "card clean of this change amount"
+    },
+    {
+      "text": "seven stage archives under 04 without overwrite",
+      "passed": false,
+      "evidence": "found=[]"
+    },
+    {
+      "text": "procurement tracker unchanged",
+      "passed": false,
+      "evidence": "changed"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 6,
+    "pass_rate": 0.3333
+  }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harbor Lab · 空采购包台账 · 示例</title>
+<style>
+  :root { --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --hdr:#334155; --group:#f1f5f9; --pay:#fffbeb; --pay-hdr:#92400e; --page:#f8fafc; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; background:var(--page); color:var(--ink); padding:32px 20px 48px; line-height:1.5; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .meta { font-size:12px; color:var(--muted); margin-bottom:14px; padding:10px 14px; background:#fff; border:1px solid var(--line); border-radius:8px; }
+  h1 { font-size:22px; margin:0 0 6px; }
+  .project-name { font-size:13px; color:var(--muted); margin:0 0 6px; }
+  .project-name strong { color:var(--ink); font-size:16px; font-weight:700; }
+  .sub { font-size:14px; color:var(--muted); margin:0 0 18px; }
+  .sheet { background:#fff; border:1px solid var(--line); border-radius:8px; overflow:auto; }
+  table { border-collapse:collapse; font-size:12px; }
+  th, td { border:1px solid var(--line); padding:8px 10px; vertical-align:middle; }
+  .meta-row td { background:#fff; color:var(--muted); border-bottom:1px solid var(--line); }
+  .group-row td { background:var(--group); color:#475569; font-weight:600; text-align:center; }
+  .group-row .pay-group { background:var(--pay); color:var(--pay-hdr); }
+  .head-row th { background:var(--hdr); color:#fff; font-weight:600; text-align:center; white-space:nowrap; }
+  .head-row th.pay-col { background:#475569; }
+  .empty td { text-align:center; color:var(--muted); padding:28px; font-size:13px; }
+  .tag { display:inline-block; font-size:11px; padding:2px 8px; border-radius:999px; background:#ecfdf5; color:#047857; margin-left:8px; }
+</style>
+<link rel="stylesheet" href="resizable-table.css">
+</head>
+<body>
+<div class="wrap">
+  <p class="meta">示例 · Skill 0 新建项目产出 · 对应 Excel：<code>Harbor Lab_procurement_packages_status_tracker.xlsx</code></p>
+  <p class="project-name">项目 · <strong>Harbor Lab</strong></p>
+  <h1>空采购包台账</h1>
+  <p class="sub">项目初始化后先有表头和文件夹结构，还没有任何供应商行。<span class="tag">0 行数据</span></p>
+  <p class="resize-hint">表头右缘可拖动调节列宽。</p>
+  <div class="sheet">
+    <table class="resizable-table" data-col-widths="52,96,168,72,148,64,96,96,88,132,96,96,128,84,108,108,84,72,128,108">
+      <tr class="meta-row"><td colspan="20">Harbor Lab · 最后更新：2026-08-09 14:30</td></tr>
+      <tr class="group-row"><td colspan="10"></td><td colspan="3" class="pay-group">请款</td><td colspan="5">状态</td><td colspan="2"></td></tr>
+      <tr class="head-row">
+        <th>序号</th><th>采购包名称</th><th>供应商名称</th><th>供应商简称</th><th>对接人邮箱</th><th>采购包类型</th>
+        <th>金额不含税</th><th>金额含税</th><th>金额备注</th><th>交期摘要</th>
+        <th class="pay-col">已请金额</th><th class="pay-col">待请款金额</th><th class="pay-col">下一付款节点</th>
+        <th>RFP 发出</th><th>技术方案已确认</th><th>商务报价已确认</th><th>PO 已发起</th><th>已结算</th>
+        <th>卡片路径</th><th>文件夹路径</th>
+      </tr>
+      <tr class="empty"><td colspan="20">尚无采购包。Skill 1 建包后在此追加行。</td></tr>
+    </table>
+  </div>
+</div>
+<script src="resizable-table.js"></script>
+</body>
+</html>

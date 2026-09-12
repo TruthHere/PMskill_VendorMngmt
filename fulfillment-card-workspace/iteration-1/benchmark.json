@@ -1,0 +1,87 @@
+{
+  "skill_name": "fulfillment-card",
+  "iteration": 1,
+  "standard_evals": {
+    "with_skill_pass_rate": 1.0,
+    "without_skill_pass_rate": 0.5786,
+    "with_skill_format_pass_rate": 1.0,
+    "with_skill_quality_pass_rate": 1.0,
+    "without_skill_format_pass_rate": 0.34,
+    "count": 5
+  },
+  "diagnostic_evals": {
+    "with_skill_pass_rate": 0.6667,
+    "with_skill_format_pass_rate": 1.0,
+    "with_skill_quality_pass_rate": 0.2,
+    "note": "quality-gap：期望 format 高、quality 低",
+    "count": 1
+  },
+  "evals": [
+    {
+      "eval_id": 0,
+      "name": "supply-good",
+      "eval_kind": "standard",
+      "with_pass": 1.0,
+      "without_pass": 0.5,
+      "with_format": 1.0,
+      "with_quality": 1.0,
+      "without_format": 0.3333,
+      "without_quality": 0.8333
+    },
+    {
+      "eval_id": 1,
+      "name": "gc-constraint",
+      "eval_kind": "standard",
+      "with_pass": 1.0,
+      "without_pass": 0.5,
+      "with_format": 1.0,
+      "with_quality": 1.0,
+      "without_format": 0.2,
+      "without_quality": 0.8
+    },
+    {
+      "eval_id": 2,
+      "name": "non-gc-hides-constraint",
+      "eval_kind": "standard",
+      "with_pass": 1.0,
+      "without_pass": 0.75,
+      "with_format": 1.0,
+      "with_quality": 1.0,
+      "without_format": 0.5,
+      "without_quality": 1.0
+    },
+    {
+      "eval_id": 3,
+      "name": "attachments-infer",
+      "eval_kind": "standard",
+      "with_pass": 1.0,
+      "without_pass": 0.5714,
+      "with_format": 1.0,
+      "with_quality": 1.0,
+      "without_format": 0.3333,
+      "without_quality": 0.75
+    },
+    {
+      "eval_id": 4,
+      "name": "change-items",
+      "eval_kind": "standard",
+      "with_pass": 1.0,
+      "without_pass": 0.5714,
+      "with_format": 1.0,
+      "with_quality": 1.0,
+      "without_format": 0.3333,
+      "without_quality": 0.75
+    },
+    {
+      "eval_id": 5,
+      "name": "quality-gap",
+      "eval_kind": "diagnostic",
+      "with_pass": 0.6667,
+      "without_pass": 0.25,
+      "with_format": 1.0,
+      "with_quality": 0.2,
+      "without_format": 0.4286,
+      "without_quality": 0.0
+    }
+  ]
+}

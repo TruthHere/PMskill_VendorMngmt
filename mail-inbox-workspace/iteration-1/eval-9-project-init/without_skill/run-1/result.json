@@ -1,0 +1,23 @@
+{
+  "ok": true,
+  "intent": "project_init",
+  "route_to": "project-init",
+  "confidence": "high",
+  "hints": {
+    "subject": "[项目初始化] SARL Lab Phase5",
+    "change_no": "",
+    "package_name": ""
+  },
+  "enrichment": {
+    "payment_terms": false
+  },
+  "attachments": [],
+  "pending": null,
+  "did": [
+    "naive_classify"
+  ],
+  "next": {
+    "skill": "project-init",
+    "action": "naive"
+  }
+}

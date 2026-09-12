@@ -1,0 +1,10 @@
+{
+  "message_id": "msg_smoke_raise_po_faq_001",
+  "subject": "[Raise PO] F.23604 SARL Ph5_Initial Cleaning_CBRE",
+  "from": "pm@example.com",
+  "to": ["buyer@example.com"],
+  "date": "Sat, 8 Aug 2026 08:00:00 +0000",
+  "body_format": "text",
+  "body": "Would you please help raise PO to CBRE for Initial cleaning.\n\nIf this PR is a change order, please provide the original PO #:\nReply: No.\n",
+  "attachments": []
+}

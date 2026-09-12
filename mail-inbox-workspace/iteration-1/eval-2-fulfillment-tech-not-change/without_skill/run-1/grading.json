@@ -1,0 +1,24 @@
+{
+  "expectations": [
+    {
+      "text": "intent is fulfillment.tech_confirm",
+      "passed": false,
+      "evidence": "got 'change.tech_confirm'"
+    },
+    {
+      "text": "route_to is contract-fulfillment-struct",
+      "passed": false,
+      "evidence": "got 'change-archive'"
+    },
+    {
+      "text": "not change.*",
+      "passed": false,
+      "evidence": "got 'change.tech_confirm'"
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "total": 3,
+    "pass_rate": 0.0
+  }
+}
