@@ -1,4 +1,0 @@
-{
-  "intent": "fulfillment.tech_confirm",
-  "route_to": "po-flow"
-}

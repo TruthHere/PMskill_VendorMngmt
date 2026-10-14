@@ -1,5 +1,0 @@
-{
-  "intent": "change.change_po",
-  "route_to": "change-flow",
-  "change_no": "COT003"
-}

@@ -1,5 +1,0 @@
-{
-  "intent": "payment_claim.inbound",
-  "route_to": "payment-flow",
-  "package_name": "BMS"
-}

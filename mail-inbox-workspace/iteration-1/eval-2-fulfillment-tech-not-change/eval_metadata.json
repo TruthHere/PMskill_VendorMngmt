@@ -1,5 +1,0 @@
-{
-  "eval_id": 2,
-  "eval_name": "fulfillment-tech-not-change",
-  "prompt": "履约技术确认（无 COT/COD）：主题「BMS · 技术确认」。应判 fulfillment.tech_confirm，不得进 Skill 3。"
-}

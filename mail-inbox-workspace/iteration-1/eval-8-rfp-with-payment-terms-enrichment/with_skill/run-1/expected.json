@@ -1,6 +1,0 @@
-{
-  "intent": "fulfillment.rfp",
-  "route_to": "po-flow",
-  "enrichment_payment_terms": true,
-  "package_name": "BMS"
-}

@@ -1,5 +1,0 @@
-{
-  "intent": "fulfillment.rfp",
-  "route_to": "po-flow",
-  "package_name": "Door Package"
-}

@@ -1,8 +1,0 @@
-[
-  "dialog-create-empty-project/with_skill",
-  "dialog-create-empty-project/old_skill",
-  "mail-handler-pending-not-silent-create/with_skill",
-  "mail-handler-pending-not-silent-create/old_skill",
-  "mail-handler-confirm-existing-mailbox/with_skill",
-  "mail-handler-confirm-existing-mailbox/old_skill"
-]

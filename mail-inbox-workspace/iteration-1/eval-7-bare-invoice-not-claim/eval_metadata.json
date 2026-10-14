@@ -1,5 +1,0 @@
-{
-  "eval_id": 7,
-  "eval_name": "bare-invoice-not-claim",
-  "prompt": "裸 Invoice 附件闲聊，无请款语境 → unknown（不得高置信进 Skill 2）。"
-}

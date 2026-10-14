@@ -1,7 +1,0 @@
-最终报价单
-采购包：BMS
-供应商：BOSCH Building Technologies
-
-Amount before VAT: 1,174,311.93
-Amount (Include.VAT): 1,280,000.00
-VAT: 9%

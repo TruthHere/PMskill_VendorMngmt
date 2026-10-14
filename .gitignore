@@ -17,5 +17,10 @@ dist/
 docs.zip
 test-runs/
 
+# 打磨技能时的试验记录，留在本机，不进仓库
+*-workspace/
+pm-docs/
+skills-lock.json
+
 # Real client mail used only for local smoke tests — do not upload
 change-flow-workspace/real-mail-smoke/

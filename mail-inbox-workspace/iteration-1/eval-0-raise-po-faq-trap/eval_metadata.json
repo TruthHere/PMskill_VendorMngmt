@@ -1,5 +1,0 @@
-{
-  "eval_id": 0,
-  "eval_name": "raise-po-faq-trap",
-  "prompt": "主题 [Raise PO] Initial Cleaning；正文含苹果采购 FAQ「If this PR is a change order, please provide the original PO #」。应判 fulfillment.raise_po，不得进 change.change_po。"
-}

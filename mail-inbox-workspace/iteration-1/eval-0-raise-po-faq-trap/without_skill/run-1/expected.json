@@ -1,4 +1,0 @@
-{
-  "intent": "fulfillment.raise_po",
-  "route_to": "po-flow"
-}
