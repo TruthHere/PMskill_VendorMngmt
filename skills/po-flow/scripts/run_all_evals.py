@@ -14,7 +14,7 @@ from pathlib import Path
 SCRIPTS = Path(__file__).resolve().parent
 SKILL_ROOT = SCRIPTS.parent
 INPUT = SKILL_ROOT / "samples" / "input"
-REPO_ROOT = SKILL_ROOT.parent.parent.parent
+REPO_ROOT = SKILL_ROOT.parent.parent
 WORKSPACE = REPO_ROOT / "po-flow-workspace" / "iteration-2"
 EVALS_JSON = SKILL_ROOT / "evals" / "evals.json"
 SKILL_CREATOR = Path.home() / ".cursor" / "skills" / "skill-creator"

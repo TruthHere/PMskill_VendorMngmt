@@ -13,7 +13,7 @@ from pathlib import Path
 
 SCRIPTS = Path(__file__).resolve().parent
 SKILL_ROOT = SCRIPTS.parent
-REPO_ROOT = SKILL_ROOT.parent.parent.parent
+REPO_ROOT = SKILL_ROOT.parent.parent
 WORKSPACE = REPO_ROOT / "change-flow-workspace" / "iteration-1"
 EVALS_JSON = SKILL_ROOT / "evals" / "evals.json"
 INIT = SKILL_ROOT.parent / "po-flow" / "scripts" / "init_project.py"

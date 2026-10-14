@@ -5,8 +5,9 @@ alwaysApply: true
 
 # Skill 编排（项目级 Rule）
 
-**短规则真源**：`.cursor/lib/skill-orchestration/ALWAYS.md`（改规则先改那份，再对齐本文件与建项写入的 CodeBuddy Rule）。  
-**长文细节**：`.cursor/lib/skill-orchestration/README.md`
+**短规则真源**：`lib/skill-orchestration/ALWAYS.md`（`.cursor/lib` 指回这里。改规则先改那份，再对齐本文件与建项写入的 CodeBuddy Rule）。  
+**长文细节**：`lib/skill-orchestration/README.md`  
+**技能正文**在仓库根 `skills/`。`.cursor/skills` 只是给 Cursor 认的入口。
 
 本仓库有多套 Skill。跨 Skill「谁先谁后」、脚本已串完的事不要再手搓、功能 Skill 能否单独用——先 Read 上述真源。
 

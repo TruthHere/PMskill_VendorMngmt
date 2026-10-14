@@ -14,7 +14,7 @@ from typing import Any
 
 SCRIPTS = Path(__file__).resolve().parent
 SKILL_ROOT = SCRIPTS.parent
-REPO_ROOT = SKILL_ROOT.parent.parent.parent
+REPO_ROOT = SKILL_ROOT.parent.parent
 WORKSPACE = REPO_ROOT / "mail-inbox-workspace" / "iteration-1"
 EVALS_JSON = SKILL_ROOT / "evals" / "evals.json"
 GRADE = SCRIPTS / "grade_run.py"

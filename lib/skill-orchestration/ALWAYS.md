@@ -14,7 +14,7 @@ enabled: true
 本机 Skills **安装根目录**（各技能文件夹的上一级）：
 
 - WorkBuddy / CodeBuddy 常见：`~/.workbuddy/skills/`（或项目下 `.workbuddy/skills/` / `.codebuddy/skills/`）
-- Cursor 本仓库开发时：`.cursor/skills/`；公共库在 `.cursor/lib/`（安装到 Agent 后与 Skill **并列**，仍按 `<skills-root>/project-foundation` 等查找）
+- Cursor 本仓库：技能正文在仓库根 `skills/`，共用库在 `lib/`。`.cursor/skills` 和 `.cursor/lib` 只是给 Cursor 认的入口，指回这两处。装到 WorkBuddy 之后，库与技能并列，仍按 `<skills-root>/project-foundation` 查找。
 
 命令一律写成：`python3 <skills-root>/<技能名>/scripts/….py …`  
 **禁止**在说明书里写死某一家产品的家目录路径（例如不要写死 `.cursor/skills/...` 当唯一命令）。

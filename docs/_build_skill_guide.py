@@ -266,7 +266,7 @@ def skill_block(item: dict, source: str) -> str:
         for q, a in item["questions"]
     )
     works = "\n".join(f"<li>{html.escape(line)}</li>" for line in item["works"])
-    path = f".cursor/skills/{item['id']}/SKILL.md"
+    path = f"skills/{item['id']}/SKILL.md"
     return f"""
 <article class="sheet {item['kind']}" id="{item['id']}">
   <a class="tab" href="#{item['id']}">{html.escape(item['mark'])} {html.escape(item['title'])}</a>

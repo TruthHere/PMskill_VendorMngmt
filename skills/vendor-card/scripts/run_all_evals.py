@@ -12,7 +12,7 @@ from pathlib import Path
 
 SCRIPTS = Path(__file__).resolve().parent
 SKILL_ROOT = SCRIPTS.parent
-REPO_ROOT = SKILL_ROOT.parent.parent.parent
+REPO_ROOT = SKILL_ROOT.parent.parent
 EVALS_JSON = SKILL_ROOT / "evals" / "evals.json"
 WORKSPACE = REPO_ROOT / "vendor-card-workspace" / "iteration-3"
 FIXTURES = SKILL_ROOT / "evals" / "fixtures"

@@ -12,7 +12,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 SKILL_ROOT = Path(__file__).resolve().parents[1]
-REPO_ROOT = SKILL_ROOT.parents[2]
+REPO_ROOT = SKILL_ROOT.parents[1]
 SAMPLES = SKILL_ROOT / "samples" / "demo_project"
 FIXTURE_EML = SKILL_ROOT / "samples" / "fixtures" / "payment_claim.eml"
 SCRIPTS = SKILL_ROOT / "scripts"

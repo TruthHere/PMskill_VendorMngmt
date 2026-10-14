@@ -16,8 +16,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-SKILLS_SRC = REPO / ".cursor" / "skills"
-LIB_SRC = REPO / ".cursor" / "lib"
+SKILLS_SRC = REPO / "skills"
+LIB_SRC = REPO / "lib"
 DEFAULT_DEST = Path.home() / ".workbuddy" / "skills"
 
 RUNTIME_SKILLS = (
