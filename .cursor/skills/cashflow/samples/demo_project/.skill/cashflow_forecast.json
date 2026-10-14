@@ -1,0 +1,227 @@
+{
+  "as_of": "2026-09-06",
+  "currency": "CNY",
+  "tax_basis": "excl_tax",
+  "payment_lag_days": 30,
+  "horizon_months": 18,
+  "tail_months": 1,
+  "summary": {
+    "contract_base_excl_tax": 1000000.0,
+    "changes_confirmed_excl_tax": 50000.0,
+    "paid_to_date_excl_tax": 100000.0,
+    "forecast_remaining_excl_tax": 950000.0,
+    "pending_amount_excl_tax": 0.0
+  },
+  "calendar": {
+    "start_month": "2026-01",
+    "end_month": "2027-01",
+    "months": [
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04",
+      "2026-05",
+      "2026-06",
+      "2026-07",
+      "2026-08",
+      "2026-09",
+      "2026-10",
+      "2026-11",
+      "2026-12",
+      "2027-01"
+    ]
+  },
+  "packages": [
+    {
+      "seq": "01",
+      "package": "BMS",
+      "supplier": "Schneider Electric (China) Co., Ltd.",
+      "package_dir": "01_BMS_Schneider",
+      "amount_excl_tax": 1000000.0,
+      "changes_excl_tax": 50000.0,
+      "po_number": "PO-DEMO-BMS",
+      "payment_terms": "预付款 10%；到货 30%；验收 60%",
+      "pending_excl_tax": 0.0,
+      "months": {
+        "2026-01": {
+          "expected": 100000.0,
+          "actual": 100000.0
+        },
+        "2026-09": {
+          "expected": 300000.0,
+          "actual": 0.0
+        },
+        "2026-12": {
+          "expected": 650000.0,
+          "actual": 0.0
+        }
+      }
+    }
+  ],
+  "monthly": [
+    {
+      "month": "2026-01",
+      "expected": 100000.0,
+      "actual": 100000.0
+    },
+    {
+      "month": "2026-02",
+      "expected": 0.0,
+      "actual": 0.0
+    },
+    {
+      "month": "2026-03",
+      "expected": 0.0,
+      "actual": 0.0
+    },
+    {
+      "month": "2026-04",
+      "expected": 0.0,
+      "actual": 0.0
+    },
+    {
+      "month": "2026-05",
+      "expected": 0.0,
+      "actual": 0.0
+    },
+    {
+      "month": "2026-06",
+      "expected": 0.0,
+      "actual": 0.0
+    },
+    {
+      "month": "2026-07",
+      "expected": 0.0,
+      "actual": 0.0
+    },
+    {
+      "month": "2026-08",
+      "expected": 0.0,
+      "actual": 0.0
+    },
+    {
+      "month": "2026-09",
+      "expected": 300000.0,
+      "actual": 0.0
+    },
+    {
+      "month": "2026-10",
+      "expected": 0.0,
+      "actual": 0.0
+    },
+    {
+      "month": "2026-11",
+      "expected": 0.0,
+      "actual": 0.0
+    },
+    {
+      "month": "2026-12",
+      "expected": 650000.0,
+      "actual": 0.0
+    },
+    {
+      "month": "2027-01",
+      "expected": 0.0,
+      "actual": 0.0
+    }
+  ],
+  "line_items": [
+    {
+      "package": "BMS",
+      "supplier": "Schneider Electric (China) Co., Ltd.",
+      "package_dir": "01_BMS_Schneider",
+      "payment_no": 1,
+      "node": "预付款 / Advance",
+      "status": "actual",
+      "expected_amount_excl_tax": 100000.0,
+      "actual_amount_excl_tax": 100000.0,
+      "includes_change_amount": false,
+      "anchor_date": "2026-01-01",
+      "planned_cash_out_date": "2026-01-01",
+      "planned_cash_out_month": "2026-01",
+      "actual_date": "2026-01-01",
+      "actual_month": "2026-01",
+      "date_confidence": "medium",
+      "date_source": "tracker_paid",
+      "pct": "10%"
+    },
+    {
+      "package": "BMS",
+      "supplier": "Schneider Electric (China) Co., Ltd.",
+      "package_dir": "01_BMS_Schneider",
+      "payment_no": 2,
+      "node": "到货 / Delivery",
+      "status": "forecast",
+      "expected_amount_excl_tax": 300000.0,
+      "actual_amount_excl_tax": null,
+      "includes_change_amount": false,
+      "anchor_date": "2026-08-13",
+      "planned_cash_out_date": "2026-09-12",
+      "planned_cash_out_month": "2026-09",
+      "actual_date": null,
+      "actual_month": null,
+      "date_confidence": "high",
+      "date_source": "window_end",
+      "pct": "30%"
+    },
+    {
+      "package": "BMS",
+      "supplier": "Schneider Electric (China) Co., Ltd.",
+      "package_dir": "01_BMS_Schneider",
+      "payment_no": 3,
+      "node": "验收 / Acceptance",
+      "status": "forecast",
+      "expected_amount_excl_tax": 650000.0,
+      "actual_amount_excl_tax": null,
+      "includes_change_amount": true,
+      "anchor_date": "2026-12-01",
+      "planned_cash_out_date": "2026-12-31",
+      "planned_cash_out_month": "2026-12",
+      "actual_date": null,
+      "actual_month": null,
+      "date_confidence": "high",
+      "date_source": "window_end",
+      "pct": "60%"
+    }
+  ],
+  "pending": [],
+  "warnings": [],
+  "sources": [
+    {
+      "kind": "tracker",
+      "label": "采购包 Tracker（CSV）",
+      "path": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/cashflow/samples/demo_project/Skill4 Demo Project_procurement_packages_status_tracker.csv",
+      "rel": "Skill4 Demo Project_procurement_packages_status_tracker.csv",
+      "missing": false,
+      "mtime": "2026-09-16 00:40",
+      "sha256": "ec5c686ff6ab77cf"
+    },
+    {
+      "kind": "change_log",
+      "label": "变更台账 Change Log",
+      "path": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/cashflow/samples/demo_project/Skill4 Demo Project_change_log.csv",
+      "rel": "Skill4 Demo Project_change_log.csv",
+      "missing": false,
+      "mtime": "2026-09-07 21:29",
+      "sha256": "d9155dbf1de301c6"
+    },
+    {
+      "kind": "schedule",
+      "label": "进度关键节点",
+      "path": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/cashflow/samples/demo_project/.skill/schedule.json",
+      "rel": ".skill/schedule.json",
+      "missing": false,
+      "mtime": "2026-09-06 17:03",
+      "sha256": "a1e6f1cbb689fb38"
+    },
+    {
+      "kind": "card_data",
+      "label": "01_BMS_Schneider 履约卡片数据",
+      "path": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/cashflow/samples/demo_project/01_BMS_Schneider/card-data.json",
+      "rel": "01_BMS_Schneider/card-data.json",
+      "missing": false,
+      "mtime": "2026-09-07 21:29",
+      "sha256": "0af1a4cd0871d6b1"
+    }
+  ]
+}

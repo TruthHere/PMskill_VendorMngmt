@@ -18,7 +18,7 @@ REPO_ROOT = SKILL_ROOT.parent.parent.parent
 WORKSPACE = REPO_ROOT / "mail-inbox-workspace" / "iteration-1"
 EVALS_JSON = SKILL_ROOT / "evals" / "evals.json"
 GRADE = SCRIPTS / "grade_run.py"
-REVIEW = SKILL_ROOT.parent / "contract-fulfillment-struct" / "scripts" / "render_eval_review.py"
+REVIEW = SKILL_ROOT.parent / "po-flow" / "scripts" / "render_eval_review.py"
 
 sys.path.insert(0, str(SCRIPTS))
 from classify_mail import classify_from_message  # noqa: E402
@@ -52,14 +52,14 @@ def naive_classify(subject: str, body: str) -> dict[str, Any]:
         intent = "payment_claim.inbound"
 
     route = {
-        "project_init": "project-init",
-        "fulfillment.rfp": "contract-fulfillment-struct",
-        "fulfillment.raise_po": "contract-fulfillment-struct",
-        "change.change_po": "change-archive",
-        "change.pmi": "change-archive",
-        "change.cod": "change-archive",
-        "change.tech_confirm": "change-archive",
-        "payment_claim.inbound": "payment-request",
+        "project_init": "new-project",
+        "fulfillment.rfp": "po-flow",
+        "fulfillment.raise_po": "po-flow",
+        "change.change_po": "change-flow",
+        "change.pmi": "change-flow",
+        "change.cod": "change-flow",
+        "change.tech_confirm": "change-flow",
+        "payment_claim.inbound": "payment-flow",
     }.get(intent)
 
     return {
@@ -180,7 +180,7 @@ def main() -> int:
     # Retitle page for this skill
     html = review.read_text(encoding="utf-8")
     html = html.replace(
-        "contract-fulfillment-struct · Eval Review",
+        "po-flow · Eval Review",
         "mail-inbox · Eval Review",
     )
     review.write_text(html, encoding="utf-8")

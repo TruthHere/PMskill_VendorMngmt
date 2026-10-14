@@ -1,0 +1,34 @@
+{
+  "package_type_label": "供装",
+  "package_name": "BMS",
+  "supplier_name": "Schneider Electric (China) Co., Ltd.",
+  "project_name": "Skill2 Demo Project",
+  "total_amount": "¥1,000,000.00 不含税",
+  "scope_summary": "BMS supply and installation",
+  "delivery_schedule": "按项目进度计划",
+  "po_number": "PO-DEMO-BMS",
+  "payment_nodes": [
+    {
+      "name": "预付款 / Advance",
+      "pct": "10%",
+      "condition": "PO 生效",
+      "payment_attachments": "请款单；PO/合同复印件；发票"
+    },
+    {
+      "name": "到货 / Delivery",
+      "pct": "30%",
+      "condition": "到货签认",
+      "payment_attachments": "请款单；到货签认单；送货单/装箱单；发票"
+    },
+    {
+      "name": "验收 / Acceptance",
+      "pct": "60%",
+      "condition": "验收签认",
+      "payment_attachments": "请款单；验收签认单；测试/调试报告；发票"
+    }
+  ],
+  "acceptance_items": [
+    "按合同验收"
+  ],
+  "data_sources": "payment-flow samples"
+}

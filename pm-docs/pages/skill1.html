@@ -909,7 +909,7 @@
     <div class="content-card">
       <div class="content-card-title" style="color:var(--muted)">🏷️ 输出 ②：履约条件卡片（HTML → PDF）</div>
       <div class="content-card-body">
-        <p><strong>形态</strong>：每个直采包一份可导出 PDF 的 <strong>HTML 卡片</strong>，放采购包文件夹根目录（模板：<code>pm-docs/templates/fulfillment-card.html</code>；字段示例见 <code>pm-docs/templates/card-detail-reference.html</code>）</p>
+        <p><strong>形态</strong>：每个直采包一份可导出 PDF 的 <strong>HTML 卡片</strong>，放采购包文件夹根目录（模板：<code>pm-docs/templates/vendor-card.html</code>；字段示例见 <code>pm-docs/templates/card-detail-reference.html</code>）</p>
         <p><strong>更新机制</strong>：每次收到新邮件<strong>增量更新</strong>卡片字段，不全量重造</p>
         <p><strong>内容（描述，非样式）</strong>：</p>
         <ul class="item-list">
@@ -971,9 +971,9 @@
         </ul>
         <p style="margin-top:10px"><strong>目录约定</strong>：</p>
         <div style="background:var(--card2);border-radius:8px;padding:12px 16px;font-family:'SF Mono','Menlo',monospace;font-size:12px;line-height:1.9;margin-top:6px">
-          <div>.cursor/skills/contract-fulfillment-struct/SKILL.md <span style="color:var(--muted);font-family:-apple-system">— Agent 入口</span></div>
+          <div>.cursor/skills/po-flow/SKILL.md <span style="color:var(--muted);font-family:-apple-system">— Agent 入口</span></div>
           <div>pm-docs/pages/skill1.html <span style="color:var(--muted);font-family:-apple-system">— 业务 SOP（唯一真源）</span></div>
-          <div>pm-docs/templates/fulfillment-card.html <span style="color:var(--muted);font-family:-apple-system">— 卡片生产模板</span></div>
+          <div>pm-docs/templates/vendor-card.html <span style="color:var(--muted);font-family:-apple-system">— 卡片生产模板</span></div>
           <div>pm-docs/templates/card-detail-reference.html <span style="color:var(--muted);font-family:-apple-system">— 卡片字段样式参考</span></div>
         </div>
       </div>
@@ -1025,8 +1025,7 @@
           <tr><td>总金额</td><td>数字</td><td>PO/合同/报价确认后填入，标注币种</td></tr>
           <tr><td>交期摘要</td><td>文本</td><td>自卡片/邮件提取的关键交期</td></tr>
           <tr><td>下一付款节点</td><td>文本</td><td>卡片付款节点中最近待触发项</td></tr>
-          <tr><td>卡片路径</td><td>文本</td><td>本地 <code>履约条件卡片.html</code> 绝对路径</td></tr>
-          <tr><td>文件夹路径</td><td>文本</td><td>采购包根目录绝对路径</td></tr>
+          <tr><td>请款进度</td><td>文本</td><td>当前在办请款状态人话；无在办写「无在办」</td></tr>
         </tbody>
       </table>
       <div class="content-card-body" style="margin-top:8px">
@@ -1080,7 +1079,7 @@
     <div class="content-card">
       <div class="content-card-title" style="color:var(--muted)">🏷️ 履约卡片：HTML 增量更新</div>
       <div class="content-card-body">
-        <p><strong>模板</strong>：<code>pm-docs/templates/fulfillment-card.html</code>（占位符渲染）；样式参考 <code>card-detail-reference.html</code>。</p>
+        <p><strong>模板</strong>：<code>pm-docs/templates/vendor-card.html</code>（占位符渲染）；样式参考 <code>card-detail-reference.html</code>。</p>
         <p><strong>增量原则</strong>：每次新邮件只更新<strong>本邮件影响的字段</strong>，保留已有正确字段与数据来源标注。付款节点变更保留历史来源（合同提取 / 邮件指示）。</p>
         <p><strong>导出 PDF</strong>：浏览器打开 HTML → 打印 → 存储为 PDF；后续可加 headless Chrome 自动化（非 MVP 必须）。</p>
       </div>

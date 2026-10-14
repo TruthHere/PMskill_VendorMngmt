@@ -20,10 +20,10 @@
     "reason": "intent_low_confidence",
     "question": "邮件意图置信度低，需确认交给哪个 Skill。",
     "candidates": [
-      "project-init",
-      "contract-fulfillment-struct",
-      "payment-request",
-      "change-archive"
+      "new-project",
+      "po-flow",
+      "payment-flow",
+      "change-flow"
     ]
   },
   "did": [

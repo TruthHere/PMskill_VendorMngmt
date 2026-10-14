@@ -6,9 +6,9 @@
       "evidence": "got 'fulfillment.tech_confirm'"
     },
     {
-      "text": "route_to is contract-fulfillment-struct",
+      "text": "route_to is po-flow",
       "passed": true,
-      "evidence": "got 'contract-fulfillment-struct'"
+      "evidence": "got 'po-flow'"
     },
     {
       "text": "not change.*",

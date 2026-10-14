@@ -11,6 +11,7 @@ from typing import Any, Callable
 
 from common import (
     MILESTONE_TO_CSV,
+    PAYMENT_CSV_HEADERS,
     TRACKER_FIELDNAMES,
     _milestone_column_range,
     _payment_column_range,
@@ -18,7 +19,7 @@ from common import (
     pkg_to_csv_row,
 )
 
-TRACKER_XLSX_SCHEMA_VERSION = 1
+TRACKER_XLSX_SCHEMA_VERSION = 2
 GROUP_ROW = 2
 HEADER_ROW = 3
 DATA_START = HEADER_ROW + 1
@@ -34,6 +35,10 @@ def _theme() -> dict[str, Any]:
         "group_bg": "F1F5F9",
         "group_text": "475569",
         "zebra": "F8FAFC",
+        "pay_bg": "FFFBEB",
+        "pay_zebra": "FEF3C7",
+        "pay_hl": "FFF7ED",
+        "pay_group_text": "92400E",
         "milestone_hdr": "475569",
         "milestone_done_bg": "DBEAFE",
         "milestone_done_text": "1D4ED8",
@@ -51,15 +56,13 @@ def _theme() -> dict[str, Any]:
             "交期摘要": 22,
             "已请金额": 13,
             "待请款金额": 13,
-            "下一付款节点": 16,
-            "请款进度": 18,
+            "下一付款节点": 18,
+            "请款进度": 22,
             "RFP 发出": 11,
             "技术方案已确认": 13,
             "商务报价已确认": 13,
             "PO 已发起": 11,
             "已结算": 10,
-            "卡片路径": 34,
-            "文件夹路径": 34,
         },
         "wrap_headers": {
             "采购包名称",
@@ -70,8 +73,6 @@ def _theme() -> dict[str, Any]:
             "交期摘要",
             "下一付款节点",
             "请款进度",
-            "卡片路径",
-            "文件夹路径",
         },
         "center_headers": {"序号", "采购包类型", *MILESTONE_TO_CSV.values()},
         "right_headers": {"金额不含税", "金额含税", "已请金额", "待请款金额"},
@@ -101,8 +102,11 @@ def _styles(theme: dict[str, Any]):
         "group": Font(name=theme["font"], size=10, bold=True, color=theme["group_text"]),
         "header": Font(name=theme["font"], size=10, bold=True, color=theme["header_text"]),
         "body": Font(name=theme["font"], size=10, color=theme["ink"]),
-        "path": Font(name=theme["font"], size=9, color=theme["ink_muted"]),
         "meta": Font(name=theme["font"], size=10, color=theme["ink_muted"]),
+        "pay_group": Font(
+            name=theme["font"], size=10, bold=True, color=theme["pay_group_text"]
+        ),
+        "pay_hl": Font(name=theme["font"], size=10, bold=True, color=theme["ink"]),
         "milestone_done": Font(
             name=theme["font"], size=10, bold=True, color=theme["milestone_done_text"]
         ),
@@ -111,6 +115,9 @@ def _styles(theme: dict[str, Any]):
         "header": fill(theme["header_bg"]),
         "group": fill(theme["group_bg"]),
         "zebra": fill(theme["zebra"]),
+        "pay": fill(theme["pay_bg"]),
+        "pay_zebra": fill(theme["pay_zebra"]),
+        "pay_hl": fill(theme["pay_hl"]),
         "milestone_hdr": fill(theme["milestone_hdr"]),
         "milestone_done": fill(theme["milestone_done_bg"]),
     }
@@ -129,9 +136,7 @@ def _row_height_for_values(values: dict[str, str], theme: dict[str, Any]) -> flo
         text = values.get(header, "")
         if not text:
             continue
-        is_path = header in ("卡片路径", "文件夹路径")
-        factor = 1.15 if is_path else 1.45
-        capacity = max(6, int(col_widths.get(header, 12) * factor))
+        capacity = max(6, int(col_widths.get(header, 12) * 1.45))
         lines = max(1, math.ceil(_display_width(text) / capacity))
         max_lines = max(max_lines, lines)
     return min(120.0, max(22.0, max_lines * 15.0 + 8.0))
@@ -160,6 +165,16 @@ def _apply_milestone_style(cell, header: str, value: str, fonts, fills) -> None:
         cell.font = fonts["milestone_done"]
 
 
+def _apply_payment_style(cell, header: str, value: str, is_zebra: bool, fonts, fills) -> None:
+    if header not in PAYMENT_CSV_HEADERS:
+        return
+    if header == "下一付款节点" and value:
+        cell.fill = fills["pay_hl"]
+        cell.font = fonts["pay_hl"]
+        return
+    cell.fill = fills["pay_zebra"] if is_zebra else fills["pay"]
+
+
 def _read_header_row(ws) -> list[str]:
     return [str(ws.cell(HEADER_ROW, c).value or "").strip() for c in range(1, len(TRACKER_FIELDNAMES) + 1)]
 
@@ -182,10 +197,11 @@ def _map_existing_rows(ws) -> dict[str, int]:
     return mapping
 
 
-def _update_meta_row(ws, updated_at: str, fonts) -> None:
+def _update_meta_row(ws, updated_at: str, fonts, project_name: str = "") -> None:
     updated_date = format_milestone_date(updated_at) or updated_at[:10]
+    prefix = f"{project_name} · " if project_name else ""
     cell = ws.cell(1, 1)
-    cell.value = f"最后更新：{updated_date}"
+    cell.value = f"{prefix}最后更新：{updated_date}"
     if not cell.font or cell.font.name is None:
         cell.font = fonts["meta"]
 
@@ -203,22 +219,21 @@ def _apply_data_row_style(
     fills,
 ) -> None:
     milestone_cols = {TRACKER_FIELDNAMES.index(c) + 1 for c in MILESTONE_TO_CSV.values()}
-    path_cols = {
-        TRACKER_FIELDNAMES.index("卡片路径") + 1,
-        TRACKER_FIELDNAMES.index("文件夹路径") + 1,
-    }
+    payment_cols = {TRACKER_FIELDNAMES.index(c) + 1 for c in PAYMENT_CSV_HEADERS}
     for col_idx, header in enumerate(TRACKER_FIELDNAMES, start=1):
         value = row.get(header, "")
         cell = ws.cell(row_idx, col_idx)
         cell.border = border_all
         cell.alignment = cell_alignment(header)
-        if col_idx in path_cols:
-            cell.font = fonts["path"]
-        elif header in MILESTONE_TO_CSV.values() and value:
+        if header in MILESTONE_TO_CSV.values() and value:
             cell.font = fonts["milestone_done"]
+        elif header == "下一付款节点" and value:
+            cell.font = fonts["pay_hl"]
         else:
             cell.font = fonts["body"]
-        if is_zebra and col_idx not in milestone_cols:
+        if col_idx in payment_cols:
+            _apply_payment_style(cell, header, value, is_zebra, fonts, fills)
+        elif is_zebra and col_idx not in milestone_cols:
             cell.fill = fills["zebra"]
         _write_cell_value(cell, header, value)
         _apply_milestone_style(cell, header, value, fonts, fills)
@@ -239,10 +254,12 @@ def _sync_data_rows(ws, packages: list[dict[str, Any]], theme: dict[str, Any], f
             continue
         if name in existing:
             row_idx = existing[name]
+            is_zebra = (row_idx - DATA_START) % 2 == 1
             for col_idx, header in enumerate(TRACKER_FIELDNAMES, start=1):
                 cell = ws.cell(row_idx, col_idx)
                 value = row_data.get(header, "")
                 _write_cell_value(cell, header, value)
+                _apply_payment_style(cell, header, value, is_zebra, fonts, fills)
                 _apply_milestone_style(cell, header, value, fonts, fills)
                 if cell.alignment is None or cell.alignment.horizontal is None:
                     cell.alignment = cell_alignment(header)
@@ -277,7 +294,9 @@ def _sync_data_rows(ws, packages: list[dict[str, Any]], theme: dict[str, Any], f
         ws.auto_filter.ref = f"A{HEADER_ROW}:{get_column_letter(last_col)}{ws.max_row}"
 
 
-def _create_workbook(packages: list[dict[str, Any]], updated_at: str) -> Any:
+def _create_workbook(
+    packages: list[dict[str, Any]], updated_at: str, project_name: str = ""
+) -> Any:
     from openpyxl import Workbook
     from openpyxl.styles import Alignment
     from openpyxl.utils import get_column_letter
@@ -289,8 +308,8 @@ def _create_workbook(packages: list[dict[str, Any]], updated_at: str) -> Any:
     ws.title = "采购包 Tracker"
     last_col = len(TRACKER_FIELDNAMES)
 
-    _update_meta_row(ws, updated_at, fonts)
-    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=min(6, last_col))
+    _update_meta_row(ws, updated_at, fonts, project_name)
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=last_col)
     ws.cell(1, 1).alignment = Alignment(horizontal="left", vertical="center")
     ws.row_dimensions[1].height = 22
 
@@ -308,23 +327,32 @@ def _create_workbook(packages: list[dict[str, Any]], updated_at: str) -> Any:
         )
         group_cell = ws.cell(GROUP_ROW, first + 1, label)
         group_cell.alignment = Alignment(horizontal="center", vertical="center")
-        group_cell.font = fonts["group"]
-        group_cell.fill = fills["group"]
+        if label == "请款":
+            group_cell.font = fonts["pay_group"]
+            group_cell.fill = fills["pay"]
+        else:
+            group_cell.font = fonts["group"]
+            group_cell.fill = fills["group"]
         group_cell.border = border_all
 
     pay_cols = set(range(pay_first + 1, pay_last + 2))
     ms_cols = set(range(ms_first + 1, ms_last + 2))
     for col_idx in range(1, last_col + 1):
         cell = ws.cell(GROUP_ROW, col_idx)
-        cell.fill = fills["group"]
+        cell.fill = fills["pay"] if col_idx in pay_cols else fills["group"]
         cell.border = border_all
         if col_idx not in pay_cols and col_idx not in ms_cols:
             cell.alignment = Alignment(horizontal="center", vertical="center")
+    ws.cell(GROUP_ROW, pay_first + 1).font = fonts["pay_group"]
+    ws.cell(GROUP_ROW, pay_first + 1).fill = fills["pay"]
 
     for col_idx, header in enumerate(TRACKER_FIELDNAMES, start=1):
         cell = ws.cell(HEADER_ROW, col_idx, header)
         cell.font = fonts["header"]
-        cell.fill = fills["milestone_hdr"] if header in MILESTONE_TO_CSV.values() else fills["header"]
+        if header in MILESTONE_TO_CSV.values() or header in PAYMENT_CSV_HEADERS:
+            cell.fill = fills["milestone_hdr"]
+        else:
+            cell.fill = fills["header"]
         cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
         cell.border = border_all
 
@@ -373,7 +401,12 @@ def _assert_layout(ws, cell_alignment: Callable[[str], Any], package_count: int)
             )
 
 
-def save_tracker_xlsx(path: Path, packages: list[dict[str, Any]], updated_at: str) -> None:
+def save_tracker_xlsx(
+    path: Path,
+    packages: list[dict[str, Any]],
+    updated_at: str,
+    project_name: str = "",
+) -> None:
     """
     xlsx 写入策略：
     - 文件不存在 / 表头与当前 schema 不一致 → 全量创建（含主题样式）
@@ -391,7 +424,7 @@ def save_tracker_xlsx(path: Path, packages: list[dict[str, Any]], updated_at: st
             wb = load_workbook(path)
             ws = wb.active
             if _schema_matches(ws):
-                _update_meta_row(ws, updated_at, fonts)
+                _update_meta_row(ws, updated_at, fonts, project_name)
                 _sync_data_rows(ws, packages, theme, fonts, fills)
                 wb.save(path)
                 return
@@ -400,5 +433,5 @@ def save_tracker_xlsx(path: Path, packages: list[dict[str, Any]], updated_at: st
         except Exception as exc:
             warnings.warn(f"Tracker xlsx 增量更新失败，将全量重建：{exc}", stacklevel=2)
 
-    wb = _create_workbook(packages, updated_at)
+    wb = _create_workbook(packages, updated_at, project_name)
     wb.save(path)

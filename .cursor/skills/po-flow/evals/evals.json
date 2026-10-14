@@ -1,0 +1,60 @@
+{
+  "skill_name": "po-flow",
+  "evals": [
+    {
+      "id": 0,
+      "name": "misroute-init",
+      "prompt": "项目已完成阶段 0。请用 Skill 1 处理「项目初始化」邮件（不应由 Skill 1 建项）。",
+      "expected_output": "经 process_email 重定向到 Skill 0（routed_to_skill0），不新建采购包",
+      "files": [],
+      "assertions": [
+        "process_result.json exists (pipeline evidence)",
+        "process_result came from mail classification path",
+        "process_result reason is routed_to_skill0",
+        "note tells user to use Skill 0 / new-project",
+        "no procurement package created by this mail",
+        "no 01_* package folder created"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "rfp-forward",
+      "prompt": "项目已完成阶段 0。请处理 RFP 转发邮件，初始化采购包 BMS。",
+      "expected_output": "经 process_email 建包；Tracker / 卡片 / .eml 归档；卡片走 vendor-card 模板",
+      "files": [],
+      "assertions": [
+        "process_result.json exists (pipeline evidence)",
+        "process_result intent is fulfillment.rfp",
+        "process_result step is step1 and auto=true",
+        "standard tracker CSV exists",
+        "tracker has exactly one package",
+        "milestone RFP 发出 is set",
+        "package has 01~07 subfolders",
+        "RFP .eml archived under 07_往来文件",
+        "card HTML passes vendor-card template validation",
+        "card HTML has payment-table (template fingerprint)",
+        "请款申请.html looks like claim-form template",
+        "card-data supplier_name filled by Skill 1"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "po-payment",
+      "prompt": "已有 BMS 包（技术方案已确认）。依次处理 Raise PO + 付款指示。",
+      "expected_output": "经 process_email 写 PO/付款节点/金额；卡片与请款页为模板产物",
+      "files": [],
+      "assertions": [
+        "process_result.json exists (pipeline evidence)",
+        "process_result records Raise PO via pipeline (step3 auto)",
+        "process_result records payment terms via pipeline",
+        "milestone PO 已发起 is set",
+        "next_payment_node is populated",
+        "card-data payment_nodes has 3 entries",
+        "PO amount written to tracker or card (含税)",
+        "card HTML passes vendor-card template validation",
+        "card HTML has payment-table (template fingerprint)",
+        "请款申请.html looks like claim-form template"
+      ]
+    }
+  ]
+}

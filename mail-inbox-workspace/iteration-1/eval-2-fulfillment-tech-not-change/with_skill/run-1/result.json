@@ -2,7 +2,7 @@
   "ok": true,
   "eml_path": "",
   "intent": "fulfillment.tech_confirm",
-  "route_to": "contract-fulfillment-struct",
+  "route_to": "po-flow",
   "confidence": "medium",
   "project_root": "",
   "hints": {
@@ -22,7 +22,7 @@
     "classify"
   ],
   "next": {
-    "skill": "contract-fulfillment-struct",
+    "skill": "po-flow",
     "action": "handle_fulfillment_tech_confirm",
     "note": "业务 Skill 消费本 JSON；mail-inbox 不改业务数据"
   }

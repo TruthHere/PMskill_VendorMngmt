@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{form_title}} · {{package_name}}</title>
+<style>
+  :root {
+    --page: #eef0f4;
+    --surface: #ffffff;
+    --surface-muted: #f6f7f9;
+    --border: #dfe3ea;
+    --border-strong: #c8ced8;
+    --ink: #141418;
+    --ink-secondary: #3f3f46;
+    --muted: #52525b;
+    --blue: #2563eb;
+    --blue-soft: rgba(37, 99, 235, 0.08);
+    --amber: #b45309;
+    --green: #047857;
+    --green-soft: rgba(4, 120, 87, 0.08);
+    --red: #b91c1c;
+    --red-soft: rgba(185, 28, 28, 0.06);
+    --radius: 12px;
+    --shadow: 0 1px 2px rgba(20, 20, 24, 0.04), 0 8px 24px rgba(20, 20, 24, 0.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    background: var(--page);
+    color: var(--ink);
+    padding: 40px 24px 120px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 880px; margin: 0 auto; }
+  .meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    align-items: center;
+  }
+  .meta a {
+    color: var(--blue);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .meta a:hover { text-decoration: underline; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 28px;
+    background: linear-gradient(180deg, var(--blue-soft) 0%, var(--surface) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .type-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  .card-sub {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .card-sub strong { color: var(--ink-secondary); font-weight: 600; }
+  .stamp {
+    flex-shrink: 0;
+    text-align: right;
+    min-width: 7.5rem;
+  }
+  .stamp-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stamp-value {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+  .card-body { padding: 24px 28px 28px; }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .fact {
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .fact-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    margin-bottom: 6px;
+  }
+  .fact-value {
+    font-size: 14px;
+    color: var(--ink);
+    word-break: break-word;
+  }
+  .fact-value.mono {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+  }
+
+  .facts-note {
+    margin: -16px 0 28px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .section + .section {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .section-index {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+  }
+  .section-hint {
+    margin: 0 0 14px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px 16px;
+  }
+  .grid > * { min-width: 0; }
+  .full { grid-column: 1 / -1; }
+
+  .field-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+  }
+  .en {
+    font-weight: 500;
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .req {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--blue);
+    background: var(--blue-soft);
+    border: 1px solid rgba(37, 99, 235, 0.28);
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+  .opt {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+  input, select, textarea {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 10px;
+    font: inherit;
+    background: #fff;
+    color: var(--ink);
+  }
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%2352525b' d='M1.2 1.3L6 6.1l4.8-4.8 1.2 1.2L6 8.5 0 2.5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px 8px;
+    padding-right: 32px;
+  }
+  input::placeholder, textarea::placeholder { color: #71717a; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+  .money-wrap {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+  }
+  .money-wrap:focus-within {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+  .money-prefix {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    background: var(--surface-muted);
+    border-right: 1px solid var(--border);
+  }
+  .money-wrap .money-input {
+    border: 0;
+    border-radius: 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
+  .money-wrap .money-input:focus-visible { outline: none; }
+  .hint { margin-top: 6px; font-size: 12px; color: var(--muted); }
+  .hint.warn { color: var(--amber); }
+  .flag-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 4px;
+    padding: 12px 14px;
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .flag-row input { width: auto; margin-top: 3px; flex-shrink: 0; }
+  .flag-row .flag-copy { font-size: 13px; color: var(--ink-secondary); line-height: 1.45; }
+  .flag-row .flag-copy strong { color: var(--ink); font-weight: 600; }
+  .flag-row .flag-copy .en { color: var(--muted); font-weight: 400; }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table th, .data-table td {
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  .data-table th {
+    background: var(--surface-muted);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+  }
+  .data-table .col-no {
+    white-space: nowrap;
+    font-weight: 600;
+    width: 72px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .data-table .col-pct {
+    white-space: nowrap;
+    font-weight: 700;
+    color: var(--amber);
+    width: 72px;
+  }
+  .data-table tr.is-current td { background: var(--blue-soft); }
+  .checklist-empty {
+    color: var(--muted);
+    font-size: 13px;
+    padding: 4px 0 8px;
+    border-bottom: 0;
+  }
+
+  .checklist { list-style: none; }
+  .checklist li { padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .checklist li:last-child { border-bottom: 0; }
+  .checklist label {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .checklist input { width: auto; margin-top: 3px; }
+
+  .dock {
+    position: sticky;
+    bottom: 0;
+    margin-top: 8px;
+    padding: 14px 28px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+  }
+  button {
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 16px;
+    background: var(--blue);
+    color: #fff;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  button:hover { filter: brightness(0.97); }
+  .download-status { font-size: 12px; color: var(--muted); min-height: 1.2em; }
+  .download-status.ok { color: var(--green); font-weight: 600; }
+  .flag-row.is-hidden, .full.is-hidden, .checklist.is-hidden, #files_lines_wrap.is-hidden { display: none !important; }
+
+  @media (max-width: 720px) {
+    body { padding: 24px 14px 120px; }
+    .card-header, .card-body, .dock { padding-left: 18px; padding-right: 18px; }
+    .card-header { flex-direction: column; }
+    .stamp { text-align: left; }
+    .facts, .grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    button { transition: none; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .meta, .dock, .no-print { display: none !important; }
+    .card { box-shadow: none; border: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="meta">
+    <span>{{form_title}} · {{form_title_en}}</span>
+    <span>{{project_name}}</span>
+    <a class="no-print" href="履约条件卡片.html">返回履约卡片</a>
+  </p>
+
+  <article class="card">
+    <header class="card-header">
+      <div>
+        <span class="type-badge">{{type_badge}}</span>
+        <h1 class="card-title">{{supplier_name}}</h1>
+        <p class="card-sub">采购包 <strong>{{package_name}}</strong> · 下载后即客户模板 Excel，可直接提交</p>
+      </div>
+      <div class="stamp" aria-live="polite">
+        <div class="stamp-label">Payment No.</div>
+        <div class="stamp-value" id="payment_no_stamp">{{payment_no}}</div>
+      </div>
+    </header>
+
+    <div class="card-body">
+      <div class="facts" aria-label="系统已带出的合同信息">
+        <div class="fact">
+          <div class="fact-label">项目 Project</div>
+          <div class="fact-value">{{project_name}}</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Division</div>
+          <div class="fact-value mono">{{division}}</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">{{contract_amount_label}}</div>
+          <div class="fact-value mono">{{contract_value_excl_tax}}</div>
+        </div>
+      </div>
+      <p class="facts-note">开票主体 {{billing_entity}} · {{facts_amount_note}} · {{vat_note_line}}</p>
+
+      <section class="section" aria-labelledby="sec-claim">
+        <div class="section-head">
+          <span class="section-index">01</span>
+          <h2 class="section-title" id="sec-claim">这一笔请什么</h2>
+        </div>
+        <p class="section-hint">{{claim_section_hint}}</p>
+        <div class="grid">
+          <div>
+            <label class="field-label" for="claim_node">请款节点 <span class="en">Claim item</span> <span class="req">必填</span></label>
+            <select id="claim_node">{{node_options_html}}</select>
+          </div>
+          <div>
+            <label class="field-label" for="claim_amount">{{amount_field_label}} <span class="en">This claim</span> <span class="req">必填</span></label>
+            <div class="money-wrap">
+              <span class="money-prefix" aria-hidden="true">CNY</span>
+              <input id="claim_amount" class="money-input" type="text" inputmode="decimal" autocomplete="off" value="{{suggested_amount}}" placeholder="例如 300,000.00">
+            </div>
+            <p class="hint" id="amount_hint">{{amount_hint}}</p>
+          </div>
+          <div class="full {{variations_flag_class}}">
+            <label class="flag-row" for="includes_variations">
+              <input id="includes_variations" type="checkbox">
+              <span class="flag-copy">
+                <strong>本期是否含变更</strong>
+                <span class="en">Includes variations</span><br>
+                只作复核标记：勾上表示本次金额里含了已确认变更；不必拆出变更金额。
+              </span>
+            </label>
+          </div>
+          <div class="full">
+            <div class="field-label">付款节点</div>
+            <table class="data-table">
+              <thead>
+                <tr><th>No.</th><th>节点</th><th>比例</th></tr>
+              </thead>
+              <tbody id="nodes_table">{{nodes_overview_html}}</tbody>
+            </table>
+            <textarea id="nodes_overview" hidden>{{nodes_overview}}</textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="sec-vendor">
+        <div class="section-head">
+          <span class="section-index">02</span>
+          <h2 class="section-title" id="sec-vendor">{{vendor_section_title}}</h2>
+        </div>
+        <p class="section-hint">这些格子会写进客户请款单。标了必填的都要填。</p>
+        <div class="grid">
+          {{vendor_fields_html}}
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="sec-files">
+        <div class="section-head">
+          <span class="section-index">03</span>
+          <h2 class="section-title" id="sec-files">{{files_section_title}}</h2>
+        </div>
+        <p class="section-hint" id="files_hint">{{files_hint}}</p>
+        <ul class="checklist {{files_checklist_class}}" id="checklist">{{checklist_html}}</ul>
+        <div class="{{files_lines_class}}" id="files_lines_wrap">
+          <label class="field-label" for="support_files_text">支持文件清单 <span class="opt">可空</span></label>
+          <textarea id="support_files_text" rows="4" placeholder="每行一项，例如：PO 单&#10;到货签认单"></textarea>
+        </div>
+      </section>
+    </div>
+
+    <div class="dock no-print">
+      <button type="button" id="btn_excel">{{download_label}}</button>
+      <span class="download-status" id="download_status" aria-live="polite"></span>
+    </div>
+  </article>
+</div>
+
+<script src=".claim-assets/jszip.min.js"></script>
+<script src=".claim-assets/fill-insert-xlsx.js"></script>
+<script src=".claim-assets/fill-xlsx.js"></script>
+<script type="application/json" id="boot">{{boot_json}}</script>
+<script type="text/plain" id="xlsx_template_b64">{{xlsx_template_b64}}</script>
+<script>
+(function () {
+  const boot = JSON.parse(document.getElementById("boot").textContent);
+  const nodeSelect = document.getElementById("claim_node");
+  const claimAmount = document.getElementById("claim_amount");
+  const includesVariations = document.getElementById("includes_variations");
+  const amountHint = document.getElementById("amount_hint");
+  const checklist = document.getElementById("checklist");
+  const filesHint = document.getElementById("files_hint");
+  const downloadStatus = document.getElementById("download_status");
+  const stamp = document.getElementById("payment_no_stamp");
+  const taxLabel = boot.amount_tax === "incl" ? "含税" : "不含税";
+  let lastAutoPurpose = "";
+
+  function money(v) {
+    if (v === null || v === undefined || v === "" || v === "—") return null;
+    const n = Number(String(v).replace(/[,¥￥\s]/g, ""));
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function formatMoneyDisplay(raw) {
+    const text = String(raw == null ? "" : raw);
+    const hasDot = text.indexOf(".") !== -1;
+    const cleaned = text.replace(/[^\d.]/g, "");
+    if (!cleaned || cleaned === ".") return cleaned === "." ? "0." : "";
+    const parts = cleaned.split(".");
+    let intPart = parts[0].replace(/^0+(?=\d)/, "");
+    if (intPart === "" && hasDot) intPart = "0";
+    const grouped = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if (parts.length > 1) {
+      return grouped + "." + parts.slice(1).join("").replace(/\D/g, "").slice(0, 2);
+    }
+    return grouped;
+  }
+
+  function formatMoneyCurrency(raw) {
+    const n = money(raw);
+    if (n == null) return "";
+    return n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function digitsBefore(str, pos) {
+    return str.slice(0, pos).replace(/\D/g, "").length;
+  }
+
+  function posAfterDigits(str, n) {
+    if (n <= 0) return 0;
+    var count = 0;
+    for (var i = 0; i < str.length; i++) {
+      if (/\d/.test(str[i])) count++;
+      if (count >= n) return i + 1;
+    }
+    return str.length;
+  }
+
+  function applyMoneyFormat(el, fromBlur) {
+    const start = el.selectionStart;
+    const before = el.value;
+    const next = fromBlur ? formatMoneyCurrency(before) : formatMoneyDisplay(before);
+    if (next === before) return;
+    const keep = digitsBefore(before, start == null ? before.length : start);
+    el.value = next;
+    if (!fromBlur) {
+      const pos = posAfterDigits(next, keep);
+      try { el.setSelectionRange(pos, pos); } catch (e) {}
+    }
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (ch) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch];
+    });
+  }
+
+  function selectedNode() {
+    return (boot.nodes || []).find(function (n) { return n.name === nodeSelect.value; }) || {};
+  }
+
+  function renderChecklist(items) {
+    if (!items || !items.length) {
+      checklist.innerHTML = "<li class=\"checklist-empty\">本节点无需随单附件。</li>";
+      return;
+    }
+    checklist.innerHTML = items.map(function (t) {
+      return "<li><label><input type=\"checkbox\"> <span>" + esc(t) + "</span></label></li>";
+    }).join("");
+  }
+
+  function markCurrentRow() {
+    const name = nodeSelect.value;
+    document.querySelectorAll("#nodes_table tr").forEach(function (tr) {
+      const cellName = tr.children[1] ? tr.children[1].textContent.trim() : "";
+      tr.classList.toggle("is-current", cellName === name);
+    });
+  }
+
+  function syncNode() {
+    const node = selectedNode();
+    stamp.textContent = node.payment_no || "";
+    if (boot.attachment_mode !== "lines") {
+      renderChecklist(node.checklist || []);
+      if (filesHint) filesHint.textContent = node.files_hint || "随单附件随请款节点变化。";
+    }
+    amountHint.textContent = boot.amount_hint || ("本次请款金额须为" + taxLabel + "，由供应商按合同自行填写。");
+    const purpose = document.getElementById("claim_purpose");
+    if (purpose) {
+      const auto = "现申请" + (node.name || "") + (node.pct ? "（" + node.pct + "）" : "");
+      if (!purpose.value || purpose.value === lastAutoPurpose) purpose.value = auto;
+      lastAutoPurpose = auto;
+    }
+    markCurrentRow();
+  }
+
+  function checkedFiles() {
+    return Array.from(checklist.querySelectorAll("li")).map(function (li) {
+      const input = li.querySelector("input");
+      if (!input) return null;
+      const text = li.querySelector("span");
+      return {
+        item: (text ? text.textContent : li.textContent).trim(),
+        checked: !!input.checked
+      };
+    }).filter(Boolean);
+  }
+
+  function val(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : "";
+  }
+
+  function payload() {
+    const base = money(boot.contract_value_excl_tax);
+    const node = selectedNode();
+    const p = {
+      payment_no: Number(node.payment_no || stamp.textContent || 1),
+      project_name: boot.project_name || "",
+      division: boot.division || "",
+      division_code: boot.division_code || "",
+      billing_entity: boot.billing_entity || "",
+      vendor_name: boot.vendor_name || "",
+      work_package: boot.work_package || "",
+      vendor_ref: val("vendor_ref"),
+      po_number: val("po_number"),
+      po_value_excl_tax: base,
+      contract_value_excl_tax: base,
+      contact_name: val("contact_name"),
+      contact_mobile: val("contact_mobile"),
+      office_phone: val("office_phone"),
+      office_address: val("office_address"),
+      claim_node: nodeSelect.value,
+      claim_amount_excl_tax: boot.amount_tax === "incl" ? null : money(claimAmount.value),
+      claim_amount_incl_tax: boot.amount_tax === "incl" ? money(claimAmount.value) : null,
+      payment_terms: boot.payment_terms || "",
+      application_date: (function () {
+        const d = new Date();
+        return d.getFullYear() + "年" + String(d.getMonth() + 1).padStart(2, "0") + "月" + String(d.getDate()).padStart(2, "0") + "日";
+      })(),
+      includes_variations: !!(includesVariations && includesVariations.checked),
+      variations_to_date: money(boot.variations_to_date) || 0,
+      period_count: Number(boot.period_count) || (boot.nodes || []).length || 0,
+      previous_claims: Array.isArray(boot.previous_claims) ? boot.previous_claims : [],
+      nodes_overview: document.getElementById("nodes_overview").value,
+      vat_note_pct: boot.vat_note_pct == null || boot.vat_note_pct === "" ? null : boot.vat_note_pct,
+      notes: "",
+      support_files: checkedFiles()
+    };
+    (boot.user_fields || []).forEach(function (f) {
+      if (!f || !f.key) return;
+      p[f.key] = val(f.key);
+    });
+    if (boot.attachment_mode === "lines") {
+      p.support_file_lines = val("support_files_text").split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+    }
+    return p;
+  }
+
+  function typedClaim(p) {
+    return boot.amount_tax === "incl" ? p.claim_amount_incl_tax : p.claim_amount_excl_tax;
+  }
+
+  function validate(p) {
+    if (!p.claim_node) return "请选择请款节点";
+    if (typedClaim(p) == null) return "请填写本次请款金额（" + taxLabel + "）";
+    const fields = boot.user_fields || [];
+    if (fields.length) {
+      for (let i = 0; i < fields.length; i++) {
+        const f = fields[i];
+        if (f.required && !p[f.key]) return "请填写" + (f.label || f.key);
+      }
+      return "";
+    }
+    if (!p.po_number) return "请填写 PO Number";
+    if (!p.vendor_ref) return "请填写 Vendor Reference（供应商编号，PO 上通常有）";
+    if (!p.contact_name) return "请填写联系人";
+    if (!p.contact_mobile) return "请填写手机号";
+    if (!p.office_address) return "请填写公司地址";
+    return "";
+  }
+
+  function setStatus(msg, kind) {
+    downloadStatus.textContent = msg || "";
+    downloadStatus.className = "download-status" + (kind ? " " + kind : "");
+  }
+
+  function b64ToUint8Array(b64) {
+    const bin = atob(b64.replace(/\s+/g, ""));
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  function excelFileName(p) {
+    const n = Number(p.payment_no) || 1;
+    const safe = function (s) {
+      return String(s || "").replace(/[\\/:*?"<>|]+/g, "_").replace(/\s+/g, " ").trim().slice(0, 40) || "未命名";
+    };
+    const tpl = String(boot.download_filename || "").trim();
+    if (tpl) {
+      return tpl
+        .replaceAll("{project_name}", safe(p.project_name))
+        .replaceAll("{vendor_name}", safe(p.vendor_name))
+        .replaceAll("{work_package}", safe(p.work_package))
+        .replaceAll("{payment_no}", String(n));
+    }
+    const pkg = String(p.work_package || "package").replace(/[^\w\u4e00-\u9fff\-]+/g, "_").slice(0, 40);
+    const d = new Date();
+    const iso = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    return "PAYMENT_NO_" + n + "_" + pkg + "_" + iso + ".xlsx";
+  }
+
+  function downloadExcel() {
+    const p = payload();
+    const err = validate(p);
+    if (err) {
+      setStatus(err, "err");
+      return;
+    }
+    const engine = boot.engine || "cells";
+    if (engine === "cells") {
+      if (typeof fillXlsxFromProfile !== "function") {
+        setStatus("Excel 填表组件未加载（缺少 .claim-assets/fill-xlsx.js），请重新同步请款页。", "err");
+        return;
+      }
+    } else if (typeof fillInsertRowsXlsx !== "function") {
+      setStatus("Excel 填表组件未加载（缺少 .claim-assets/fill-insert-xlsx.js），请重新同步请款页。", "err");
+      return;
+    }
+    const b64El = document.getElementById("xlsx_template_b64");
+    const b64 = (b64El && b64El.textContent || "").trim();
+    if (!b64) {
+      setStatus("缺少公司请款模板，请重新同步请款申请页。", "err");
+      return;
+    }
+    const bytes = b64ToUint8Array(b64);
+    const job = engine === "cells"
+      ? fillXlsxFromProfile(bytes, p, boot.profile || {})
+      : fillInsertRowsXlsx(bytes, p);
+    job.then(function (blob) {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = excelFileName(p);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
+      setStatus("已下载" + (boot.form_title || "请款单") + " Excel。", "ok");
+    }).catch(function (e) {
+      setStatus("生成 Excel 失败：" + (e && e.message ? e.message : e), "err");
+    });
+  }
+
+  nodeSelect.addEventListener("change", syncNode);
+  claimAmount.addEventListener("input", function () { applyMoneyFormat(claimAmount, false); });
+  claimAmount.addEventListener("blur", function () { applyMoneyFormat(claimAmount, true); });
+  document.getElementById("btn_excel").addEventListener("click", downloadExcel);
+  if (claimAmount.value) applyMoneyFormat(claimAmount, true);
+  syncNode();
+})();
+</script>
+</body>
+</html>

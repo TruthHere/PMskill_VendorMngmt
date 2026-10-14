@@ -1,7 +1,7 @@
 {
   "ok": true,
   "intent": "payment_claim.inbound",
-  "route_to": "payment-request",
+  "route_to": "payment-flow",
   "confidence": "high",
   "hints": {
     "subject": "Payment Application No. 3 for BMS - Delivery",
@@ -17,7 +17,7 @@
     "naive_classify"
   ],
   "next": {
-    "skill": "payment-request",
+    "skill": "payment-flow",
     "action": "naive"
   }
 }

@@ -18,4 +18,4 @@ docs.zip
 test-runs/
 
 # Real client mail used only for local smoke tests — do not upload
-change-archive-workspace/real-mail-smoke/
+change-flow-workspace/real-mail-smoke/

@@ -1,0 +1,613 @@
+{
+  "metadata": {
+    "skill_name": "po-flow",
+    "skill_path": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/po-flow",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-08-01T13:16:41Z",
+    "evals_run": [
+      0,
+      1,
+      2
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 0.053,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "process_result.json exists (pipeline evidence)",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/misroute-init-with/process_result.json"
+        },
+        {
+          "text": "process_result is non-empty JSON",
+          "passed": true,
+          "evidence": "ok"
+        },
+        {
+          "text": "process_result came from mail classification path",
+          "passed": true,
+          "evidence": "from_classification=True intent=project_init"
+        },
+        {
+          "text": "process_result reason is routed_to_skill0",
+          "passed": true,
+          "evidence": "reason=routed_to_skill0"
+        },
+        {
+          "text": "note tells user to use Skill 0 / new-project",
+          "passed": true,
+          "evidence": "\u9879\u76ee\u521d\u59cb\u5316\u5df2\u8fc1\u51fa Skill 1\u3002\u8bf7\u7ecf mail-inbox \u5206\u53d1\u5230 Skill 0 `new-project/scripts/handle_init_email.py`\uff0c\u6216\u624b\u52a8\u8fd0\u884c run_init.py\u3002"
+        },
+        {
+          "text": "no procurement package created by this mail",
+          "passed": true,
+          "evidence": "packages=0"
+        },
+        {
+          "text": "no 01_* package folder created",
+          "passed": true,
+          "evidence": "none"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 19,
+        "failed": 0,
+        "total": 19,
+        "time_seconds": 0.155,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "process_result.json exists (pipeline evidence)",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/rfp-forward-with/process_result.json"
+        },
+        {
+          "text": "process_result is non-empty JSON",
+          "passed": true,
+          "evidence": "ok"
+        },
+        {
+          "text": "process_result intent is fulfillment.rfp",
+          "passed": true,
+          "evidence": "intent=fulfillment.rfp"
+        },
+        {
+          "text": "process_result step is step1 and auto=true",
+          "passed": true,
+          "evidence": "step=step1 auto=True"
+        },
+        {
+          "text": "project.json exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/rfp-forward-with/.skill/project.json"
+        },
+        {
+          "text": "standard tracker CSV exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/rfp-forward-with/Sample Project_procurement_packages_status_tracker.csv"
+        },
+        {
+          "text": "tracker has exactly one package",
+          "passed": true,
+          "evidence": "count=1"
+        },
+        {
+          "text": "milestone RFP \u53d1\u51fa is set",
+          "passed": true,
+          "evidence": "RFP \u53d1\u51fa=2026-08-01"
+        },
+        {
+          "text": "package name is BMS",
+          "passed": true,
+          "evidence": "BMS"
+        },
+        {
+          "text": "package has 01~07 subfolders",
+          "passed": true,
+          "evidence": ".claim-assets, 06_\u7ed3\u7b97\u8d44\u6599, 07_\u5f80\u6765\u6587\u4ef6, 05_\u9a8c\u6536\u8bb0\u5f55, 04_\u53d8\u66f4\u6d3d\u5546, 03_\u8bf7\u6b3e\u8bb0\u5f55, 02_\u56fe\u7eb8, 01_\u5408\u540c\u62a5\u4ef7"
+        },
+        {
+          "text": "\u5c65\u7ea6\u6761\u4ef6\u5361\u7247.html exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/rfp-forward-with/01_BMS_BOSCH/\u5c65\u7ea6\u6761\u4ef6\u5361\u7247.html"
+        },
+        {
+          "text": "RFP .eml archived under 07_\u5f80\u6765\u6587\u4ef6",
+          "passed": true,
+          "evidence": "count=1"
+        },
+        {
+          "text": "card-data.json exists (Skill 1 \u2192 vendor-card input)",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/rfp-forward-with/01_BMS_BOSCH/card-data.json"
+        },
+        {
+          "text": "card HTML passes vendor-card template validation",
+          "passed": true,
+          "evidence": "ok"
+        },
+        {
+          "text": "card HTML has payment-table (template fingerprint)",
+          "passed": true,
+          "evidence": "found"
+        },
+        {
+          "text": "\u8bf7\u6b3e\u7533\u8bf7.html exists (produced by vendor-card)",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/rfp-forward-with/01_BMS_BOSCH/\u8bf7\u6b3e\u7533\u8bf7.html"
+        },
+        {
+          "text": "\u8bf7\u6b3e\u7533\u8bf7.html looks like claim-form template",
+          "passed": true,
+          "evidence": "template markers ok"
+        },
+        {
+          "text": "card has \u53d1\u8d77\u8bf7\u6b3e link to \u8bf7\u6b3e\u7533\u8bf7.html",
+          "passed": true,
+          "evidence": "found"
+        },
+        {
+          "text": "card-data supplier_name filled by Skill 1",
+          "passed": true,
+          "evidence": "BOSCH Building Technologies"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 20,
+        "failed": 0,
+        "total": 20,
+        "time_seconds": 0.313,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "process_result.json exists (pipeline evidence)",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/po-payment-with/process_result.json"
+        },
+        {
+          "text": "process_result is non-empty JSON",
+          "passed": true,
+          "evidence": "ok"
+        },
+        {
+          "text": "process_result records Raise PO via pipeline (step3 auto)",
+          "passed": true,
+          "evidence": "raise_po.step=step3 auto=True flat_step=step4_payment"
+        },
+        {
+          "text": "process_result records payment terms via pipeline",
+          "passed": true,
+          "evidence": "payment.step=step4_payment payment_nodes=3"
+        },
+        {
+          "text": "project.json exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/po-payment-with/.skill/project.json"
+        },
+        {
+          "text": "tracker has a package",
+          "passed": true,
+          "evidence": "count=1"
+        },
+        {
+          "text": "milestone PO \u5df2\u53d1\u8d77 is set",
+          "passed": true,
+          "evidence": "PO \u5df2\u53d1\u8d77=2026-08-01"
+        },
+        {
+          "text": "next_payment_node is populated",
+          "passed": true,
+          "evidence": "\u9884\u4ed8\u6b3e / Advance 30%"
+        },
+        {
+          "text": "\u5c65\u7ea6\u6761\u4ef6\u5361\u7247.html exists",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/po-payment-with/01_BMS_BOSCH/\u5c65\u7ea6\u6761\u4ef6\u5361\u7247.html"
+        },
+        {
+          "text": "card HTML mentions \u9884\u4ed8\u6b3e",
+          "passed": true,
+          "evidence": "found"
+        },
+        {
+          "text": "card HTML mentions 30%",
+          "passed": true,
+          "evidence": "found"
+        },
+        {
+          "text": "card-data payment_nodes has 3 entries",
+          "passed": true,
+          "evidence": "count=3"
+        },
+        {
+          "text": "PO amount written to tracker or card (\u542b\u7a0e)",
+          "passed": true,
+          "evidence": "card=\u00a51,280,000.00 tracker=1280000.00"
+        },
+        {
+          "text": "card-data.json exists (Skill 1 \u2192 vendor-card input)",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/po-payment-with/01_BMS_BOSCH/card-data.json"
+        },
+        {
+          "text": "card HTML passes vendor-card template validation",
+          "passed": true,
+          "evidence": "ok"
+        },
+        {
+          "text": "card HTML has payment-table (template fingerprint)",
+          "passed": true,
+          "evidence": "found"
+        },
+        {
+          "text": "\u8bf7\u6b3e\u7533\u8bf7.html exists (produced by vendor-card)",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/po-payment-with/01_BMS_BOSCH/\u8bf7\u6b3e\u7533\u8bf7.html"
+        },
+        {
+          "text": "\u8bf7\u6b3e\u7533\u8bf7.html looks like claim-form template",
+          "passed": true,
+          "evidence": "template markers ok"
+        },
+        {
+          "text": "card has \u53d1\u8d77\u8bf7\u6b3e link to \u8bf7\u6b3e\u7533\u8bf7.html",
+          "passed": true,
+          "evidence": "found"
+        },
+        {
+          "text": "card-data supplier_name filled by Skill 1",
+          "passed": true,
+          "evidence": "BOSCH Building Technologies"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 0,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5714,
+        "passed": 4,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 0.0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "process_result.json exists (pipeline evidence)",
+          "passed": true,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/misroute-init-without/process_result.json"
+        },
+        {
+          "text": "process_result is non-empty JSON",
+          "passed": true,
+          "evidence": "ok"
+        },
+        {
+          "text": "process_result came from mail classification path",
+          "passed": false,
+          "evidence": "from_classification=None intent=None"
+        },
+        {
+          "text": "process_result reason is routed_to_skill0",
+          "passed": false,
+          "evidence": "reason=missing"
+        },
+        {
+          "text": "note tells user to use Skill 0 / new-project",
+          "passed": false,
+          "evidence": "naive init"
+        },
+        {
+          "text": "no procurement package created by this mail",
+          "passed": true,
+          "evidence": "packages=0"
+        },
+        {
+          "text": "no 01_* package folder created",
+          "passed": true,
+          "evidence": "none"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 17,
+        "time_seconds": 0.0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "process_result.json exists (pipeline evidence)",
+          "passed": false,
+          "evidence": "missing \u2014 likely hand-rolled without process_email"
+        },
+        {
+          "text": "process_result is non-empty JSON",
+          "passed": false,
+          "evidence": "empty"
+        },
+        {
+          "text": "project.json exists",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "standard tracker CSV exists",
+          "passed": false,
+          "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/rfp-forward-without/tracker.csv"
+        },
+        {
+          "text": "tracker has exactly one package",
+          "passed": false,
+          "evidence": "count=0"
+        },
+        {
+          "text": "milestone RFP \u53d1\u51fa is set",
+          "passed": false,
+          "evidence": "no package"
+        },
+        {
+          "text": "package name is BMS",
+          "passed": false,
+          "evidence": "no package"
+        },
+        {
+          "text": "package has 01~07 subfolders",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "\u5c65\u7ea6\u6761\u4ef6\u5361\u7247.html exists",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "RFP .eml archived under 07_\u5f80\u6765\u6587\u4ef6",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card-data.json exists (Skill 1 \u2192 vendor-card input)",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card HTML passes vendor-card template validation",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card HTML has payment-table (template fingerprint)",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "\u8bf7\u6b3e\u7533\u8bf7.html exists (produced by vendor-card)",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "\u8bf7\u6b3e\u7533\u8bf7.html looks like claim-form template",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card has \u53d1\u8d77\u8bf7\u6b3e link to \u8bf7\u6b3e\u7533\u8bf7.html",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card-data supplier_name filled by Skill 1",
+          "passed": false,
+          "evidence": "package dir missing"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 18,
+        "time_seconds": 0.0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "process_result.json exists (pipeline evidence)",
+          "passed": false,
+          "evidence": "missing \u2014 likely hand-rolled without process_email"
+        },
+        {
+          "text": "process_result is non-empty JSON",
+          "passed": false,
+          "evidence": "empty"
+        },
+        {
+          "text": "project.json exists",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "tracker has a package",
+          "passed": false,
+          "evidence": "count=0"
+        },
+        {
+          "text": "milestone PO \u5df2\u53d1\u8d77 is set",
+          "passed": false,
+          "evidence": "no package"
+        },
+        {
+          "text": "next_payment_node is populated",
+          "passed": false,
+          "evidence": "no package"
+        },
+        {
+          "text": "\u5c65\u7ea6\u6761\u4ef6\u5361\u7247.html exists",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card HTML mentions \u9884\u4ed8\u6b3e",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card HTML mentions 30%",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card-data payment_nodes has 3 entries",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "PO amount written to tracker or card (\u542b\u7a0e)",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card-data.json exists (Skill 1 \u2192 vendor-card input)",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card HTML passes vendor-card template validation",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card HTML has payment-table (template fingerprint)",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "\u8bf7\u6b3e\u7533\u8bf7.html exists (produced by vendor-card)",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "\u8bf7\u6b3e\u7533\u8bf7.html looks like claim-form template",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card has \u53d1\u8d77\u8bf7\u6b3e link to \u8bf7\u6b3e\u7533\u8bf7.html",
+          "passed": false,
+          "evidence": "package dir missing"
+        },
+        {
+          "text": "card-data supplier_name filled by Skill 1",
+          "passed": false,
+          "evidence": "package dir missing"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 0.1737,
+        "stddev": 0.131,
+        "min": 0.053,
+        "max": 0.313
+      },
+      "tokens": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.1905,
+        "stddev": 0.3299,
+        "min": 0.0,
+        "max": 0.5714
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "tokens": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.81",
+      "time_seconds": "+0.2",
+      "tokens": "+0"
+    }
+  },
+  "notes": []
+}

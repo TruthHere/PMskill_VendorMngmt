@@ -21,60 +21,55 @@ from common import PENDING_JSON, load_json, now_iso, system_file
 ALLOWED_PENDING_SKILLS = frozenset(
     {
         "mail-inbox",
-        "project-init",
-        "contract-fulfillment-struct",
-        "payment-request",
-        "change-archive",
-        "cashflow-forecast",
-        "project-directory",
+        "new-project",
+        "po-flow",
+        "payment-flow",
+        "change-flow",
+        "cashflow",
     }
 )
 
 SCHEDULE_PENDING_SKILLS = frozenset(
     {
-        "schedule-critical-nodes",
-        "schedule-mpp-excel",
+        "critical-nodes",
+        "mpp-to-excel",
     }
 )
 
 FORBIDDEN_PENDING_SKILLS = {
-    "schedule-critical-nodes": "进度的待确认必须写在 schedule.json 里，不能写进 pending.json。",
-    "schedule-mpp-excel": "转进度表不写 pending.json；吃不准的节点交给 schedule-critical-nodes，写在 schedule.json。",
-    "fulfillment-card": "卡片质量提醒只留在卡片顶栏，禁止写入 pending.json。",
-    "payment-form": "请款申请页不写 pending.json。",
-    "pdf-read": "读 PDF 不写 pending.json。",
+    "critical-nodes": "进度的待确认必须写在 schedule.json 里，不能写进 pending.json。",
+    "mpp-to-excel": "转进度表不写 pending.json；吃不准的节点交给 critical-nodes，写在 schedule.json。",
+    "vendor-card": "卡片质量提醒只留在卡片顶栏，禁止写入 pending.json。",
+    "payment-sheet": "请款申请页不写 pending.json。",
+    "read-pdf": "读 PDF 不写 pending.json。",
 }
 
 SKILL_ALIASES = {
-    "skill0": "project-init",
-    "skill 0": "project-init",
-    "sk-init": "project-init",
-    "skill1": "contract-fulfillment-struct",
-    "skill 1": "contract-fulfillment-struct",
-    "sk-fulfill": "contract-fulfillment-struct",
-    "skill2": "payment-request",
-    "skill 2": "payment-request",
-    "sk-pay": "payment-request",
-    "skill3": "change-archive",
-    "skill 3": "change-archive",
-    "sk-change": "change-archive",
-    "skill4": "cashflow-forecast",
-    "skill 4": "cashflow-forecast",
-    "sk-cash": "cashflow-forecast",
-    "skill5": "project-directory",
-    "skill 5": "project-directory",
-    "sk-dir": "project-directory",
+    "skill0": "new-project",
+    "skill 0": "new-project",
+    "sk-init": "new-project",
+    "skill1": "po-flow",
+    "skill 1": "po-flow",
+    "sk-fulfill": "po-flow",
+    "skill2": "payment-flow",
+    "skill 2": "payment-flow",
+    "sk-pay": "payment-flow",
+    "skill3": "change-flow",
+    "skill 3": "change-flow",
+    "sk-change": "change-flow",
+    "skill4": "cashflow",
+    "skill 4": "cashflow",
+    "sk-cash": "cashflow",
     "sk-mail": "mail-inbox",
 }
 
 SKILL_LABELS = {
     "mail-inbox": "邮件入口",
-    "project-init": "Skill 0 项目初始化",
-    "contract-fulfillment-struct": "Skill 1 履约",
-    "payment-request": "Skill 2 请款",
-    "change-archive": "Skill 3 变更",
-    "cashflow-forecast": "Skill 4 现金流",
-    "project-directory": "Skill 5 通讯录",
+    "new-project": "Skill 0 项目初始化",
+    "po-flow": "Skill 1 履约",
+    "payment-flow": "Skill 2 请款",
+    "change-flow": "Skill 3 变更",
+    "cashflow": "现金流预测",
 }
 
 CLOSE_STATUSES = frozenset({"confirmed", "cancelled"})
@@ -158,7 +153,7 @@ def infer_legacy_skill(item: dict[str, Any]) -> str | None:
     reason = str(item.get("reason") or "").strip()
 
     if step in {"change_archive", "change_po"} or step.startswith("change."):
-        return "change-archive"
+        return "change-flow"
     if reason in {
         "change_po_deferred",
         "change_id_unmatched",
@@ -166,13 +161,11 @@ def infer_legacy_skill(item: dict[str, Any]) -> str | None:
         "change_handler_failed",
         "amount_unconfirmed",
     }:
-        return "change-archive"
+        return "change-flow"
     if step in {"project_init", "stage0"} or reason.startswith("project_"):
-        return "project-init"
-    if step.startswith("directory") or reason.startswith("directory_"):
-        return "project-directory"
+        return "new-project"
     if step.startswith("payment_claim") or reason.startswith("payment_"):
-        return "payment-request"
+        return "payment-flow"
     if reason in {"intent_low_confidence", "unknown_intent"} or step in {"unknown"}:
         return "mail-inbox"
     if reason in {
@@ -185,12 +178,14 @@ def infer_legacy_skill(item: dict[str, Any]) -> str | None:
         "quote_amount_unparsed",
         "contract_payment_needs_review",
         "package_not_found",
+        "possible_thread_reply",
+        "open_action_item",
     }:
-        return "contract-fulfillment-struct"
+        return "po-flow"
     if step.startswith("step") or step in {"步骤4"}:
-        return "contract-fulfillment-struct"
+        return "po-flow"
     if reason in {"package_unmatched", "out_of_order"}:
-        return "change-archive"
+        return "change-flow"
     return None
 
 

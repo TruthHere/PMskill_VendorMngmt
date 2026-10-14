@@ -6,9 +6,9 @@
       "evidence": "got 'fulfillment.rfp'"
     },
     {
-      "text": "route_to is contract-fulfillment-struct",
+      "text": "route_to is po-flow",
       "passed": true,
-      "evidence": "got 'contract-fulfillment-struct'"
+      "evidence": "got 'po-flow'"
     },
     {
       "text": "package_name is Door Package",

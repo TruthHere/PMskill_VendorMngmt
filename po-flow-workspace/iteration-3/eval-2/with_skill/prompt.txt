@@ -1,0 +1,7 @@
+工作目录（已有 BMS 采购包，技术方案已确认）：/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-3/eval-2/with_skill/outputs
+请依次处理：
+1) Raise PO 邮件：/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-3/eval-2/with_skill/outputs/_mail/raise_po.eml
+2) 付款指示邮件：/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-3/eval-2/with_skill/outputs/_mail/payment.eml
+
+目标：更新 Tracker 的 PO 已发起，卡片写入 3 个付款节点（预付款30%/到货验收60%/尾款10%），金额含税写入。
+完成后状态留在工作目录，并写说明到 /Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-3/eval-2/with_skill/outputs/agent_notes.md。

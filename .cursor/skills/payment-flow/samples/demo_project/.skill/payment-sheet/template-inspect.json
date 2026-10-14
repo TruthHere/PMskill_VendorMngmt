@@ -1,0 +1,1639 @@
+{
+  "file": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/payment-flow/samples/demo_project/.skill/payment-sheet/template.xlsx",
+  "sheets": [
+    {
+      "name": "Invoice",
+      "state": "visible",
+      "rid": "rId1",
+      "part": "xl/worksheets/sheet1.xml",
+      "in_zip": true,
+      "cells": [
+        {
+          "cell": "B1",
+          "kind": "value",
+          "text": "PAYMENT NO: 1",
+          "style": "36"
+        },
+        {
+          "cell": "B2",
+          "kind": "value",
+          "text": "Project:",
+          "style": "32"
+        },
+        {
+          "cell": "C2",
+          "kind": "value",
+          "text": "Apple SARL Phase 5 Build Out Project",
+          "style": "134"
+        },
+        {
+          "cell": "B3",
+          "kind": "value",
+          "text": "Division:",
+          "style": "32"
+        },
+        {
+          "cell": "C3",
+          "kind": "value",
+          "text": "212-4",
+          "style": "135"
+        },
+        {
+          "cell": "B4",
+          "kind": "value",
+          "text": "Vendor:",
+          "style": "34"
+        },
+        {
+          "cell": "C4",
+          "kind": "value",
+          "text": "供应商名称",
+          "style": "159"
+        },
+        {
+          "cell": "B5",
+          "kind": "value",
+          "text": "Work Package:",
+          "style": "34"
+        },
+        {
+          "cell": "C5",
+          "kind": "value",
+          "text": "服务内容",
+          "style": "132"
+        },
+        {
+          "cell": "B6",
+          "kind": "value",
+          "text": "Vendor Reference Number:",
+          "style": "44"
+        },
+        {
+          "cell": "C6",
+          "kind": "value",
+          "text": "供应商编号（PO单里有）",
+          "style": "136"
+        },
+        {
+          "cell": "B7",
+          "kind": "value",
+          "text": "PO Number :",
+          "style": "32"
+        },
+        {
+          "cell": "C7",
+          "kind": "value",
+          "text": "PO号",
+          "style": "135"
+        },
+        {
+          "cell": "B8",
+          "kind": "value",
+          "text": "PO Value:",
+          "style": "32"
+        },
+        {
+          "cell": "C8",
+          "kind": "value",
+          "text": "PO金额",
+          "style": "137"
+        },
+        {
+          "cell": "D8",
+          "kind": "value",
+          "text": "(CNY exclude xx% VAT)",
+          "style": "138"
+        },
+        {
+          "cell": "B9",
+          "kind": "value",
+          "text": "Contract Value:",
+          "style": "72"
+        },
+        {
+          "cell": "C9",
+          "kind": "value",
+          "text": "PO金额",
+          "style": "140"
+        },
+        {
+          "cell": "D9",
+          "kind": "value",
+          "text": "(CNY exclude xx% VAT)",
+          "style": "141"
+        },
+        {
+          "cell": "B11",
+          "kind": "value",
+          "text": "Vendor:",
+          "style": "34"
+        },
+        {
+          "cell": "C11",
+          "kind": "value",
+          "text": "供应商名称",
+          "style": "131"
+        },
+        {
+          "cell": "K11",
+          "kind": "value",
+          "text": "Office Address:",
+          "style": "175"
+        },
+        {
+          "cell": "B12",
+          "kind": "value",
+          "text": "Contact Point:",
+          "style": "34"
+        },
+        {
+          "cell": "C12",
+          "kind": "value",
+          "text": "联系人姓名",
+          "style": "132"
+        },
+        {
+          "cell": "K12",
+          "kind": "value",
+          "text": "公司地址",
+          "style": "178"
+        },
+        {
+          "cell": "B13",
+          "kind": "value",
+          "text": "Contact Number:",
+          "style": "34"
+        },
+        {
+          "cell": "C13",
+          "kind": "value",
+          "text": "联系人手机号",
+          "style": "133"
+        },
+        {
+          "cell": "B14",
+          "kind": "value",
+          "text": "Office:",
+          "style": "34"
+        },
+        {
+          "cell": "C14",
+          "kind": "value",
+          "text": "公司电话（如有）",
+          "style": "132"
+        },
+        {
+          "cell": "B18",
+          "kind": "value",
+          "text": "Division:",
+          "style": "44"
+        },
+        {
+          "cell": "Q18",
+          "kind": "value",
+          "text": "Payment Claim No.",
+          "style": "65"
+        },
+        {
+          "cell": "B19",
+          "kind": "value",
+          "text": "212",
+          "style": "32"
+        },
+        {
+          "cell": "C19",
+          "kind": "value",
+          "text": "Apple R&D (Beijing) Limited",
+          "style": "44"
+        },
+        {
+          "cell": "Q19",
+          "kind": "value",
+          "text": "1",
+          "style": "67"
+        },
+        {
+          "cell": "B22",
+          "kind": "value",
+          "text": "所有请款节点，金额及条件",
+          "style": "170"
+        },
+        {
+          "cell": "P22",
+          "kind": "value",
+          "text": "Period",
+          "style": "180"
+        },
+        {
+          "cell": "P23",
+          "kind": "value",
+          "text": "1",
+          "style": "182"
+        },
+        {
+          "cell": "B29",
+          "kind": "value",
+          "text": "Contract Value",
+          "style": "32"
+        },
+        {
+          "cell": "H29",
+          "kind": "value",
+          "text": "RMB",
+          "style": "75"
+        },
+        {
+          "cell": "B30",
+          "kind": "value",
+          "text": "Add: Variations to-date",
+          "style": "44"
+        },
+        {
+          "cell": "H30",
+          "kind": "value",
+          "text": "RMB",
+          "style": "75"
+        },
+        {
+          "cell": "I30",
+          "kind": "value",
+          "text": "0",
+          "style": "161"
+        },
+        {
+          "cell": "B31",
+          "kind": "value",
+          "text": "Adjusted Contract Value",
+          "style": "32"
+        },
+        {
+          "cell": "H31",
+          "kind": "value",
+          "text": "RMB",
+          "style": "75"
+        },
+        {
+          "cell": "B37",
+          "kind": "value",
+          "text": "本次请款节点",
+          "style": "183"
+        },
+        {
+          "cell": "Q37",
+          "kind": "value",
+          "text": "本次请款金额",
+          "style": "130"
+        },
+        {
+          "cell": "B39",
+          "kind": "value",
+          "text": "Total Invoice Value",
+          "style": "32"
+        },
+        {
+          "cell": "B41",
+          "kind": "value",
+          "text": "LESS payment previously certified",
+          "style": "168"
+        },
+        {
+          "cell": "Q41",
+          "kind": "value",
+          "text": "0",
+          "style": "127"
+        },
+        {
+          "cell": "B45",
+          "kind": "value",
+          "text": "TOTAL CLAIM",
+          "style": "146"
+        },
+        {
+          "cell": "B49",
+          "kind": "value",
+          "text": "PAYMENT APPROVALS",
+          "style": "103"
+        },
+        {
+          "cell": "E50",
+          "kind": "value",
+          "text": "Date",
+          "style": "150"
+        },
+        {
+          "cell": "B56",
+          "kind": "value",
+          "text": "Signature",
+          "style": "148"
+        },
+        {
+          "cell": "E56",
+          "kind": "value",
+          "text": "Date",
+          "style": "150"
+        },
+        {
+          "cell": "L56",
+          "kind": "value",
+          "text": "Project Manager",
+          "style": "148"
+        },
+        {
+          "cell": "B62",
+          "kind": "value",
+          "text": "Notes:",
+          "style": "115"
+        },
+        {
+          "cell": "B63",
+          "kind": "value",
+          "text": "Please note the following assumptions",
+          "style": "118"
+        },
+        {
+          "cell": "B64",
+          "kind": "value",
+          "text": "(a) This invoice without VAT",
+          "style": "119"
+        },
+        {
+          "cell": "B65",
+          "kind": "value",
+          "text": "(b) Please see attached email for approval.",
+          "style": "119"
+        }
+      ],
+      "formulas": [
+        {
+          "cell": "I29",
+          "kind": "formula",
+          "text": "C9",
+          "style": "176"
+        },
+        {
+          "cell": "I31",
+          "kind": "formula",
+          "text": "I29+I30",
+          "style": "163"
+        },
+        {
+          "cell": "Q39",
+          "kind": "formula",
+          "text": "SUM(Q36:Q37)",
+          "style": "126"
+        },
+        {
+          "cell": "Q45",
+          "kind": "formula",
+          "text": "Q39-Q41",
+          "style": "128"
+        }
+      ],
+      "empty_styled_count": 2330,
+      "fill_guesses": [
+        {
+          "cell": "C1",
+          "label": "PAYMENT NO: 1",
+          "label_at": "left"
+        },
+        {
+          "cell": "D2",
+          "label": "Apple SARL Phase 5 Build Out Project",
+          "label_at": "left"
+        },
+        {
+          "cell": "D3",
+          "label": "212-4",
+          "label_at": "left"
+        },
+        {
+          "cell": "D4",
+          "label": "供应商名称",
+          "label_at": "left"
+        },
+        {
+          "cell": "D5",
+          "label": "服务内容",
+          "label_at": "left"
+        },
+        {
+          "cell": "D6",
+          "label": "供应商编号（PO单里有）",
+          "label_at": "left"
+        },
+        {
+          "cell": "D7",
+          "label": "PO号",
+          "label_at": "left"
+        },
+        {
+          "cell": "E8",
+          "label": "(CNY exclude xx% VAT)",
+          "label_at": "left"
+        },
+        {
+          "cell": "E9",
+          "label": "(CNY exclude xx% VAT)",
+          "label_at": "left"
+        },
+        {
+          "cell": "B10",
+          "label": "Contract Value:",
+          "label_at": "above"
+        },
+        {
+          "cell": "C10",
+          "label": "PO金额",
+          "label_at": "above"
+        },
+        {
+          "cell": "D10",
+          "label": "(CNY exclude xx% VAT)",
+          "label_at": "above"
+        },
+        {
+          "cell": "D11",
+          "label": "供应商名称",
+          "label_at": "left"
+        },
+        {
+          "cell": "L11",
+          "label": "Office Address:",
+          "label_at": "left"
+        },
+        {
+          "cell": "D12",
+          "label": "联系人姓名",
+          "label_at": "left"
+        },
+        {
+          "cell": "L12",
+          "label": "公司地址",
+          "label_at": "left"
+        },
+        {
+          "cell": "D13",
+          "label": "联系人手机号",
+          "label_at": "left"
+        },
+        {
+          "cell": "K13",
+          "label": "公司地址",
+          "label_at": "above"
+        },
+        {
+          "cell": "D14",
+          "label": "公司电话（如有）",
+          "label_at": "left"
+        },
+        {
+          "cell": "B15",
+          "label": "Office:",
+          "label_at": "above"
+        },
+        {
+          "cell": "C15",
+          "label": "公司电话（如有）",
+          "label_at": "above"
+        },
+        {
+          "cell": "C18",
+          "label": "Division:",
+          "label_at": "left"
+        },
+        {
+          "cell": "R18",
+          "label": "Payment Claim No.",
+          "label_at": "left"
+        },
+        {
+          "cell": "D19",
+          "label": "Apple R&D (Beijing) Limited",
+          "label_at": "left"
+        },
+        {
+          "cell": "R19",
+          "label": "1",
+          "label_at": "left"
+        },
+        {
+          "cell": "B20",
+          "label": "212",
+          "label_at": "above"
+        },
+        {
+          "cell": "C20",
+          "label": "Apple R&D (Beijing) Limited",
+          "label_at": "above"
+        },
+        {
+          "cell": "Q20",
+          "label": "1",
+          "label_at": "above"
+        },
+        {
+          "cell": "C22",
+          "label": "所有请款节点，金额及条件",
+          "label_at": "left"
+        },
+        {
+          "cell": "Q22",
+          "label": "Period",
+          "label_at": "left"
+        },
+        {
+          "cell": "B23",
+          "label": "所有请款节点，金额及条件",
+          "label_at": "above"
+        },
+        {
+          "cell": "Q23",
+          "label": "1",
+          "label_at": "left"
+        },
+        {
+          "cell": "P24",
+          "label": "1",
+          "label_at": "above"
+        },
+        {
+          "cell": "C29",
+          "label": "Contract Value",
+          "label_at": "left"
+        },
+        {
+          "cell": "C30",
+          "label": "Add: Variations to-date",
+          "label_at": "left"
+        },
+        {
+          "cell": "J30",
+          "label": "0",
+          "label_at": "left"
+        },
+        {
+          "cell": "C31",
+          "label": "Adjusted Contract Value",
+          "label_at": "left"
+        },
+        {
+          "cell": "B32",
+          "label": "Adjusted Contract Value",
+          "label_at": "above"
+        },
+        {
+          "cell": "H32",
+          "label": "RMB",
+          "label_at": "above"
+        },
+        {
+          "cell": "C37",
+          "label": "本次请款节点",
+          "label_at": "left"
+        },
+        {
+          "cell": "R37",
+          "label": "本次请款金额",
+          "label_at": "left"
+        },
+        {
+          "cell": "B38",
+          "label": "本次请款节点",
+          "label_at": "above"
+        },
+        {
+          "cell": "Q38",
+          "label": "本次请款金额",
+          "label_at": "above"
+        },
+        {
+          "cell": "C39",
+          "label": "Total Invoice Value",
+          "label_at": "left"
+        },
+        {
+          "cell": "B40",
+          "label": "Total Invoice Value",
+          "label_at": "above"
+        },
+        {
+          "cell": "C41",
+          "label": "LESS payment previously certified",
+          "label_at": "left"
+        },
+        {
+          "cell": "R41",
+          "label": "0",
+          "label_at": "left"
+        },
+        {
+          "cell": "B42",
+          "label": "LESS payment previously certified",
+          "label_at": "above"
+        },
+        {
+          "cell": "Q42",
+          "label": "0",
+          "label_at": "above"
+        },
+        {
+          "cell": "C45",
+          "label": "TOTAL CLAIM",
+          "label_at": "left"
+        },
+        {
+          "cell": "B46",
+          "label": "TOTAL CLAIM",
+          "label_at": "above"
+        },
+        {
+          "cell": "C49",
+          "label": "PAYMENT APPROVALS",
+          "label_at": "left"
+        },
+        {
+          "cell": "B50",
+          "label": "PAYMENT APPROVALS",
+          "label_at": "above"
+        },
+        {
+          "cell": "F50",
+          "label": "Date",
+          "label_at": "left"
+        },
+        {
+          "cell": "E51",
+          "label": "Date",
+          "label_at": "above"
+        },
+        {
+          "cell": "C56",
+          "label": "Signature",
+          "label_at": "left"
+        },
+        {
+          "cell": "F56",
+          "label": "Date",
+          "label_at": "left"
+        },
+        {
+          "cell": "M56",
+          "label": "Project Manager",
+          "label_at": "left"
+        },
+        {
+          "cell": "B57",
+          "label": "Signature",
+          "label_at": "above"
+        },
+        {
+          "cell": "E57",
+          "label": "Date",
+          "label_at": "above"
+        },
+        {
+          "cell": "L57",
+          "label": "Project Manager",
+          "label_at": "above"
+        },
+        {
+          "cell": "C62",
+          "label": "Notes:",
+          "label_at": "left"
+        },
+        {
+          "cell": "C63",
+          "label": "Please note the following assumptions",
+          "label_at": "left"
+        },
+        {
+          "cell": "C64",
+          "label": "(a) This invoice without VAT",
+          "label_at": "left"
+        },
+        {
+          "cell": "C65",
+          "label": "(b) Please see attached email for approval.",
+          "label_at": "left"
+        },
+        {
+          "cell": "B66",
+          "label": "(b) Please see attached email for approval.",
+          "label_at": "above"
+        }
+      ],
+      "truncated": false
+    },
+    {
+      "name": "Advance Payment Schedule",
+      "state": "hidden",
+      "rid": "rId2",
+      "part": "xl/worksheets/sheet2.xml",
+      "in_zip": true,
+      "cells": [
+        {
+          "cell": "K10",
+          "kind": "value",
+          "text": "AMOUNT",
+          "style": "20"
+        },
+        {
+          "cell": "A12",
+          "kind": "value",
+          "text": "1)",
+          "style": "8"
+        },
+        {
+          "cell": "B12",
+          "kind": "value",
+          "text": "ADVANCE PAYMENT AS PER ADVACE PAYMENT CERTIFICATE NO. 1 - Feb 2014 (TBC)",
+          "style": "8"
+        },
+        {
+          "cell": "K12",
+          "kind": "value",
+          "text": "12000000000",
+          "style": "24"
+        },
+        {
+          "cell": "A15",
+          "kind": "value",
+          "text": "3)",
+          "style": "8"
+        },
+        {
+          "cell": "B15",
+          "kind": "value",
+          "text": "LESS : ADVANCE PAYMENT PAYBACK TO DATE",
+          "style": "8"
+        },
+        {
+          "cell": "C17",
+          "kind": "value",
+          "text": "Payback",
+          "style": "8"
+        },
+        {
+          "cell": "E17",
+          "kind": "value",
+          "text": "Included in",
+          "style": "8"
+        },
+        {
+          "cell": "G17",
+          "kind": "value",
+          "text": "Certificate",
+          "style": "8"
+        },
+        {
+          "cell": "I17",
+          "kind": "value",
+          "text": "Payback Amount",
+          "style": "185"
+        },
+        {
+          "cell": "C18",
+          "kind": "value",
+          "text": "Payment No",
+          "style": "8"
+        },
+        {
+          "cell": "E18",
+          "kind": "value",
+          "text": "Certificate No",
+          "style": "8"
+        },
+        {
+          "cell": "G18",
+          "kind": "value",
+          "text": "Date",
+          "style": "8"
+        },
+        {
+          "cell": "C20",
+          "kind": "value",
+          "text": "No 1",
+          "style": "8"
+        },
+        {
+          "cell": "E20",
+          "kind": "value",
+          "text": "No 2",
+          "style": "8"
+        },
+        {
+          "cell": "G20",
+          "kind": "value",
+          "text": "41730",
+          "style": "26"
+        },
+        {
+          "cell": "C21",
+          "kind": "value",
+          "text": "No 2",
+          "style": "8"
+        },
+        {
+          "cell": "E21",
+          "kind": "value",
+          "text": "No 3",
+          "style": "8"
+        },
+        {
+          "cell": "G21",
+          "kind": "value",
+          "text": "41760",
+          "style": "26"
+        },
+        {
+          "cell": "C22",
+          "kind": "value",
+          "text": "No 3",
+          "style": "8"
+        },
+        {
+          "cell": "E22",
+          "kind": "value",
+          "text": "No 4",
+          "style": "8"
+        },
+        {
+          "cell": "G22",
+          "kind": "value",
+          "text": "41791",
+          "style": "26"
+        },
+        {
+          "cell": "I22",
+          "kind": "value",
+          "text": "1701600000",
+          "style": "31"
+        },
+        {
+          "cell": "C23",
+          "kind": "value",
+          "text": "No 4",
+          "style": "8"
+        },
+        {
+          "cell": "E23",
+          "kind": "value",
+          "text": "No 5",
+          "style": "8"
+        },
+        {
+          "cell": "G23",
+          "kind": "value",
+          "text": "41821",
+          "style": "26"
+        },
+        {
+          "cell": "I23",
+          "kind": "value",
+          "text": "2297100000",
+          "style": "24"
+        },
+        {
+          "cell": "C24",
+          "kind": "value",
+          "text": "No 5",
+          "style": "8"
+        },
+        {
+          "cell": "E24",
+          "kind": "value",
+          "text": "No 6",
+          "style": "8"
+        },
+        {
+          "cell": "G24",
+          "kind": "value",
+          "text": "41852",
+          "style": "27"
+        },
+        {
+          "cell": "I24",
+          "kind": "value",
+          "text": "639700000",
+          "style": "24"
+        },
+        {
+          "cell": "C25",
+          "kind": "value",
+          "text": "No 6",
+          "style": "8"
+        },
+        {
+          "cell": "E25",
+          "kind": "value",
+          "text": "No 7",
+          "style": "8"
+        },
+        {
+          "cell": "G25",
+          "kind": "value",
+          "text": "41896",
+          "style": "26"
+        },
+        {
+          "cell": "I25",
+          "kind": "value",
+          "text": "598000000",
+          "style": "24"
+        },
+        {
+          "cell": "L25",
+          "kind": "value",
+          "text": "-3534800000",
+          "style": ""
+        },
+        {
+          "cell": "C26",
+          "kind": "value",
+          "text": "No 7",
+          "style": "8"
+        },
+        {
+          "cell": "E26",
+          "kind": "value",
+          "text": "No 8",
+          "style": "8"
+        },
+        {
+          "cell": "C27",
+          "kind": "value",
+          "text": "No 8",
+          "style": "8"
+        },
+        {
+          "cell": "E27",
+          "kind": "value",
+          "text": "No 9",
+          "style": "8"
+        },
+        {
+          "cell": "C28",
+          "kind": "value",
+          "text": "No 9",
+          "style": "8"
+        },
+        {
+          "cell": "E28",
+          "kind": "value",
+          "text": "No 10",
+          "style": "8"
+        },
+        {
+          "cell": "C29",
+          "kind": "value",
+          "text": "No 10",
+          "style": "8"
+        },
+        {
+          "cell": "E29",
+          "kind": "value",
+          "text": "No 11 + 12",
+          "style": "8"
+        },
+        {
+          "cell": "C30",
+          "kind": "value",
+          "text": "No 11",
+          "style": "8"
+        },
+        {
+          "cell": "E30",
+          "kind": "value",
+          "text": "No 13",
+          "style": "8"
+        },
+        {
+          "cell": "C31",
+          "kind": "value",
+          "text": "No 12",
+          "style": "8"
+        },
+        {
+          "cell": "E31",
+          "kind": "value",
+          "text": "No 14",
+          "style": "8"
+        },
+        {
+          "cell": "C32",
+          "kind": "value",
+          "text": "No 13",
+          "style": "8"
+        },
+        {
+          "cell": "E32",
+          "kind": "value",
+          "text": "No 15",
+          "style": "8"
+        },
+        {
+          "cell": "C33",
+          "kind": "value",
+          "text": "No 14",
+          "style": "8"
+        },
+        {
+          "cell": "E33",
+          "kind": "value",
+          "text": "No 16",
+          "style": "8"
+        },
+        {
+          "cell": "C34",
+          "kind": "value",
+          "text": "No 15",
+          "style": "8"
+        },
+        {
+          "cell": "E34",
+          "kind": "value",
+          "text": "No 17",
+          "style": "8"
+        },
+        {
+          "cell": "C35",
+          "kind": "value",
+          "text": "No 16",
+          "style": "8"
+        },
+        {
+          "cell": "E35",
+          "kind": "value",
+          "text": "No 18",
+          "style": "8"
+        },
+        {
+          "cell": "C36",
+          "kind": "value",
+          "text": "No 17",
+          "style": "8"
+        },
+        {
+          "cell": "E36",
+          "kind": "value",
+          "text": "No 19",
+          "style": "8"
+        },
+        {
+          "cell": "C37",
+          "kind": "value",
+          "text": "No 18",
+          "style": "8"
+        },
+        {
+          "cell": "E37",
+          "kind": "value",
+          "text": "No 20",
+          "style": "8"
+        },
+        {
+          "cell": "C38",
+          "kind": "value",
+          "text": "No 19",
+          "style": "8"
+        },
+        {
+          "cell": "E38",
+          "kind": "value",
+          "text": "No 21",
+          "style": "8"
+        },
+        {
+          "cell": "C39",
+          "kind": "value",
+          "text": "No 20",
+          "style": "8"
+        },
+        {
+          "cell": "E39",
+          "kind": "value",
+          "text": "No 22",
+          "style": "8"
+        },
+        {
+          "cell": "C40",
+          "kind": "value",
+          "text": "No 21",
+          "style": "8"
+        },
+        {
+          "cell": "E40",
+          "kind": "value",
+          "text": "No 23",
+          "style": "8"
+        },
+        {
+          "cell": "C41",
+          "kind": "value",
+          "text": "No 22",
+          "style": "8"
+        },
+        {
+          "cell": "E41",
+          "kind": "value",
+          "text": "No 24",
+          "style": "8"
+        },
+        {
+          "cell": "C42",
+          "kind": "value",
+          "text": "No 23",
+          "style": "8"
+        },
+        {
+          "cell": "E42",
+          "kind": "value",
+          "text": "No 25",
+          "style": "8"
+        },
+        {
+          "cell": "C43",
+          "kind": "value",
+          "text": "No 24",
+          "style": "8"
+        },
+        {
+          "cell": "I43",
+          "kind": "value",
+          "text": "0",
+          "style": "24"
+        },
+        {
+          "cell": "C44",
+          "kind": "value",
+          "text": "No 25",
+          "style": "8"
+        },
+        {
+          "cell": "I53",
+          "kind": "value",
+          "text": "ADVANCE PAYMENT BALANCE",
+          "style": "17"
+        },
+        {
+          "cell": "J53",
+          "kind": "value",
+          "text": "R",
+          "style": "18"
+        },
+        {
+          "cell": "K55",
+          "kind": "value",
+          "text": "8465200000",
+          "style": ""
+        }
+      ],
+      "formulas": [
+        {
+          "cell": "K15",
+          "kind": "formula",
+          "text": "+SUM(I20:I44)",
+          "style": "24"
+        },
+        {
+          "cell": "L27",
+          "kind": "formula",
+          "text": "-2936800000",
+          "style": "15"
+        },
+        {
+          "cell": "L29",
+          "kind": "formula",
+          "text": "L25-L27",
+          "style": "28"
+        },
+        {
+          "cell": "K53",
+          "kind": "formula",
+          "text": "K12-K15",
+          "style": "19"
+        },
+        {
+          "cell": "K56",
+          "kind": "formula",
+          "text": "K53-K55",
+          "style": "30"
+        }
+      ],
+      "empty_styled_count": 317,
+      "fill_guesses": [
+        {
+          "cell": "K11",
+          "label": "AMOUNT",
+          "label_at": "above"
+        },
+        {
+          "cell": "C12",
+          "label": "ADVANCE PAYMENT AS PER ADVACE PAYMENT CERTIFICATE NO. 1 - Feb 2014 (TBC)",
+          "label_at": "left"
+        },
+        {
+          "cell": "A13",
+          "label": "1)",
+          "label_at": "above"
+        },
+        {
+          "cell": "B13",
+          "label": "ADVANCE PAYMENT AS PER ADVACE PAYMENT CERTIFICATE NO. 1 - Feb 2014 (TBC)",
+          "label_at": "above"
+        },
+        {
+          "cell": "K13",
+          "label": "12000000000",
+          "label_at": "above"
+        },
+        {
+          "cell": "C15",
+          "label": "LESS : ADVANCE PAYMENT PAYBACK TO DATE",
+          "label_at": "left"
+        },
+        {
+          "cell": "A16",
+          "label": "3)",
+          "label_at": "above"
+        },
+        {
+          "cell": "B16",
+          "label": "LESS : ADVANCE PAYMENT PAYBACK TO DATE",
+          "label_at": "above"
+        },
+        {
+          "cell": "D17",
+          "label": "Payback",
+          "label_at": "left"
+        },
+        {
+          "cell": "F17",
+          "label": "Included in",
+          "label_at": "left"
+        },
+        {
+          "cell": "H17",
+          "label": "Certificate",
+          "label_at": "left"
+        },
+        {
+          "cell": "J17",
+          "label": "Payback Amount",
+          "label_at": "left"
+        },
+        {
+          "cell": "D18",
+          "label": "Payment No",
+          "label_at": "left"
+        },
+        {
+          "cell": "F18",
+          "label": "Certificate No",
+          "label_at": "left"
+        },
+        {
+          "cell": "H18",
+          "label": "Date",
+          "label_at": "left"
+        },
+        {
+          "cell": "I18",
+          "label": "Payback Amount",
+          "label_at": "above"
+        },
+        {
+          "cell": "C19",
+          "label": "Payment No",
+          "label_at": "above"
+        },
+        {
+          "cell": "E19",
+          "label": "Certificate No",
+          "label_at": "above"
+        },
+        {
+          "cell": "G19",
+          "label": "Date",
+          "label_at": "above"
+        },
+        {
+          "cell": "D20",
+          "label": "No 1",
+          "label_at": "left"
+        },
+        {
+          "cell": "F20",
+          "label": "No 2",
+          "label_at": "left"
+        },
+        {
+          "cell": "H20",
+          "label": "41730",
+          "label_at": "left"
+        },
+        {
+          "cell": "D21",
+          "label": "No 2",
+          "label_at": "left"
+        },
+        {
+          "cell": "F21",
+          "label": "No 3",
+          "label_at": "left"
+        },
+        {
+          "cell": "H21",
+          "label": "41760",
+          "label_at": "left"
+        },
+        {
+          "cell": "D22",
+          "label": "No 3",
+          "label_at": "left"
+        },
+        {
+          "cell": "F22",
+          "label": "No 4",
+          "label_at": "left"
+        },
+        {
+          "cell": "H22",
+          "label": "41791",
+          "label_at": "left"
+        },
+        {
+          "cell": "J22",
+          "label": "1701600000",
+          "label_at": "left"
+        },
+        {
+          "cell": "D23",
+          "label": "No 4",
+          "label_at": "left"
+        },
+        {
+          "cell": "F23",
+          "label": "No 5",
+          "label_at": "left"
+        },
+        {
+          "cell": "H23",
+          "label": "41821",
+          "label_at": "left"
+        },
+        {
+          "cell": "J23",
+          "label": "2297100000",
+          "label_at": "left"
+        },
+        {
+          "cell": "D24",
+          "label": "No 5",
+          "label_at": "left"
+        },
+        {
+          "cell": "F24",
+          "label": "No 6",
+          "label_at": "left"
+        },
+        {
+          "cell": "H24",
+          "label": "41852",
+          "label_at": "left"
+        },
+        {
+          "cell": "J24",
+          "label": "639700000",
+          "label_at": "left"
+        },
+        {
+          "cell": "D25",
+          "label": "No 6",
+          "label_at": "left"
+        },
+        {
+          "cell": "F25",
+          "label": "No 7",
+          "label_at": "left"
+        },
+        {
+          "cell": "H25",
+          "label": "41896",
+          "label_at": "left"
+        },
+        {
+          "cell": "J25",
+          "label": "598000000",
+          "label_at": "left"
+        },
+        {
+          "cell": "D26",
+          "label": "No 7",
+          "label_at": "left"
+        },
+        {
+          "cell": "F26",
+          "label": "No 8",
+          "label_at": "left"
+        },
+        {
+          "cell": "G26",
+          "label": "41896",
+          "label_at": "above"
+        },
+        {
+          "cell": "I26",
+          "label": "598000000",
+          "label_at": "above"
+        },
+        {
+          "cell": "D27",
+          "label": "No 8",
+          "label_at": "left"
+        },
+        {
+          "cell": "F27",
+          "label": "No 9",
+          "label_at": "left"
+        },
+        {
+          "cell": "D28",
+          "label": "No 9",
+          "label_at": "left"
+        },
+        {
+          "cell": "F28",
+          "label": "No 10",
+          "label_at": "left"
+        },
+        {
+          "cell": "D29",
+          "label": "No 10",
+          "label_at": "left"
+        },
+        {
+          "cell": "F29",
+          "label": "No 11 + 12",
+          "label_at": "left"
+        },
+        {
+          "cell": "D30",
+          "label": "No 11",
+          "label_at": "left"
+        },
+        {
+          "cell": "F30",
+          "label": "No 13",
+          "label_at": "left"
+        },
+        {
+          "cell": "D31",
+          "label": "No 12",
+          "label_at": "left"
+        },
+        {
+          "cell": "F31",
+          "label": "No 14",
+          "label_at": "left"
+        },
+        {
+          "cell": "D32",
+          "label": "No 13",
+          "label_at": "left"
+        },
+        {
+          "cell": "F32",
+          "label": "No 15",
+          "label_at": "left"
+        },
+        {
+          "cell": "D33",
+          "label": "No 14",
+          "label_at": "left"
+        },
+        {
+          "cell": "F33",
+          "label": "No 16",
+          "label_at": "left"
+        },
+        {
+          "cell": "D34",
+          "label": "No 15",
+          "label_at": "left"
+        },
+        {
+          "cell": "F34",
+          "label": "No 17",
+          "label_at": "left"
+        },
+        {
+          "cell": "D35",
+          "label": "No 16",
+          "label_at": "left"
+        },
+        {
+          "cell": "F35",
+          "label": "No 18",
+          "label_at": "left"
+        },
+        {
+          "cell": "D36",
+          "label": "No 17",
+          "label_at": "left"
+        },
+        {
+          "cell": "F36",
+          "label": "No 19",
+          "label_at": "left"
+        },
+        {
+          "cell": "D37",
+          "label": "No 18",
+          "label_at": "left"
+        },
+        {
+          "cell": "F37",
+          "label": "No 20",
+          "label_at": "left"
+        },
+        {
+          "cell": "D38",
+          "label": "No 19",
+          "label_at": "left"
+        },
+        {
+          "cell": "F38",
+          "label": "No 21",
+          "label_at": "left"
+        },
+        {
+          "cell": "D39",
+          "label": "No 20",
+          "label_at": "left"
+        },
+        {
+          "cell": "F39",
+          "label": "No 22",
+          "label_at": "left"
+        },
+        {
+          "cell": "D40",
+          "label": "No 21",
+          "label_at": "left"
+        },
+        {
+          "cell": "F40",
+          "label": "No 23",
+          "label_at": "left"
+        },
+        {
+          "cell": "D41",
+          "label": "No 22",
+          "label_at": "left"
+        },
+        {
+          "cell": "F41",
+          "label": "No 24",
+          "label_at": "left"
+        },
+        {
+          "cell": "D42",
+          "label": "No 23",
+          "label_at": "left"
+        },
+        {
+          "cell": "F42",
+          "label": "No 25",
+          "label_at": "left"
+        },
+        {
+          "cell": "D43",
+          "label": "No 24",
+          "label_at": "left"
+        },
+        {
+          "cell": "E43",
+          "label": "No 25",
+          "label_at": "above"
+        },
+        {
+          "cell": "J43",
+          "label": "0",
+          "label_at": "left"
+        },
+        {
+          "cell": "D44",
+          "label": "No 25",
+          "label_at": "left"
+        },
+        {
+          "cell": "I44",
+          "label": "0",
+          "label_at": "above"
+        }
+      ],
+      "truncated": false
+    }
+  ]
+}

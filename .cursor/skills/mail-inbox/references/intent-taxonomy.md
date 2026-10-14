@@ -60,8 +60,24 @@ RFP 正文常夹带「请款条件」——**不得**因此改判为付款专信
 
 | confidence | 动作 |
 |------------|------|
-| `high` | 直接路由 |
+| `high` | 可路由；**不等于判对了**（见下节） |
 | `medium` | 可自动路由；缺包名/变更号时降级 |
 | `low` | → `unknown` / pending，不得静默定稿 |
 
 多采购包模糊、无包可挂、变更序号歧义 → pending（字段见 `io-contract.md`）。
+
+## 线程回信怎么判
+
+`classify_mail` 只扫主题+全文关键词，**不懂线程**：`Re:` / `回复:` 正文里常带着被引用的原邮件。原信里的 `RFP` / `COD` / `Raise PO` 会被当成「这封也是那一步」，并打出 `confidence: high`。
+
+这不是偶发误伤，是分类器能力边界。**没有评测集前不要改 `classify_mail.py`**（会牵动 pull 邮箱自动分发）。判错由 **Agent 覆写 intent** 兜住，不另造一套分类器。
+
+| 要 | 不要 |
+|----|------|
+| 只拿**最新一段回复**判断本封在办哪一步 | 被引用原文、页脚签名、FAQ 模板句带着跑 |
+| 覆写后仍用本表的 `intent` 值，写入 route.json，并加 `"intent_verified": true` | 跟着错误 intent 再建一次采购包 / 再盖一次「RFP 发出」 |
+| 吃不准 → pending 问人 | 因为 `high` 就直接 `dispatch` |
+
+**履约常见错判**：顾问回 RFP 线程说「图纸没意见了 / approved / no further comment」→ 应是 `fulfillment.tech_confirm`（步骤 2），不是又一封 `fulfillment.rfp`。商务回「报价确认 / commercial confirmed」→ 仍走履约后续步骤，不是新 RFP。
+
+**变更同样适用**：回信里引用了 COD/COT 原文，以最新一段是技术确认还是商务确认为准。

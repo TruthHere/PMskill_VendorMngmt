@@ -8,7 +8,7 @@
     {
       "text": "route_to is None",
       "passed": false,
-      "evidence": "got 'payment-request'"
+      "evidence": "got 'payment-flow'"
     },
     {
       "text": "not payment_claim",

@@ -38,7 +38,7 @@ class PendingStoreTests(unittest.TestCase):
             add_pending(
                 root,
                 {"reason": "unmapped_task", "note": "进度吃不准"},
-                skill="schedule-critical-nodes",
+                skill="critical-nodes",
             )
         self.assertIn("schedule.json", str(ctx.exception))
         self.assertEqual(load_pending_doc(root)["items"], [])
@@ -54,24 +54,24 @@ class PendingStoreTests(unittest.TestCase):
         pid = add_pending(
             root,
             {"reason": "tax_rate_uncertain", "subject": "Raise PO", "eml_path": "/tmp/a.eml"},
-            skill="contract-fulfillment-struct",
+            skill="po-flow",
         )
         item = load_pending_doc(root)["items"][0]
-        self.assertEqual(item["skill"], "contract-fulfillment-struct")
+        self.assertEqual(item["skill"], "po-flow")
         self.assertEqual(item["pending_id"], pid)
-        closed = close_pending(root, pid, skill="contract-fulfillment-struct")
+        closed = close_pending(root, pid, skill="po-flow")
         self.assertEqual(closed["status"], "confirmed")
-        self.assertEqual(closed["resolved_by"], "contract-fulfillment-struct")
+        self.assertEqual(closed["resolved_by"], "po-flow")
 
     def test_other_skill_cannot_close(self) -> None:
         root = _root()
         pid = add_pending(
             root,
             {"reason": "out_of_order", "subject": "商务确认", "step": "change_archive"},
-            skill="change-archive",
+            skill="change-flow",
         )
         with self.assertRaises(PendingStoreError) as ctx:
-            close_pending(root, pid, skill="payment-request")
+            close_pending(root, pid, skill="payment-flow")
         self.assertIn("不能关别人的单", str(ctx.exception))
         self.assertEqual(load_pending_doc(root)["items"][0]["status"], "open")
 
@@ -80,16 +80,16 @@ class PendingStoreTests(unittest.TestCase):
         mine = add_pending(
             root,
             {"reason": "change_po_deferred", "fields": {"change_no": "COD076"}, "subject": "a"},
-            skill="change-archive",
+            skill="change-flow",
         )
         add_pending(
             root,
             {"reason": "change_po_deferred", "fields": {"change_no": "COD076"}, "subject": "b"},
-            skill="contract-fulfillment-struct",
+            skill="po-flow",
         )
         closed = close_matching(
             root,
-            skill="change-archive",
+            skill="change-flow",
             match=lambda it: str(it.get("reason") or "") == "change_po_deferred",
         )
         self.assertEqual(closed, [mine])
@@ -97,7 +97,7 @@ class PendingStoreTests(unittest.TestCase):
         self.assertEqual(items[mine]["status"], "confirmed")
         other = next(i for i in items.values() if i["pending_id"] != mine)
         self.assertEqual(other["status"], "open")
-        self.assertEqual(other["skill"], "contract-fulfillment-struct")
+        self.assertEqual(other["skill"], "po-flow")
 
     def test_legacy_item_inferred_owner(self) -> None:
         root = _root()
@@ -120,18 +120,18 @@ class PendingStoreTests(unittest.TestCase):
             + "\n",
             encoding="utf-8",
         )
-        close_pending(root, "p-old", skill="change-archive")
+        close_pending(root, "p-old", skill="change-flow")
         item = load_pending_doc(root)["items"][0]
         self.assertEqual(item["status"], "confirmed")
-        self.assertEqual(item["skill"], "change-archive")
+        self.assertEqual(item["skill"], "change-flow")
         with self.assertRaises(PendingStoreError) as ctx:
-            close_pending(root, "p-old", skill="contract-fulfillment-struct")
+            close_pending(root, "p-old", skill="po-flow")
         self.assertIn("不能关别人的单", str(ctx.exception))
 
     def test_card_skill_forbidden(self) -> None:
         root = _root()
         with self.assertRaises(PendingStoreError):
-            add_pending(root, {"reason": "quality"}, skill="fulfillment-card")
+            add_pending(root, {"reason": "quality"}, skill="vendor-card")
 
 
 if __name__ == "__main__":

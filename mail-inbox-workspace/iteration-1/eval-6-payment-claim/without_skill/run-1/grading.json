@@ -6,9 +6,9 @@
       "evidence": "got 'payment_claim.inbound'"
     },
     {
-      "text": "route_to is payment-request",
+      "text": "route_to is payment-flow",
       "passed": true,
-      "evidence": "got 'payment-request'"
+      "evidence": "got 'payment-flow'"
     },
     {
       "text": "package_name is BMS",

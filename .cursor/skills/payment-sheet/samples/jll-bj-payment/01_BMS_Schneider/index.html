@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>付款证书 · BMS</title>
+<style>
+  :root {
+    --page: #eef0f4;
+    --surface: #ffffff;
+    --surface-muted: #f6f7f9;
+    --border: #dfe3ea;
+    --border-strong: #c8ced8;
+    --ink: #141418;
+    --ink-secondary: #3f3f46;
+    --muted: #52525b;
+    --blue: #2563eb;
+    --blue-soft: rgba(37, 99, 235, 0.08);
+    --amber: #b45309;
+    --green: #047857;
+    --green-soft: rgba(4, 120, 87, 0.08);
+    --red: #b91c1c;
+    --red-soft: rgba(185, 28, 28, 0.06);
+    --radius: 12px;
+    --shadow: 0 1px 2px rgba(20, 20, 24, 0.04), 0 8px 24px rgba(20, 20, 24, 0.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", sans-serif;
+    background: var(--page);
+    color: var(--ink);
+    padding: 40px 24px 120px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 880px; margin: 0 auto; }
+  .meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    align-items: center;
+  }
+  .meta a {
+    color: var(--blue);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .meta a:hover { text-decoration: underline; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 28px;
+    background: linear-gradient(180deg, var(--blue-soft) 0%, var(--surface) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .type-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+  .card-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  .card-sub {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .card-sub strong { color: var(--ink-secondary); font-weight: 600; }
+  .stamp {
+    flex-shrink: 0;
+    text-align: right;
+    min-width: 7.5rem;
+  }
+  .stamp-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stamp-value {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    line-height: 1.15;
+  }
+  .card-body { padding: 24px 28px 28px; }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .fact {
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .fact-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    margin-bottom: 6px;
+  }
+  .fact-value {
+    font-size: 14px;
+    color: var(--ink);
+    word-break: break-word;
+  }
+  .fact-value.mono {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+  }
+
+  .facts-note {
+    margin: -16px 0 28px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .section + .section {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .section-index {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+  }
+  .section-hint {
+    margin: 0 0 14px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px 16px;
+  }
+  .grid > * { min-width: 0; }
+  .full { grid-column: 1 / -1; }
+
+  .field-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+  }
+  .en {
+    font-weight: 500;
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .req {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--blue);
+    background: var(--blue-soft);
+    border: 1px solid rgba(37, 99, 235, 0.28);
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+  .opt {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+  input, select, textarea {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 10px;
+    font: inherit;
+    background: #fff;
+    color: var(--ink);
+  }
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%2352525b' d='M1.2 1.3L6 6.1l4.8-4.8 1.2 1.2L6 8.5 0 2.5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px 8px;
+    padding-right: 32px;
+  }
+  input::placeholder, textarea::placeholder { color: #71717a; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+  .money-wrap {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+  }
+  .money-wrap:focus-within {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+  .money-prefix {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    background: var(--surface-muted);
+    border-right: 1px solid var(--border);
+  }
+  .money-wrap .money-input {
+    border: 0;
+    border-radius: 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
+  .money-wrap .money-input:focus-visible { outline: none; }
+  .hint { margin-top: 6px; font-size: 12px; color: var(--muted); }
+  .hint.warn { color: var(--amber); }
+  .flag-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 4px;
+    padding: 12px 14px;
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .flag-row input { width: auto; margin-top: 3px; flex-shrink: 0; }
+  .flag-row .flag-copy { font-size: 13px; color: var(--ink-secondary); line-height: 1.45; }
+  .flag-row .flag-copy strong { color: var(--ink); font-weight: 600; }
+  .flag-row .flag-copy .en { color: var(--muted); font-weight: 400; }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table th, .data-table td {
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  .data-table th {
+    background: var(--surface-muted);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+  }
+  .data-table .col-no {
+    white-space: nowrap;
+    font-weight: 600;
+    width: 72px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .data-table .col-pct {
+    white-space: nowrap;
+    font-weight: 700;
+    color: var(--amber);
+    width: 72px;
+  }
+  .data-table tr.is-current td { background: var(--blue-soft); }
+  .checklist-empty {
+    color: var(--muted);
+    font-size: 13px;
+    padding: 4px 0 8px;
+    border-bottom: 0;
+  }
+
+  .checklist { list-style: none; }
+  .checklist li { padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .checklist li:last-child { border-bottom: 0; }
+  .checklist label {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .checklist input { width: auto; margin-top: 3px; }
+
+  .dock {
+    position: sticky;
+    bottom: 0;
+    margin-top: 8px;
+    padding: 14px 28px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+  }
+  button {
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 16px;
+    background: var(--blue);
+    color: #fff;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  button:hover { filter: brightness(0.97); }
+  .download-status { font-size: 12px; color: var(--muted); min-height: 1.2em; }
+  .download-status.ok { color: var(--green); font-weight: 600; }
+  .flag-row.is-hidden, .full.is-hidden, .checklist.is-hidden, #files_lines_wrap.is-hidden { display: none !important; }
+
+  @media (max-width: 720px) {
+    body { padding: 24px 14px 120px; }
+    .card-header, .card-body, .dock { padding-left: 18px; padding-right: 18px; }
+    .card-header { flex-direction: column; }
+    .stamp { text-align: left; }
+    .facts, .grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    button { transition: none; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .meta, .dock, .no-print { display: none !important; }
+    .card { box-shadow: none; border: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="meta">
+    <span>付款证书 · Payment Certificate</span>
+    <span>Skill2 Demo Project</span>
+    <a class="no-print" href="履约条件卡片.html">返回履约卡片</a>
+  </p>
+
+  <article class="card">
+    <header class="card-header">
+      <div>
+        <span class="type-badge">付款证书</span>
+        <h1 class="card-title">Schneider Electric (China) Co., Ltd.</h1>
+        <p class="card-sub">采购包 <strong>BMS</strong> · 下载后即客户模板 Excel，可直接提交</p>
+      </div>
+      <div class="stamp" aria-live="polite">
+        <div class="stamp-label">Payment No.</div>
+        <div class="stamp-value" id="payment_no_stamp">1</div>
+      </div>
+    </header>
+
+    <div class="card-body">
+      <div class="facts" aria-label="系统已带出的合同信息">
+        <div class="fact">
+          <div class="fact-label">项目 Project</div>
+          <div class="fact-value">Skill2 Demo Project</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">Division</div>
+          <div class="fact-value mono">212-4</div>
+        </div>
+        <div class="fact">
+          <div class="fact-label">合同金额（含税）</div>
+          <div class="fact-value mono">1,090,000</div>
+        </div>
+      </div>
+      <p class="facts-note">开票主体 Demo Billing Entity · 金额按含税填写 · VAT 9%</p>
+
+      <section class="section" aria-labelledby="sec-claim">
+        <div class="section-head">
+          <span class="section-index">01</span>
+          <h2 class="section-title" id="sec-claim">这一笔请什么</h2>
+        </div>
+        <p class="section-hint">选节点、自己填含税金额。系统不代算，避免和合同对不上。</p>
+        <div class="grid">
+          <div>
+            <label class="field-label" for="claim_node">请款节点 <span class="en">Claim item</span> <span class="req">必填</span></label>
+            <select id="claim_node"><option value="预付款 / Advance" selected>预付款 / Advance</option>
+<option value="到货 / Delivery">到货 / Delivery</option>
+<option value="验收 / Acceptance">验收 / Acceptance</option></select>
+          </div>
+          <div>
+            <label class="field-label" for="claim_amount">本次金额（含税） <span class="en">This claim</span> <span class="req">必填</span></label>
+            <div class="money-wrap">
+              <span class="money-prefix" aria-hidden="true">CNY</span>
+              <input id="claim_amount" class="money-input" type="text" inputmode="decimal" autocomplete="off" value="" placeholder="例如 300,000.00">
+            </div>
+            <p class="hint" id="amount_hint">本次请款金额须为含税，由供应商按合同自行填写。以客户请款单模板上的口径为准。</p>
+          </div>
+          <div class="full is-hidden">
+            <label class="flag-row" for="includes_variations">
+              <input id="includes_variations" type="checkbox">
+              <span class="flag-copy">
+                <strong>本期是否含变更</strong>
+                <span class="en">Includes variations</span><br>
+                只作复核标记：勾上表示本次金额里含了已确认变更；不必拆出变更金额。
+              </span>
+            </label>
+          </div>
+          <div class="full">
+            <div class="field-label">付款节点</div>
+            <table class="data-table">
+              <thead>
+                <tr><th>No.</th><th>节点</th><th>比例</th></tr>
+              </thead>
+              <tbody id="nodes_table"><tr class="is-current"><td class="col-no">NO.1</td><td>预付款 / Advance</td><td class="col-pct">10%</td></tr><tr class=""><td class="col-no">NO.2</td><td>到货 / Delivery</td><td class="col-pct">30%</td></tr><tr class=""><td class="col-no">NO.3</td><td>验收 / Acceptance</td><td class="col-pct">60%</td></tr></tbody>
+            </table>
+            <textarea id="nodes_overview" hidden>1. 预付款 / Advance  10%
+2. 到货 / Delivery  30%
+3. 验收 / Acceptance  60%</textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="sec-vendor">
+        <div class="section-head">
+          <span class="section-index">02</span>
+          <h2 class="section-title" id="sec-vendor">付款证书抬头（供应商填）</h2>
+        </div>
+        <p class="section-hint">这些格子会写进客户请款单。标了必填的都要填。</p>
+        <div class="grid">
+          <div><label class="field-label" for="addressee">主送  <span class="req">必填</span></label><input id="addressee" value="" autocomplete="off" placeholder="客户公司全称，写在付款证书「主送」后面"></div>
+          <div><label class="field-label" for="po_number">采购单号  <span class="req">必填</span></label><input id="po_number" value="" autocomplete="off" placeholder="PO / 采购订单号"></div>
+          <div class="full"><label class="field-label" for="claim_purpose">本次请款比例及目的  <span class="req">必填</span></label><textarea id="claim_purpose" rows="3" placeholder="例如：现申请合同生效后支付合同金额的 35%"></textarea></div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="sec-files">
+        <div class="section-head">
+          <span class="section-index">03</span>
+          <h2 class="section-title" id="sec-files">请款支持文件</h2>
+        </div>
+        <p class="section-hint" id="files_hint">每行一项，会写进付款证书「请款支持文件」。不同采购包可以写不一样的附件。</p>
+        <ul class="checklist is-hidden" id="checklist"><li class="checklist-empty">本节点无需随单附件。</li></ul>
+        <div class="" id="files_lines_wrap">
+          <label class="field-label" for="support_files_text">支持文件清单 <span class="opt">可空</span></label>
+          <textarea id="support_files_text" rows="4" placeholder="每行一项，例如：PO 单&#10;到货签认单"></textarea>
+        </div>
+      </section>
+    </div>
+
+    <div class="dock no-print">
+      <button type="button" id="btn_excel">下载付款证书（Excel）</button>
+      <span class="download-status" id="download_status" aria-live="polite"></span>
+    </div>
+  </article>
+</div>
+
+<script src=".claim-assets/jszip.min.js"></script>
+<script src=".claim-assets/fill-insert-xlsx.js"></script>
+<script src=".claim-assets/fill-xlsx.js"></script>
+<script type="application/json" id="boot">{"project_name": "Skill2 Demo Project", "division": "212-4", "division_code": "", "billing_entity": "Demo Billing Entity", "vendor_name": "Schneider Electric (China) Co., Ltd.", "work_package": "BMS", "contract_value_excl_tax": 1000000.0, "contract_value_incl_tax": 1090000.0, "claimed_amount_excl_tax": 100000.0, "claimed_amount_incl_tax": 109000.0, "payment_terms": "预付款 / Advance 10%（PO 生效）；到货 / Delivery 30%（到货签认）；验收 / Acceptance 60%（验收签认）", "variations_to_date": 0.0, "period_count": 3, "previous_claims": [{"payment_no": 0, "name": "Previously certified", "amount": 109000.0}], "vat_note_pct": 9, "nodes": [{"name": "预付款 / Advance", "pct": "10%", "checklist": [], "files_hint": "预付款无需随单附件。客户批复请款后再开发票。", "payment_no": 1}, {"name": "到货 / Delivery", "pct": "30%", "checklist": ["到货签认单"], "files_hint": "到货款请附到货签认单。勾选只提醒你别漏文件，不会生成附件包。客户批复请款后再开发票。", "payment_no": 2}, {"name": "验收 / Acceptance", "pct": "60%", "checklist": ["验收确认单"], "files_hint": "验收款请附验收确认单。勾选只提醒你别漏文件，不会生成附件包。客户批复请款后再开发票。", "payment_no": 3}], "amount_hint": "本次请款金额须为含税，由供应商按合同自行填写。以客户请款单模板上的口径为准。", "amount_tax": "incl", "attachment_mode": "lines", "engine": "cells", "form_title": "付款证书", "download_filename": "【付款证书】{project_name}_{vendor_name}_第{payment_no}次请款_{payment_no}.xlsx", "user_fields": [{"key": "addressee", "label": "主送", "required": true, "placeholder": "客户公司全称，写在付款证书「主送」后面"}, {"key": "po_number", "label": "采购单号", "required": true, "placeholder": "PO / 采购订单号"}, {"key": "claim_purpose", "label": "本次请款比例及目的", "required": true, "full": true, "input": "textarea", "placeholder": "例如：现申请合同生效后支付合同金额的 35%"}], "profile": {"id": "jll-bj-payment", "engine": "cells", "amount_tax": "incl", "title": "付款证书", "title_en": "Payment Certificate", "download_label": "下载付款证书（Excel）", "download_filename": "【付款证书】{project_name}_{vendor_name}_第{payment_no}次请款_{payment_no}.xlsx", "vendor_section_title": "付款证书抬头（供应商填）", "invoice_sheet": "JLL BJ PM Payment", "drop_sheets": [], "form": {"show_includes_variations": false, "attachment_mode": "lines", "amount_tax": "incl", "user_fields": [{"key": "addressee", "label": "主送", "required": true, "placeholder": "客户公司全称，写在付款证书「主送」后面"}, {"key": "po_number", "label": "采购单号", "required": true, "placeholder": "PO / 采购订单号"}, {"key": "claim_purpose", "label": "本次请款比例及目的", "required": true, "full": true, "input": "textarea", "placeholder": "例如：现申请合同生效后支付合同金额的 35%"}]}, "writes": [{"from": "addressee", "cell": "B6", "type": "text"}, {"from": "project_name", "cell": "B8", "type": "text"}, {"from": "vendor_name", "cell": "B9", "type": "text"}, {"from": "po_number", "cell": "B10", "type": "text"}, {"from": "work_package", "cell": "B11", "type": "text"}, {"from": "payment_terms", "cell": "C14", "type": "text"}, {"from": "claim_purpose", "cell": "C15", "type": "text"}, {"from": "contract_value_incl_tax", "cell": "F22", "type": "money"}, {"from": "application_date", "cell": "F33", "type": "text"}], "claim_amount": {"amount_cells": ["C16", "F23"]}, "running_totals": {"certified_to_date_cell": "F24", "remaining_cell": "F25", "includes_this_claim": true, "contract_from": "contract_value_incl_tax"}, "support_file_cells": ["C18", "C19"], "clear_on_adopt": ["B6", "B8", "B9", "B10", "B11", "C14", "C15", "C16", "C18", "C19", "F22", "F23", "F24", "F25", "F33", "H7"], "notes": "仲量联行付款证书。金额按含税。右上角管理公司名称/地址固定不填。审批栏不填。本技能目前只收 .xlsx。"}}</script>
+<script type="text/plain" id="xlsx_template_b64">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</script>
+<script>
+(function () {
+  const boot = JSON.parse(document.getElementById("boot").textContent);
+  const nodeSelect = document.getElementById("claim_node");
+  const claimAmount = document.getElementById("claim_amount");
+  const includesVariations = document.getElementById("includes_variations");
+  const amountHint = document.getElementById("amount_hint");
+  const checklist = document.getElementById("checklist");
+  const filesHint = document.getElementById("files_hint");
+  const downloadStatus = document.getElementById("download_status");
+  const stamp = document.getElementById("payment_no_stamp");
+  const taxLabel = boot.amount_tax === "incl" ? "含税" : "不含税";
+  let lastAutoPurpose = "";
+
+  function money(v) {
+    if (v === null || v === undefined || v === "" || v === "—") return null;
+    const n = Number(String(v).replace(/[,¥￥\s]/g, ""));
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function formatMoneyDisplay(raw) {
+    const text = String(raw == null ? "" : raw);
+    const hasDot = text.indexOf(".") !== -1;
+    const cleaned = text.replace(/[^\d.]/g, "");
+    if (!cleaned || cleaned === ".") return cleaned === "." ? "0." : "";
+    const parts = cleaned.split(".");
+    let intPart = parts[0].replace(/^0+(?=\d)/, "");
+    if (intPart === "" && hasDot) intPart = "0";
+    const grouped = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if (parts.length > 1) {
+      return grouped + "." + parts.slice(1).join("").replace(/\D/g, "").slice(0, 2);
+    }
+    return grouped;
+  }
+
+  function formatMoneyCurrency(raw) {
+    const n = money(raw);
+    if (n == null) return "";
+    return n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function digitsBefore(str, pos) {
+    return str.slice(0, pos).replace(/\D/g, "").length;
+  }
+
+  function posAfterDigits(str, n) {
+    if (n <= 0) return 0;
+    var count = 0;
+    for (var i = 0; i < str.length; i++) {
+      if (/\d/.test(str[i])) count++;
+      if (count >= n) return i + 1;
+    }
+    return str.length;
+  }
+
+  function applyMoneyFormat(el, fromBlur) {
+    const start = el.selectionStart;
+    const before = el.value;
+    const next = fromBlur ? formatMoneyCurrency(before) : formatMoneyDisplay(before);
+    if (next === before) return;
+    const keep = digitsBefore(before, start == null ? before.length : start);
+    el.value = next;
+    if (!fromBlur) {
+      const pos = posAfterDigits(next, keep);
+      try { el.setSelectionRange(pos, pos); } catch (e) {}
+    }
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (ch) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch];
+    });
+  }
+
+  function selectedNode() {
+    return (boot.nodes || []).find(function (n) { return n.name === nodeSelect.value; }) || {};
+  }
+
+  function renderChecklist(items) {
+    if (!items || !items.length) {
+      checklist.innerHTML = "<li class=\"checklist-empty\">本节点无需随单附件。</li>";
+      return;
+    }
+    checklist.innerHTML = items.map(function (t) {
+      return "<li><label><input type=\"checkbox\"> <span>" + esc(t) + "</span></label></li>";
+    }).join("");
+  }
+
+  function markCurrentRow() {
+    const name = nodeSelect.value;
+    document.querySelectorAll("#nodes_table tr").forEach(function (tr) {
+      const cellName = tr.children[1] ? tr.children[1].textContent.trim() : "";
+      tr.classList.toggle("is-current", cellName === name);
+    });
+  }
+
+  function syncNode() {
+    const node = selectedNode();
+    stamp.textContent = node.payment_no || "";
+    if (boot.attachment_mode !== "lines") {
+      renderChecklist(node.checklist || []);
+      if (filesHint) filesHint.textContent = node.files_hint || "随单附件随请款节点变化。";
+    }
+    amountHint.textContent = boot.amount_hint || ("本次请款金额须为" + taxLabel + "，由供应商按合同自行填写。");
+    const purpose = document.getElementById("claim_purpose");
+    if (purpose) {
+      const auto = "现申请" + (node.name || "") + (node.pct ? "（" + node.pct + "）" : "");
+      if (!purpose.value || purpose.value === lastAutoPurpose) purpose.value = auto;
+      lastAutoPurpose = auto;
+    }
+    markCurrentRow();
+  }
+
+  function checkedFiles() {
+    return Array.from(checklist.querySelectorAll("li")).map(function (li) {
+      const input = li.querySelector("input");
+      if (!input) return null;
+      const text = li.querySelector("span");
+      return {
+        item: (text ? text.textContent : li.textContent).trim(),
+        checked: !!input.checked
+      };
+    }).filter(Boolean);
+  }
+
+  function val(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : "";
+  }
+
+  function payload() {
+    const base = money(boot.contract_value_excl_tax);
+    const node = selectedNode();
+    const p = {
+      payment_no: Number(node.payment_no || stamp.textContent || 1),
+      project_name: boot.project_name || "",
+      division: boot.division || "",
+      division_code: boot.division_code || "",
+      billing_entity: boot.billing_entity || "",
+      vendor_name: boot.vendor_name || "",
+      work_package: boot.work_package || "",
+      vendor_ref: val("vendor_ref"),
+      po_number: val("po_number"),
+      po_value_excl_tax: base,
+      contract_value_excl_tax: base,
+      contact_name: val("contact_name"),
+      contact_mobile: val("contact_mobile"),
+      office_phone: val("office_phone"),
+      office_address: val("office_address"),
+      claim_node: nodeSelect.value,
+      claim_amount_excl_tax: boot.amount_tax === "incl" ? null : money(claimAmount.value),
+      claim_amount_incl_tax: boot.amount_tax === "incl" ? money(claimAmount.value) : null,
+      payment_terms: boot.payment_terms || "",
+      application_date: (function () {
+        const d = new Date();
+        return d.getFullYear() + "年" + String(d.getMonth() + 1).padStart(2, "0") + "月" + String(d.getDate()).padStart(2, "0") + "日";
+      })(),
+      includes_variations: !!(includesVariations && includesVariations.checked),
+      variations_to_date: money(boot.variations_to_date) || 0,
+      period_count: Number(boot.period_count) || (boot.nodes || []).length || 0,
+      previous_claims: Array.isArray(boot.previous_claims) ? boot.previous_claims : [],
+      nodes_overview: document.getElementById("nodes_overview").value,
+      vat_note_pct: boot.vat_note_pct == null || boot.vat_note_pct === "" ? null : boot.vat_note_pct,
+      notes: "",
+      support_files: checkedFiles()
+    };
+    (boot.user_fields || []).forEach(function (f) {
+      if (!f || !f.key) return;
+      p[f.key] = val(f.key);
+    });
+    if (boot.attachment_mode === "lines") {
+      p.support_file_lines = val("support_files_text").split(/\r?\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+    }
+    return p;
+  }
+
+  function typedClaim(p) {
+    return boot.amount_tax === "incl" ? p.claim_amount_incl_tax : p.claim_amount_excl_tax;
+  }
+
+  function validate(p) {
+    if (!p.claim_node) return "请选择请款节点";
+    if (typedClaim(p) == null) return "请填写本次请款金额（" + taxLabel + "）";
+    const fields = boot.user_fields || [];
+    if (fields.length) {
+      for (let i = 0; i < fields.length; i++) {
+        const f = fields[i];
+        if (f.required && !p[f.key]) return "请填写" + (f.label || f.key);
+      }
+      return "";
+    }
+    if (!p.po_number) return "请填写 PO Number";
+    if (!p.vendor_ref) return "请填写 Vendor Reference（供应商编号，PO 上通常有）";
+    if (!p.contact_name) return "请填写联系人";
+    if (!p.contact_mobile) return "请填写手机号";
+    if (!p.office_address) return "请填写公司地址";
+    return "";
+  }
+
+  function setStatus(msg, kind) {
+    downloadStatus.textContent = msg || "";
+    downloadStatus.className = "download-status" + (kind ? " " + kind : "");
+  }
+
+  function b64ToUint8Array(b64) {
+    const bin = atob(b64.replace(/\s+/g, ""));
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  function excelFileName(p) {
+    const n = Number(p.payment_no) || 1;
+    const safe = function (s) {
+      return String(s || "").replace(/[\\/:*?"<>|]+/g, "_").replace(/\s+/g, " ").trim().slice(0, 40) || "未命名";
+    };
+    const tpl = String(boot.download_filename || "").trim();
+    if (tpl) {
+      return tpl
+        .replaceAll("{project_name}", safe(p.project_name))
+        .replaceAll("{vendor_name}", safe(p.vendor_name))
+        .replaceAll("{work_package}", safe(p.work_package))
+        .replaceAll("{payment_no}", String(n));
+    }
+    const pkg = String(p.work_package || "package").replace(/[^\w\u4e00-\u9fff\-]+/g, "_").slice(0, 40);
+    const d = new Date();
+    const iso = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    return "PAYMENT_NO_" + n + "_" + pkg + "_" + iso + ".xlsx";
+  }
+
+  function downloadExcel() {
+    const p = payload();
+    const err = validate(p);
+    if (err) {
+      setStatus(err, "err");
+      return;
+    }
+    const engine = boot.engine || "cells";
+    if (engine === "cells") {
+      if (typeof fillXlsxFromProfile !== "function") {
+        setStatus("Excel 填表组件未加载（缺少 .claim-assets/fill-xlsx.js），请重新同步请款页。", "err");
+        return;
+      }
+    } else if (typeof fillInsertRowsXlsx !== "function") {
+      setStatus("Excel 填表组件未加载（缺少 .claim-assets/fill-insert-xlsx.js），请重新同步请款页。", "err");
+      return;
+    }
+    const b64El = document.getElementById("xlsx_template_b64");
+    const b64 = (b64El && b64El.textContent || "").trim();
+    if (!b64) {
+      setStatus("缺少公司请款模板，请重新同步请款申请页。", "err");
+      return;
+    }
+    const bytes = b64ToUint8Array(b64);
+    const job = engine === "cells"
+      ? fillXlsxFromProfile(bytes, p, boot.profile || {})
+      : fillInsertRowsXlsx(bytes, p);
+    job.then(function (blob) {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = excelFileName(p);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
+      setStatus("已下载" + (boot.form_title || "请款单") + " Excel。", "ok");
+    }).catch(function (e) {
+      setStatus("生成 Excel 失败：" + (e && e.message ? e.message : e), "err");
+    });
+  }
+
+  nodeSelect.addEventListener("change", syncNode);
+  claimAmount.addEventListener("input", function () { applyMoneyFormat(claimAmount, false); });
+  claimAmount.addEventListener("blur", function () { applyMoneyFormat(claimAmount, true); });
+  document.getElementById("btn_excel").addEventListener("click", downloadExcel);
+  if (claimAmount.value) applyMoneyFormat(claimAmount, true);
+  syncNode();
+})();
+</script>
+</body>
+</html>

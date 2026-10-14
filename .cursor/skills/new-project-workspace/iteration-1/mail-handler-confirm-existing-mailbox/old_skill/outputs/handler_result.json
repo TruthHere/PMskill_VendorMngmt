@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "intent": "project_init",
+  "route_to": "new-project",
+  "eml_path": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/mail-handler-confirm-existing-mailbox/old_skill/outputs/mailbox.eml",
+  "subject": "[项目初始化] Harbor Lab - HARBOR",
+  "fields": {
+    "project_name": "Harbor Lab",
+    "project_code": "HARBOR",
+    "project_type": "",
+    "address": "",
+    "client": "",
+    "pm": "",
+    "currency": "",
+    "root": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/mail-handler-confirm-existing-mailbox/old_skill/outputs/HarborExisting",
+    "mailbox_address": "HarborLab_AI@163.com"
+  },
+  "auto": true,
+  "project_root": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/mail-handler-confirm-existing-mailbox/old_skill/outputs/HarborExisting",
+  "did": [
+    "confirm_existing_project",
+    "update_mailbox"
+  ],
+  "note": "项目已初始化；已确认档案。 已回写专用邮箱绑定。"
+}

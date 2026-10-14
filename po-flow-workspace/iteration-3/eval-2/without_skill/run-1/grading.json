@@ -1,0 +1,100 @@
+{
+  "eval_type": "po",
+  "expectations": [
+    {
+      "text": "process_result.json exists (pipeline evidence)",
+      "passed": false,
+      "evidence": "missing — likely hand-rolled without process_email"
+    },
+    {
+      "text": "process_result is non-empty JSON",
+      "passed": false,
+      "evidence": "empty"
+    },
+    {
+      "text": "project.json exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-3/eval-2/without_skill/outputs/.skill/project.json"
+    },
+    {
+      "text": "tracker has a package",
+      "passed": true,
+      "evidence": "count=1"
+    },
+    {
+      "text": "milestone PO 已发起 is set",
+      "passed": true,
+      "evidence": "PO 已发起=2026-08-01"
+    },
+    {
+      "text": "next_payment_node is populated",
+      "passed": true,
+      "evidence": "预付款 / Advance 30%"
+    },
+    {
+      "text": "履约条件卡片.html exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-3/eval-2/without_skill/outputs/01_BMS_BOSCH/履约条件卡片.html"
+    },
+    {
+      "text": "card HTML mentions 预付款",
+      "passed": true,
+      "evidence": "found"
+    },
+    {
+      "text": "card HTML mentions 30%",
+      "passed": true,
+      "evidence": "found"
+    },
+    {
+      "text": "card-data payment_nodes has 3 entries",
+      "passed": true,
+      "evidence": "count=3"
+    },
+    {
+      "text": "PO amount written to tracker or card (含税)",
+      "passed": true,
+      "evidence": "card=¥1,280,000.00 tracker=1280000.00"
+    },
+    {
+      "text": "card-data.json exists (Skill 1 → vendor-card input)",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-3/eval-2/without_skill/outputs/01_BMS_BOSCH/card-data.json"
+    },
+    {
+      "text": "card HTML passes vendor-card template validation",
+      "passed": false,
+      "evidence": "card-title must be supplier_name (not package_name); package_name must appear in subtitle package-name span; missing footer-meta (data_sources must be in footer)"
+    },
+    {
+      "text": "card HTML has payment-table (template fingerprint)",
+      "passed": false,
+      "evidence": "missing payment-table"
+    },
+    {
+      "text": "请款申请.html exists (produced by vendor-card)",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-3/eval-2/without_skill/outputs/01_BMS_BOSCH/请款申请.html"
+    },
+    {
+      "text": "请款申请.html looks like claim-form template",
+      "passed": false,
+      "evidence": "missing id=boot / 请款 markers"
+    },
+    {
+      "text": "card has 发起请款 link to 请款申请.html",
+      "passed": true,
+      "evidence": "found"
+    },
+    {
+      "text": "card-data supplier_name filled by Skill 1",
+      "passed": true,
+      "evidence": "BOSCH Building Technologies"
+    }
+  ],
+  "summary": {
+    "passed": 13,
+    "total": 18,
+    "pass_rate": 0.7222
+  }
+}

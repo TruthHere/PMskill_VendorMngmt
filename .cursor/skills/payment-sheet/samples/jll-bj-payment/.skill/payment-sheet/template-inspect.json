@@ -1,0 +1,357 @@
+{
+  "file": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/payment-sheet/samples/jll-bj-payment/.skill/payment-sheet/template.xlsx",
+  "sheets": [
+    {
+      "name": "JLL BJ PM Payment",
+      "state": "visible",
+      "rid": "rId1",
+      "part": "xl/worksheets/sheet1.xml",
+      "in_zip": true,
+      "cells": [
+        {
+          "cell": "A1",
+          "kind": "value",
+          "text": "付款证书",
+          "style": "31"
+        },
+        {
+          "cell": "G3",
+          "kind": "value",
+          "text": "仲量联行测量师事务所（上海）有限公司北京分公司",
+          "style": "32"
+        },
+        {
+          "cell": "G4",
+          "kind": "value",
+          "text": "北京市朝阳区针织路23号楼国寿金融中心8层，邮政编码100026",
+          "style": "33"
+        },
+        {
+          "cell": "A6",
+          "kind": "value",
+          "text": "主送:",
+          "style": "12"
+        },
+        {
+          "cell": "A8",
+          "kind": "value",
+          "text": "项目名称",
+          "style": "7"
+        },
+        {
+          "cell": "A9",
+          "kind": "value",
+          "text": "供应商名称",
+          "style": "12"
+        },
+        {
+          "cell": "A10",
+          "kind": "value",
+          "text": "采购单号",
+          "style": "12"
+        },
+        {
+          "cell": "A11",
+          "kind": "value",
+          "text": "采购内容",
+          "style": "13"
+        },
+        {
+          "cell": "A13",
+          "kind": "value",
+          "text": "本次请款信息",
+          "style": "36"
+        },
+        {
+          "cell": "A14",
+          "kind": "value",
+          "text": "合同付款条款：",
+          "style": "4"
+        },
+        {
+          "cell": "A15",
+          "kind": "value",
+          "text": "本次请款比例及目的：",
+          "style": "4"
+        },
+        {
+          "cell": "A16",
+          "kind": "value",
+          "text": "本次请款金额：",
+          "style": "4"
+        },
+        {
+          "cell": "A17",
+          "kind": "value",
+          "text": "请款支持文件：",
+          "style": "4"
+        },
+        {
+          "cell": "B18",
+          "kind": "value",
+          "text": "1",
+          "style": "22"
+        },
+        {
+          "cell": "B19",
+          "kind": "value",
+          "text": "2",
+          "style": "22"
+        },
+        {
+          "cell": "A21",
+          "kind": "value",
+          "text": "累计付款总结",
+          "style": "36"
+        },
+        {
+          "cell": "A22",
+          "kind": "value",
+          "text": "1",
+          "style": "22"
+        },
+        {
+          "cell": "B22",
+          "kind": "value",
+          "text": "合同总金额（含税）………..",
+          "style": "4"
+        },
+        {
+          "cell": "A23",
+          "kind": "value",
+          "text": "2",
+          "style": "22"
+        },
+        {
+          "cell": "B23",
+          "kind": "value",
+          "text": "本次请款金额（含税）………..",
+          "style": "4"
+        },
+        {
+          "cell": "A24",
+          "kind": "value",
+          "text": "3",
+          "style": "22"
+        },
+        {
+          "cell": "B24",
+          "kind": "value",
+          "text": "已申请款项\n（包含本次请款金额）………..",
+          "style": "4"
+        },
+        {
+          "cell": "A25",
+          "kind": "value",
+          "text": "4",
+          "style": "22"
+        },
+        {
+          "cell": "B25",
+          "kind": "value",
+          "text": "剩余应付款项 ………..",
+          "style": "4"
+        },
+        {
+          "cell": "A27",
+          "kind": "value",
+          "text": "管理公司意见",
+          "style": "36"
+        },
+        {
+          "cell": "B28",
+          "kind": "value",
+          "text": "供应商符合请款条件，本次请款无异议。",
+          "style": "4"
+        },
+        {
+          "cell": "E32",
+          "kind": "value",
+          "text": "项目经理签字：",
+          "style": "29"
+        },
+        {
+          "cell": "E33",
+          "kind": "value",
+          "text": "申请日期：",
+          "style": "29"
+        }
+      ],
+      "formulas": [],
+      "empty_styled_count": 262,
+      "fill_guesses": [
+        {
+          "cell": "B1",
+          "label": "付款证书",
+          "label_at": "left"
+        },
+        {
+          "cell": "A2",
+          "label": "付款证书",
+          "label_at": "above"
+        },
+        {
+          "cell": "H3",
+          "label": "仲量联行测量师事务所（上海）有限公司北京分公司",
+          "label_at": "left"
+        },
+        {
+          "cell": "H4",
+          "label": "北京市朝阳区针织路23号楼国寿金融中心8层，邮政编码100026",
+          "label_at": "left"
+        },
+        {
+          "cell": "G5",
+          "label": "北京市朝阳区针织路23号楼国寿金融中心8层，邮政编码100026",
+          "label_at": "above"
+        },
+        {
+          "cell": "B6",
+          "label": "主送:",
+          "label_at": "left"
+        },
+        {
+          "cell": "A7",
+          "label": "主送:",
+          "label_at": "above"
+        },
+        {
+          "cell": "B8",
+          "label": "项目名称",
+          "label_at": "left"
+        },
+        {
+          "cell": "B9",
+          "label": "供应商名称",
+          "label_at": "left"
+        },
+        {
+          "cell": "B10",
+          "label": "采购单号",
+          "label_at": "left"
+        },
+        {
+          "cell": "B11",
+          "label": "采购内容",
+          "label_at": "left"
+        },
+        {
+          "cell": "A12",
+          "label": "采购内容",
+          "label_at": "above"
+        },
+        {
+          "cell": "B13",
+          "label": "本次请款信息",
+          "label_at": "left"
+        },
+        {
+          "cell": "B14",
+          "label": "合同付款条款：",
+          "label_at": "left"
+        },
+        {
+          "cell": "B15",
+          "label": "本次请款比例及目的：",
+          "label_at": "left"
+        },
+        {
+          "cell": "B16",
+          "label": "本次请款金额：",
+          "label_at": "left"
+        },
+        {
+          "cell": "B17",
+          "label": "请款支持文件：",
+          "label_at": "left"
+        },
+        {
+          "cell": "A18",
+          "label": "请款支持文件：",
+          "label_at": "above"
+        },
+        {
+          "cell": "C18",
+          "label": "1",
+          "label_at": "left"
+        },
+        {
+          "cell": "C19",
+          "label": "2",
+          "label_at": "left"
+        },
+        {
+          "cell": "B20",
+          "label": "2",
+          "label_at": "above"
+        },
+        {
+          "cell": "B21",
+          "label": "累计付款总结",
+          "label_at": "left"
+        },
+        {
+          "cell": "C22",
+          "label": "合同总金额（含税）………..",
+          "label_at": "left"
+        },
+        {
+          "cell": "C23",
+          "label": "本次请款金额（含税）………..",
+          "label_at": "left"
+        },
+        {
+          "cell": "C24",
+          "label": "已申请款项\n（包含本次请款金额）………..",
+          "label_at": "left"
+        },
+        {
+          "cell": "C25",
+          "label": "剩余应付款项 ………..",
+          "label_at": "left"
+        },
+        {
+          "cell": "A26",
+          "label": "4",
+          "label_at": "above"
+        },
+        {
+          "cell": "B26",
+          "label": "剩余应付款项 ………..",
+          "label_at": "above"
+        },
+        {
+          "cell": "B27",
+          "label": "管理公司意见",
+          "label_at": "left"
+        },
+        {
+          "cell": "A28",
+          "label": "管理公司意见",
+          "label_at": "above"
+        },
+        {
+          "cell": "C28",
+          "label": "供应商符合请款条件，本次请款无异议。",
+          "label_at": "left"
+        },
+        {
+          "cell": "B29",
+          "label": "供应商符合请款条件，本次请款无异议。",
+          "label_at": "above"
+        },
+        {
+          "cell": "F32",
+          "label": "项目经理签字：",
+          "label_at": "left"
+        },
+        {
+          "cell": "F33",
+          "label": "申请日期：",
+          "label_at": "left"
+        }
+      ],
+      "truncated": false
+    }
+  ]
+}

@@ -5,14 +5,22 @@ alwaysApply: true
 
 # Skill 编排（项目级 Rule）
 
-本仓库有多套 Skill。跨 Skill「谁先谁后」、脚本已串完的事不要再手搓、功能 Skill 能否单独用——**唯一真源**：
+**短规则真源**：`.cursor/lib/skill-orchestration/ALWAYS.md`（改规则先改那份，再对齐本文件与建项写入的 CodeBuddy Rule）。  
+**长文细节**：`.cursor/lib/skill-orchestration/README.md`
 
-→ **先 Read** [`.cursor/skills/skill-orchestration/SKILL.md`](../skills/skill-orchestration/SKILL.md)
+本仓库有多套 Skill。跨 Skill「谁先谁后」、脚本已串完的事不要再手搓、功能 Skill 能否单独用——先 Read 上述真源。
+
+**注意**：编排是 **Rule + 长文说明书**，不是业务 Skill。不要当「可调用能力」去跑；没有输入输出产物。
 
 ## 硬规则
 
-1. **涉及 2 个及以上 Skill**、进度计划链路、合同 PDF 管线、邮件分发、建包后同步、请款/变更与履约交叉 → 必须先读上述编排 Skill，再执行。
+1. **涉及 2 个及以上 Skill**、进度计划链路、合同 PDF 管线、邮件分发、建包后同步、请款/变更与履约交叉 → 必须先读编排长文，再执行。
 2. **单独使用**（用户只要转 MPP / 析关键节点 / 读 PDF，未提建包·请款·变更·Tracker）→ 只跑对应功能 Skill，**禁止**自动串联履约卡片或请款。
-3. **系统内协作** → 服从编排 Skill 的表 A（脚本）/ 表 B（Agent）；禁止双跑。
-4. 各功能 Skill（`schedule-mpp-excel`、`schedule-critical-nodes`、`pdf-read`）正文只描述自身能力；**系统挂钩以编排 Skill 为准**，不要在功能 Skill 里发明新的兄弟调用顺序。
-5. **读 PDF 正文**（「帮我看这份 PDF」、报价单、合同、扫描件认字）→ **只用** `pdf-read`。全局 `pdf` 伴侣只在用户明确要合并、拆分、旋转、填表、加水印时才用；本仓库不安装那份 Skill。
+3. **系统内协作** → 服从编排长文的表 A（脚本）/ 表 B（Agent）；禁止双跑。建包后 sync 只重渲时间线，不算已补包级节点。
+4. 各功能 Skill（`mpp-to-excel`、`critical-nodes`、`read-pdf`）正文只描述自身能力；**系统挂钩以编排长文为准**，不要在功能 Skill 里发明新的兄弟调用顺序。
+5. **读 PDF 正文**（「帮我看这份 PDF」、报价单、合同、扫描件认字）→ **只用** `read-pdf`。全局 `pdf` 伴侣只在用户明确要合并、拆分、旋转、填表、加水印时才用；本仓库不安装那份 Skill。
+6. **关键节点时间线对人只有一份**：`项目档案/00_进度计划/关键节点时间线.html`。建项时生成；每建一个采购包、每补节点都覆盖这一份。禁止再往采购包文件夹写 `关键节点时间线.html`。`.skill/critical_nodes_timeline.html` 只当机器副本，不要对人当第二份。
+7. **建包后分工**：脚本 `sync_schedule_timeline` 只重渲上面那一份 HTML，不覆盖已有 `critical_nodes`，不写包内 HTML。Agent **禁止**用 `analyze_schedule` 整盘重算覆盖总包节点。但新建采购包成功后，**同一回合必须**交给 `critical-nodes`：只为这个新包追加到货/安装/验收等（merge，不准抹掉总包）。RFP/邮件有明确到货日就写；没有就 pending。不准说「脚本会自动补包级节点」。
+8. **业务回合禁止拆 Skill 脚本翻实现、禁止为修小毛病当场改 Skill。** 发现脚本 bug 记下来另开任务。入口以各 `SKILL.md` 写明的命令为准。
+9. **先理解再处理**：先搞清来件/附件再落库；抽不出就 pending。
+10. **这版不连邮箱。** 建项只在对话里问完必填再跑 `init_project`（必填含币种和是否含税；不问邮箱）。后续邮件由人另存成整封 `.eml` 或 Outlook 的 `.msg`，放进该项目根目录 `待处理邮件/`。用户说「处理待处理邮件」后，先读 `mail-inbox`，只跑 `process_drop_folder.py`。`.msg` 先转成 `.eml` 再分类。办成的归档进采购包对应文件夹，并拿走待处理里的原件。不建「已处理邮件」。看不准、回信、像建项的邮件留在待处理里问人。

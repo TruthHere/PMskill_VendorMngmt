@@ -1,0 +1,13 @@
+{
+  "eml_path": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-2/_tmp/misroute-init-with/_mail/init.eml",
+  "subject": "[项目初始化] Sample Project - SAMPLE",
+  "step": "stage0",
+  "auto": false,
+  "intent": "project_init",
+  "from_classification": true,
+  "pending_id": "p-1T2116400800",
+  "reason": "routed_to_skill0",
+  "note": "项目初始化已迁出 Skill 1。请经 mail-inbox 分发到 Skill 0 `new-project/scripts/handle_init_email.py`，或手动运行 run_init.py。",
+  "_elapsed_ms": 53,
+  "_eval_type": "misroute_init"
+}

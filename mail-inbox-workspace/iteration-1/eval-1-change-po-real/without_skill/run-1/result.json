@@ -1,7 +1,7 @@
 {
   "ok": true,
   "intent": "change.change_po",
-  "route_to": "change-archive",
+  "route_to": "change-flow",
   "confidence": "high",
   "hints": {
     "subject": "[Raise PO] PO-TEST BMS（change PO）_Schneider",
@@ -17,7 +17,7 @@
     "naive_classify"
   ],
   "next": {
-    "skill": "change-archive",
+    "skill": "change-flow",
     "action": "naive"
   }
 }

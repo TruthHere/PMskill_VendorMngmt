@@ -1,5 +1,0 @@
-工作目录（已完成阶段 0）：/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-1/without_skill/outputs
-请处理 RFP 转发邮件：/Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-1/without_skill/outputs/_mail/rfp.eml
-
-目标：初始化采购包 BMS（供应商 BOSCH Building Technologies，纯供应）。
-完成后项目状态留在工作目录，并写说明到 /Users/truth_here/Documents/AI Projects/PMskills/contract-fulfillment-struct-workspace/iteration-3/eval-1/without_skill/outputs/agent_notes.md。

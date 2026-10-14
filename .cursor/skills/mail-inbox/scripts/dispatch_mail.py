@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Classify then dispatch one .eml to Skill 0/1/2/3 handlers."""
+"""Classify then dispatch one .eml (or Outlook .msg) to Skill 0/1/2/3 handlers."""
 
 from __future__ import annotations
 
@@ -14,10 +14,10 @@ from typing import Any
 
 _SCRIPTS = Path(__file__).resolve().parent
 _SKILLS = _SCRIPTS.parents[1]
-_FC_SCRIPTS = _SKILLS / "contract-fulfillment-struct" / "scripts"
-_PR_SCRIPTS = _SKILLS / "payment-request" / "scripts"
-_CA_SCRIPTS = _SKILLS / "change-archive" / "scripts"
-_PI_SCRIPTS = _SKILLS / "project-init" / "scripts"
+_FC_SCRIPTS = _SKILLS / "po-flow" / "scripts"
+_PR_SCRIPTS = _SKILLS / "payment-flow" / "scripts"
+_CA_SCRIPTS = _SKILLS / "change-flow" / "scripts"
+_PI_SCRIPTS = _SKILLS / "new-project" / "scripts"
 _FOUNDATION = _SKILLS.parent / "lib" / "project-foundation" / "scripts"
 
 for path in (_SCRIPTS, _FOUNDATION, _FC_SCRIPTS):
@@ -31,6 +31,7 @@ from classify_mail import (  # noqa: E402
     get_body_text,
 )
 from common import load_tracker_packages  # noqa: E402
+from msg_to_eml import load_mail, stage_msg_as_eml  # noqa: E402
 from pending_store import add_pending  # noqa: E402
 from process_email import (  # noqa: E402
     find_package_fuzzy,
@@ -66,11 +67,11 @@ def dispatch_project_init(
         cmd.extend(["--route-json", str(route_path)])
     proc = subprocess.run(cmd, capture_output=True, text=True, check=False)
     if proc.returncode != 0:
-        note = (proc.stderr or proc.stdout or "project-init handler failed").strip()[:500]
+        note = (proc.stderr or proc.stdout or "new-project handler failed").strip()[:500]
         if project_root is None:
             return {
                 "intent": "project_init",
-                "route_to": "project-init",
+                "route_to": "new-project",
                 "reason": "project_init_handler_failed",
                 "note": note,
                 "auto": False,
@@ -85,11 +86,11 @@ def dispatch_project_init(
                 "reason": "project_init_handler_failed",
                 "note": note,
             },
-            skill="project-init",
+            skill="new-project",
         )
         return {
             "intent": "project_init",
-            "route_to": "project-init",
+            "route_to": "new-project",
             "pending_id": pid,
             "reason": "project_init_handler_failed",
             "auto": False,
@@ -105,7 +106,7 @@ def classify_eml(
     attachment_paths: list[str] | None = None,
 ) -> dict[str, Any]:
     eml_path = eml_path.expanduser().resolve()
-    msg = email.message_from_bytes(eml_path.read_bytes())
+    msg = load_mail(eml_path)
     subject = decode_mime_header(msg.get("Subject"))
     body = get_body_text(msg)
     attachments = collect_attachment_meta(msg)
@@ -211,11 +212,11 @@ def dispatch_payment_claim(
                 "reason": "package_ambiguous",
                 "note": "请款邮件已分类，但无法唯一匹配采购包目录。",
             },
-            skill="payment-request",
+            skill="payment-flow",
         )
         return {
             "intent": intent,
-            "route_to": "payment-request",
+            "route_to": "payment-flow",
             "pending_id": pid,
             "reason": "package_ambiguous",
             "auto": False,
@@ -263,11 +264,11 @@ def dispatch_payment_claim(
                     f"来件想进「{payload.get('target_label') or status}」。需人工确认或先补前面步骤。"
                 ),
             },
-            skill="payment-request",
+            skill="payment-flow",
         )
         return {
             "intent": intent,
-            "route_to": "payment-request",
+            "route_to": "payment-flow",
             "ok": False,
             "auto": False,
             "pending_id": pid,
@@ -286,11 +287,11 @@ def dispatch_payment_claim(
                 "reason": "payment_claim_parse_failed",
                 "note": (proc.stderr or proc.stdout or "record_payment_email failed").strip()[:500],
             },
-            skill="payment-request",
+            skill="payment-flow",
         )
         return {
             "intent": intent,
-            "route_to": "payment-request",
+            "route_to": "payment-flow",
             "pending_id": pid,
             "reason": "payment_claim_parse_failed",
             "auto": False,
@@ -300,7 +301,7 @@ def dispatch_payment_claim(
     parsed = json.loads(payload) if payload else {}
     return {
         "intent": intent,
-        "route_to": "payment-request",
+        "route_to": "payment-flow",
         "ok": True,
         "auto": True,
         "recorded": bool(parsed.get("recorded")),
@@ -312,7 +313,7 @@ def dispatch_payment_claim(
             "package_dir": str(pkg_dir),
             "status": status,
         },
-        "did": list(parsed.get("did") or ["payment-request.record_payment"]),
+        "did": list(parsed.get("did") or ["payment-flow.record_payment"]),
     }
 
 
@@ -355,11 +356,11 @@ def dispatch_change(
                 "reason": "change_handler_failed",
                 "note": (proc.stderr or proc.stdout or "change handler failed").strip()[:500],
             },
-            skill="change-archive",
+            skill="change-flow",
         )
         return {
             "intent": intent,
-            "route_to": "change-archive",
+            "route_to": "change-flow",
             "pending_id": pid,
             "reason": "change_handler_failed",
             "auto": False,
@@ -375,6 +376,8 @@ def dispatch_eml_file(
     attachment_paths: list[str] | None = None,
 ) -> dict[str, Any]:
     eml_path = eml_path.expanduser().resolve()
+    if eml_path.suffix.lower() == ".msg":
+        eml_path = stage_msg_as_eml(eml_path)
 
     classification = classify_eml(project_root, eml_path, attachment_paths)
     msg = email.message_from_bytes(eml_path.read_bytes())
@@ -407,21 +410,21 @@ def dispatch_eml_file(
         return result
 
     route = classification.get("route_to")
-    if route == "project-init":
+    if route == "new-project":
         handler = dispatch_project_init(
             project_root,
             eml_path,
             classification,
             subject=subject,
         )
-    elif route == "contract-fulfillment-struct":
+    elif route == "po-flow":
         handler = process_eml_file(
             project_root,
             eml_path,
             attachment_paths=attachment_paths,
             classification=classification,
         )
-    elif route == "payment-request":
+    elif route == "payment-flow":
         if project_root is None:
             raise ValueError("project_root required for payment_claim mail")
         handler = dispatch_payment_claim(
@@ -430,7 +433,7 @@ def dispatch_eml_file(
             classification,
             subject=subject,
         )
-    elif route == "change-archive":
+    elif route == "change-flow":
         if project_root is None:
             raise ValueError("project_root required for change mail")
         handler = dispatch_change(

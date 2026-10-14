@@ -1,0 +1,26 @@
+{
+  "eval_id": 0,
+  "eval_name": "supply-good",
+  "eval_kind": "standard",
+  "prompt": "用 vendor-card 渲染夹具 supply-good.json：合格纯供应采购包，含 3 个中英付款节点、请款附件与计划时间区间。",
+  "assertions": [
+    "card HTML exists",
+    "card-data.json exists",
+    "card-title is supplier_name",
+    "package-name appears in subtitle",
+    "payment nodes render as payment-table",
+    "change items render as change-table",
+    "data_sources live in footer-meta",
+    "claim link points to 请款申请.html",
+    "no unresolved template placeholders",
+    "validate_rendered_card passes",
+    "non-GC hides 约束条款 section",
+    "payment_attachments appear in table",
+    "supplier_name is non-empty",
+    "payment node names are bilingual",
+    "payment pct sum is about 100%",
+    "total_amount marks 含税 or 不含税",
+    "each payment node has attachments after enrich",
+    "schedule_window column when windows present"
+  ]
+}

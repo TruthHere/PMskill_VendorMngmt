@@ -1,0 +1,77 @@
+{
+  "expectations": [
+    {
+      "text": "card HTML exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/vendor-card-workspace/iteration-1/eval-1/with_skill/outputs/履约条件卡片.html",
+      "tier": "format"
+    },
+    {
+      "text": "card-title is supplier_name",
+      "passed": true,
+      "evidence": "supplier=Shanghai General Contractor Co., Ltd.",
+      "tier": "format"
+    },
+    {
+      "text": "payment nodes render as payment-table",
+      "passed": true,
+      "evidence": "found",
+      "tier": "format"
+    },
+    {
+      "text": "validate_rendered_card passes",
+      "passed": true,
+      "evidence": "ok",
+      "tier": "format"
+    },
+    {
+      "text": "GC shows 约束条款 section",
+      "passed": true,
+      "evidence": "is_gc=True has_section=True",
+      "tier": "format"
+    },
+    {
+      "text": "supplier_name is non-empty",
+      "passed": true,
+      "evidence": "Shanghai General Contractor Co., Ltd.",
+      "tier": "quality"
+    },
+    {
+      "text": "payment node names are bilingual",
+      "passed": true,
+      "evidence": "预付款 / Advance, 进度款 / Progress, 质保金 / Retention",
+      "tier": "quality"
+    },
+    {
+      "text": "payment pct sum is about 100%",
+      "passed": true,
+      "evidence": "sum=100.0",
+      "tier": "quality"
+    },
+    {
+      "text": "total_amount marks 含税 or 不含税",
+      "passed": true,
+      "evidence": "¥8,500,000 CNY 含税",
+      "tier": "quality"
+    },
+    {
+      "text": "each payment node has attachments after enrich",
+      "passed": true,
+      "evidence": "ok",
+      "tier": "quality"
+    }
+  ],
+  "passed": 10,
+  "total": 10,
+  "pass_rate": 1.0,
+  "format": {
+    "passed": 5,
+    "total": 5,
+    "pass_rate": 1.0
+  },
+  "quality": {
+    "passed": 5,
+    "total": 5,
+    "pass_rate": 1.0
+  }
+}

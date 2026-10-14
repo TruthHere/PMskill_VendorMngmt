@@ -516,7 +516,7 @@
       "retire": "以最新 card-data.json 为准。重渲覆盖 HTML。旧 HTML 若没重渲，就是过期打印件。",
       "states": "有草稿数据 → 已渲染出卡（可能带质量提醒）→ 付款节点已确认",
       "arrows": "改 json 必须再渲染，否则人看到的是旧卡。质量不合格仍出卡，但不把 quality_ok 标真。没有「把卡片退回空白」的正式箭头。禁止把变更金额写进卡片。",
-      "whoPushes": "Skill 1 写主字段并调渲染。fulfillment-card 只回写质检字段并印 HTML，再自动刷请款页。Skill 3 不碰卡片。",
+      "whoPushes": "Skill 1 写主字段并调渲染。vendor-card 只回写质检字段并印 HTML，再自动刷请款页。Skill 3 不碰卡片。",
       "opens": "有付款节点，请款才能对「下一笔待请」。已确认变更金额由 Change Log 直接供给现金流/请款 Excel。",
       "revoke": "从卡片里删节点不会自动改 Tracker 已请；已请过的节点仍占用。变更不在卡片里。",
       "gate": "script"
@@ -532,7 +532,7 @@
       "retire": "过程中四步不计入已请。returned/rejected 释放进度。",
       "states": "供应商请款已收到 → 已发QS核对 → QS已确认金额 → 已发客户请款 → 客户已批复（然后请款进度=无在办）",
       "arrows": "只前进。跳级挂 pending。禁止把客户批复无声改回已收到。",
-      "whoPushes": "步骤1/3/5 常由邮件自动推。步骤2/4 由 PM 声明已发。Skill 2 record_payment 写 Tracker 并归档。payment-form 不写状态。",
+      "whoPushes": "步骤1/3/5 常由邮件自动推。步骤2/4 由 PM 声明已发。Skill 2 record_payment 写 Tracker 并归档。payment-sheet 不写状态。",
       "opens": "客户批复后提醒不再报这一笔；现金流把下一节点之前当已付。前四步不打开「已请完」的门。",
       "revoke": "returned/rejected 写在请款进度；已请金额不自动退。",
       "gate": "script"
@@ -564,7 +564,7 @@
       "retire": "新一次 write 覆盖 schedule.json。建包后默认同步只重画时间线，不覆盖已有节点。旧时间线 HTML 没覆盖就是过期。",
       "states": "仅有源进度 → 已写入节点（含 inferred/pending）→ PM 时间线确认（manual）",
       "arrows": "推理写入可带 pending。PM 保存可把 inferred 改成 manual。禁止用建包同步把已有节点覆盖掉。没有「批准/驳回」审批态。",
-      "whoPushes": "schedule-critical-nodes（Agent + write 脚本）。Skill 0/1 只负责把源进度归档并触发，不手填日期。MPP 须先经 schedule-mpp-excel。",
+      "whoPushes": "critical-nodes（Agent + write 脚本）。Skill 0/1 只负责把源进度归档并触发，不手填日期。MPP 须先经 mpp-to-excel。",
       "opens": "有 window_end，请款才能算「何时该催下一笔」。卡片才能显示计划区间。",
       "revoke": "PM 改日期后，请款扫描下次会读新 window_end（不缓存旧许可）。已请金额不因日期改动而退账。",
       "gate": "script"
@@ -612,7 +612,7 @@
       "retire": "每次 --write 覆盖。不要拿上周的 xlsx 去改上游合同额。",
       "states": "未算 → 已按当前上游重算（可带 pending/warnings）",
       "arrows": "只能重算覆盖，不能反向改 Tracker/变更。变更增量默认挂尾款。",
-      "whoPushes": "cashflow-forecast 自己。不要在建包/请款同一回合抢跑，除非 PM 要看。",
+      "whoPushes": "cashflow 自己。不要在建包/请款同一回合抢跑，除非 PM 要看。",
       "opens": "只打开「人看下月要出多少钱」，不打开采购或请款许可。",
       "revoke": "上游一改，旧预测作废，须重算。不存在收回下游许可（没有下游写手）。",
       "gate": "script"
@@ -621,31 +621,31 @@
   "skills": [
     {
       "id": "sk-init",
-      "name": "project-init",
+      "name": "new-project",
       "mode": "sys",
       "soloWrite": "na"
     },
     {
       "id": "sk-fulfill",
-      "name": "contract-fulfillment-struct",
+      "name": "po-flow",
       "mode": "sys",
       "soloWrite": "na"
     },
     {
       "id": "sk-pay",
-      "name": "payment-request",
+      "name": "payment-flow",
       "mode": "sys",
       "soloWrite": "na"
     },
     {
       "id": "sk-change",
-      "name": "change-archive",
+      "name": "change-flow",
       "mode": "sys",
       "soloWrite": "na"
     },
     {
       "id": "sk-cash",
-      "name": "cashflow-forecast",
+      "name": "cashflow",
       "mode": "both",
       "soloWrite": "no"
     },
@@ -663,31 +663,31 @@
     },
     {
       "id": "sk-card",
-      "name": "fulfillment-card",
+      "name": "vendor-card",
       "mode": "sys",
       "soloWrite": "na"
     },
     {
       "id": "sk-pform",
-      "name": "payment-form",
+      "name": "payment-sheet",
       "mode": "both",
       "soloWrite": "no"
     },
     {
       "id": "sk-mpp",
-      "name": "schedule-mpp-excel",
+      "name": "mpp-to-excel",
       "mode": "both",
       "soloWrite": "no"
     },
     {
       "id": "sk-nodes",
-      "name": "schedule-critical-nodes",
+      "name": "critical-nodes",
       "mode": "both",
       "soloWrite": "no"
     },
     {
       "id": "sk-pdf",
-      "name": "pdf-read",
+      "name": "read-pdf",
       "mode": "both",
       "soloWrite": "no"
     }
@@ -804,7 +804,7 @@
   },
   "cellNotes": {
     "obj-tracker": "Skill 0 只建空表，之后不准改行。Skill 1 写包身份、金额、履约五列戳，并在改付款节点后同步「下一付款节点」。Skill 2 按五步写请款四列（已请/待请/下一节点/请款进度）；进度每步写，金额仅客户批复后重算。无第二本请款流水账。同一格禁止两人同时改。",
-    "obj-card": "Skill 1 写主数据。Skill 3 不写卡片。fulfillment-card 渲染时只回写 quality_ok/warnings，不改业务字段。",
+    "obj-card": "Skill 1 写主数据。Skill 3 不写卡片。vendor-card 渲染时只回写 quality_ok/warnings，不改业务字段。",
     "obj-pending": "共享待办队列，不是业务账。各 Skill 只追加/关闭自己的 pending_id。进度节点的 pending 在 schedule.json，不进这份。"
   },
   "cross": {

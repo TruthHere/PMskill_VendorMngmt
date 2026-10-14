@@ -11,10 +11,12 @@ from common import (
     MAILBOX_STATE_JSON,
     PROJECT_JSON,
     SCHEDULE_JSON,
+    drop_mail_dir,
     ensure_inbox_dirs,
     load_json,
     now_iso,
     project_archive_dir,
+    project_json_path,
     register_project,
     resolve_tracker_path,
     save_json,
@@ -43,10 +45,15 @@ def init_project(
     mailbox_username: str = "",
 ) -> dict:
     root = root.expanduser().resolve()
+    if not str(currency or "").strip():
+        raise ValueError("currency_required")
+    if project_json_path(root).is_file():
+        raise FileExistsError("already_initialized")
     archive_dir = project_archive_dir(root, create=True) / "00_进度计划"
     archive_dir.mkdir(parents=True, exist_ok=True)
     sys_dir = system_dir(root, create=True)
     ensure_inbox_dirs(root)
+    drop = drop_mail_dir(root, create=True)
 
     username = mailbox_username or mailbox_address
     project = {
@@ -84,14 +91,36 @@ def init_project(
 
     register_project(root, code)
 
-    return {
+    orchestration_rule = ""
+    try:
+        from install_orchestration_rule import install_orchestration_rule
+
+        orchestration_rule = str(install_orchestration_rule(root))
+    except Exception as exc:  # noqa: BLE001 — 建项不因 Rule 失败而整单失败
+        orchestration_rule = f"FAILED: {exc}"
+
+    tracker_name = str(project.get("tracker_xlsx") or "") or (
+        resolve_tracker_path(root).name if resolve_tracker_path(root) else tracker_basename(project)
+    )
+    out = {
+        "ok": True,
         "project": project,
         "tracker": str(resolve_tracker_path(root) or root / tracker_basename(project)),
         "root": str(root),
+        "drop_mail": str(drop),
+        "visible": [
+            "项目背景.md",
+            tracker_name,
+            "项目档案/00_进度计划/",
+            "待处理邮件/",
+        ],
     }
+    if orchestration_rule:
+        out["orchestration_rule"] = orchestration_rule
+    return out
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser(description="Initialize project (stage 0 · project-foundation library)")
     parser.add_argument("--root", required=True, help="Local project root folder path")
     parser.add_argument("--name", required=True, help="Project name")
@@ -100,7 +129,11 @@ def main() -> None:
     parser.add_argument("--address", required=True, help="Project address")
     parser.add_argument("--client", required=True, help="Client name")
     parser.add_argument("--pm", required=True, help="Project manager")
-    parser.add_argument("--currency", default="CNY 含税", help="Currency and tax note")
+    parser.add_argument(
+        "--currency",
+        required=True,
+        help="Currency and tax, e.g. 人民币 含税. No default; ask the user first.",
+    )
     parser.add_argument("--mailbox-address", default="", help="Project IMAP mailbox address")
     parser.add_argument("--mailbox-imap-host", default="imap.163.com")
     parser.add_argument("--mailbox-imap-port", type=int, default=993)
@@ -118,6 +151,33 @@ def main() -> None:
     args = parser.parse_args()
 
     root = Path(args.root)
+    if project_json_path(root).is_file():
+        print(
+            json.dumps(
+                {
+                    "ok": False,
+                    "reason": "already_initialized",
+                    "root": str(root.expanduser().resolve()),
+                    "note": "这个文件夹已经是建过的项目。先问是接着用，还是换一个空文件夹。不要覆盖。",
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return 2
+    if not str(args.currency or "").strip():
+        print(
+            json.dumps(
+                {
+                    "ok": False,
+                    "reason": "currency_required",
+                    "note": "还没问清币种和是否含税，不能建。",
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
+        return 2
     result = init_project(
         root,
         name=args.name,
@@ -144,7 +204,8 @@ def main() -> None:
         )
         result["schedule"] = schedule_result
     print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

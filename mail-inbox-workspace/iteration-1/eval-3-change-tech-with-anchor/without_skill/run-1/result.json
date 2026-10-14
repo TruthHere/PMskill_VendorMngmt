@@ -1,7 +1,7 @@
 {
   "ok": true,
   "intent": "change.tech_confirm",
-  "route_to": "change-archive",
+  "route_to": "change-flow",
   "confidence": "high",
   "hints": {
     "subject": "COT-003 技术文件提交",
@@ -17,7 +17,7 @@
     "naive_classify"
   ],
   "next": {
-    "skill": "change-archive",
+    "skill": "change-flow",
     "action": "naive"
   }
 }

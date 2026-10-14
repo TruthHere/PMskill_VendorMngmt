@@ -13,62 +13,57 @@ from pathlib import Path
 from typing import Any
 
 SKILL_ALIASES = {
-    "skill0": "project-init",
-    "skill 0": "project-init",
-    "sk-init": "project-init",
-    "project-init-workspace": "project-init",
-    "skill1": "contract-fulfillment-struct",
-    "skill 1": "contract-fulfillment-struct",
-    "sk-fulfill": "contract-fulfillment-struct",
-    "skill2": "payment-request",
-    "skill 2": "payment-request",
-    "sk-pay": "payment-request",
-    "skill3": "change-archive",
-    "skill 3": "change-archive",
-    "sk-change": "change-archive",
-    "skill4": "cashflow-forecast",
-    "skill 4": "cashflow-forecast",
-    "sk-cash": "cashflow-forecast",
-    "skill5": "project-directory",
-    "skill 5": "project-directory",
-    "sk-dir": "project-directory",
+    "skill0": "new-project",
+    "skill 0": "new-project",
+    "sk-init": "new-project",
+    "new-project-workspace": "new-project",
+    "skill1": "po-flow",
+    "skill 1": "po-flow",
+    "sk-fulfill": "po-flow",
+    "skill2": "payment-flow",
+    "skill 2": "payment-flow",
+    "sk-pay": "payment-flow",
+    "skill3": "change-flow",
+    "skill 3": "change-flow",
+    "sk-change": "change-flow",
+    "skill4": "cashflow",
+    "skill 4": "cashflow",
+    "sk-cash": "cashflow",
 }
 
 KNOWN_SKILLS = frozenset(
     {
         "mail-inbox",
-        "project-init",
-        "contract-fulfillment-struct",
-        "payment-request",
-        "change-archive",
-        "cashflow-forecast",
-        "project-directory",
-        "fulfillment-card",
-        "payment-form",
-        "schedule-mpp-excel",
-        "schedule-critical-nodes",
-        "pdf-read",
+        "new-project",
+        "po-flow",
+        "payment-flow",
+        "change-flow",
+        "cashflow",
+        "vendor-card",
+        "payment-sheet",
+        "mpp-to-excel",
+        "critical-nodes",
+        "read-pdf",
         "project-foundation",
         "skill-orchestration",
     }
 )
 
-# 邮局只分发；基建库不是业务 Skill。写权限看它们后面真正办事的那个。
+# 邮局只分发；基建库 / 编排说明书不是业务 Skill。写权限看它们后面真正办事的那个。
 SKIP_AS_WRITER = frozenset({"mail-inbox", "project-foundation", "skill-orchestration"})
 
 SKILL_LABELS = {
     "mail-inbox": "邮件入口",
-    "project-init": "Skill 0 项目初始化",
-    "contract-fulfillment-struct": "Skill 1 履约",
-    "payment-request": "Skill 2 请款",
-    "change-archive": "Skill 3 变更",
-    "cashflow-forecast": "Skill 4 现金流",
-    "project-directory": "Skill 5 通讯录",
-    "fulfillment-card": "履约卡片",
-    "payment-form": "请款申请页",
-    "schedule-mpp-excel": "进度转 Excel",
-    "schedule-critical-nodes": "进度关键节点",
-    "pdf-read": "读 PDF",
+    "new-project": "Skill 0 项目初始化",
+    "po-flow": "Skill 1 履约",
+    "payment-flow": "Skill 2 请款",
+    "change-flow": "Skill 3 变更",
+    "cashflow": "现金流预测",
+    "vendor-card": "履约卡片",
+    "payment-sheet": "请款申请页",
+    "mpp-to-excel": "进度转 Excel",
+    "critical-nodes": "进度关键节点",
+    "read-pdf": "读 PDF",
     "project-foundation": "项目基建库",
 }
 
@@ -82,12 +77,14 @@ TRACKER_PAYMENT_KEYS = frozenset(
 )
 TRACKER_AMOUNT_KEYS = frozenset({"amount_excl_tax", "amount_incl_tax", "amount_remark"})
 TRACKER_SKILL1_PAYMENT_KEYS = frozenset({"next_payment_node"})  # 改付款节点后同步「下一笔」
-SOLO_NO_FULFILL_SKILLS = frozenset({"schedule-mpp-excel", "pdf-read"})
+SOLO_NO_FULFILL_SKILLS = frozenset({"mpp-to-excel", "read-pdf"})
 
 _CARD_DATA = "card-data.json"
 _CARD_HTML = "履约条件卡片.html"
 _PENDING = "pending.json"
 _TRACKER_SUFFIX = "_procurement_packages_status_tracker.csv"
+_TRACKER_XLSX_SUFFIX = "_Status Tracker.xlsx"
+_TRACKER_CSV_SKILL = "status_tracker.csv"
 
 
 class WriteGuardError(PermissionError):
@@ -143,24 +140,24 @@ def _refuse(skill: str, message: str) -> None:
 
 def assert_change_log_write(*, skill: str | None = None) -> None:
     owner = _resolve_skill(skill)
-    if owner == "change-archive":
+    if owner == "change-flow":
         return
-    if owner == "contract-fulfillment-struct":
-        _refuse(owner, "变更台账归 Skill 3（change-archive）。请走变更脚本，不要用履约改 Change Log。")
-    if owner == "payment-request":
+    if owner == "po-flow":
+        _refuse(owner, "变更台账归 Skill 3（change-flow）。请走变更脚本，不要用履约改 Change Log。")
+    if owner == "payment-flow":
         _refuse(owner, "变更台账归 Skill 3。请款只改进度/已请金额，不能改变更台账。")
     if owner in SOLO_NO_FULFILL_SKILLS:
         _refuse(owner, "单独转进度 / 读 PDF 只出自己的文件，不能改变更台账。")
-    _refuse(owner or "未知", "只有 Skill 3（change-archive）能写 Change Log。")
+    _refuse(owner or "未知", "只有 Skill 3（change-flow）能写 Change Log。")
 
 
 def assert_card_data_write(*, skill: str | None = None) -> None:
     owner = _resolve_skill(skill)
-    if owner in {"contract-fulfillment-struct", "fulfillment-card", "project-foundation"}:
+    if owner in {"po-flow", "vendor-card", "project-foundation"}:
         return
-    if owner == "change-archive":
+    if owner == "change-flow":
         _refuse(owner, "变更不写履约卡片。金额以 Change Log 为准。")
-    if owner == "payment-request":
+    if owner == "payment-flow":
         _refuse(owner, "请款不改合同卡片。请改 Tracker 请款栏。")
     if owner in SOLO_NO_FULFILL_SKILLS:
         _refuse(owner, "单独转进度 / 读 PDF 不能改履约卡片。把正文或进度表交给人，履约数据留给履约 Skill。")
@@ -176,8 +173,10 @@ def assert_solo_output_allowed(path: Path | str, *, skill: str | None = None) ->
     if (
         name in {_CARD_DATA, _CARD_HTML, _PENDING}
         or name.endswith(_TRACKER_SUFFIX)
-        or name == "tracker.csv"
+        or name.endswith(_TRACKER_XLSX_SUFFIX)
+        or name in {"tracker.csv", _TRACKER_CSV_SKILL, "status_tracker.csv"}
         or name.endswith("_change_log.csv")
+        or name.endswith("_Change Log.xlsx")
         or name == "change_log.csv"
         or name == "schedule.json"
     ):
@@ -209,15 +208,15 @@ def assert_tracker_write(
     skill: str | None = None,
 ) -> None:
     owner = _resolve_skill(skill)
-    if owner in {"project-foundation", "project-init"}:
-        if owner == "project-init" and any(_pkg_key(p) for p in packages):
+    if owner in {"project-foundation", "new-project"}:
+        if owner == "new-project" and any(_pkg_key(p) for p in packages):
             _refuse(owner, "Skill 0 只建空总表。建采购包请用 Skill 1 履约。")
         return
-    if owner == "change-archive":
+    if owner == "change-flow":
         _refuse(owner, "采购包总表和请款栏都不归变更。改包身份用履约，改进度用请款。")
     if owner in SOLO_NO_FULFILL_SKILLS:
         _refuse(owner, "单独转进度 / 读 PDF 不能改 Tracker。")
-    if owner not in {"contract-fulfillment-struct", "payment-request"}:
+    if owner not in {"po-flow", "payment-flow"}:
         _refuse(owner or "未知", "Tracker 只能由 Skill 1 履约或 Skill 2 请款来写。")
 
     from common import load_tracker_packages
@@ -227,7 +226,7 @@ def assert_tracker_write(
 
     added = set(incoming) - set(existing)
     removed = set(existing) - set(incoming)
-    if (added or removed) and owner == "payment-request":
+    if (added or removed) and owner == "payment-flow":
         _refuse(owner, "请款不能新建/删采购包，也不能改合同额。建包和合同额归履约。")
 
     for name in set(incoming) & set(existing):
@@ -237,12 +236,12 @@ def assert_tracker_write(
         amount_hits = changed & TRACKER_AMOUNT_KEYS
         payment_hits = changed & TRACKER_PAYMENT_KEYS
         other = changed - TRACKER_AMOUNT_KEYS - TRACKER_PAYMENT_KEYS
-        if owner == "payment-request":
+        if owner == "payment-flow":
             if amount_hits:
                 _refuse(owner, "请款不能改合同额（不含税/含税）。合同金额归履约；变更金额归变更台账。")
             if other:
                 _refuse(owner, "请款只能改请款四栏（已请/待请/下一节点/请款进度），不能改包身份或里程碑。")
-        elif owner == "contract-fulfillment-struct":
+        elif owner == "po-flow":
             forbidden_pay = payment_hits - TRACKER_SKILL1_PAYMENT_KEYS
             if forbidden_pay:
                 _refuse(owner, "履约不能改请款进度/已请金额。那四栏归 Skill 2。")
@@ -254,9 +253,13 @@ def assert_path_write(path: Path | str, *, skill: str | None = None) -> None:
     name = target.name
     if name == _CARD_DATA:
         assert_card_data_write(skill=skill)
-    elif name.endswith("_change_log.csv") or name == "change_log.csv":
+    elif name.endswith("_change_log.csv") or name == "change_log.csv" or name.endswith("_Change Log.xlsx"):
         assert_change_log_write(skill=skill)
-    elif name.endswith(_TRACKER_SUFFIX) or name == "tracker.csv":
+    elif (
+        name.endswith(_TRACKER_SUFFIX)
+        or name.endswith(_TRACKER_XLSX_SUFFIX)
+        or name in {"tracker.csv", _TRACKER_CSV_SKILL}
+    ):
         _refuse(_resolve_skill(skill), "Tracker 必须走 save_tracker_packages，好按列检查是谁在写。")
     else:
         assert_solo_output_allowed(target, skill=skill)

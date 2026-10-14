@@ -9,11 +9,11 @@
       "body": "Would you please help raise PO to CBRE for Initial cleaning.\n\nIf this PR is a change order, please provide the original PO #:\nReply: No.\n",
       "expected": {
         "intent": "fulfillment.raise_po",
-        "route_to": "contract-fulfillment-struct"
+        "route_to": "po-flow"
       },
       "assertions": [
         "intent is fulfillment.raise_po",
-        "route_to is contract-fulfillment-struct",
+        "route_to is po-flow",
         "not change.change_po"
       ]
     },
@@ -25,12 +25,12 @@
       "body": "Please raise Change PO for COT-003. Amount excl tax RMB 16800.",
       "expected": {
         "intent": "change.change_po",
-        "route_to": "change-archive",
+        "route_to": "change-flow",
         "change_no": "COT003"
       },
       "assertions": [
         "intent is change.change_po",
-        "route_to is change-archive",
+        "route_to is change-flow",
         "change_no is COT003"
       ]
     },
@@ -42,11 +42,11 @@
       "body": "顾问确认图纸已批准 approved drawing，可下单。",
       "expected": {
         "intent": "fulfillment.tech_confirm",
-        "route_to": "contract-fulfillment-struct"
+        "route_to": "po-flow"
       },
       "assertions": [
         "intent is fulfillment.tech_confirm",
-        "route_to is contract-fulfillment-struct",
+        "route_to is po-flow",
         "not change.*"
       ]
     },
@@ -58,12 +58,12 @@
       "body": "供应商提交技术文件 submittal / shop drawing 供审核。",
       "expected": {
         "intent": "change.tech_submit",
-        "route_to": "change-archive",
+        "route_to": "change-flow",
         "change_no": "COT003"
       },
       "assertions": [
         "intent is change.tech_submit",
-        "route_to is change-archive",
+        "route_to is change-flow",
         "change_no is COT003"
       ]
     },
@@ -75,12 +75,12 @@
       "body": "Please submit quotation. This RFP includes note about future COD process for variations.",
       "expected": {
         "intent": "fulfillment.rfp",
-        "route_to": "contract-fulfillment-struct",
+        "route_to": "po-flow",
         "package_name": "Door Package"
       },
       "assertions": [
         "intent is fulfillment.rfp",
-        "route_to is contract-fulfillment-struct",
+        "route_to is po-flow",
         "not change.cod",
         "package_name extracted"
       ]
@@ -93,12 +93,12 @@
       "body": "Change Order Document issued for GC works.",
       "expected": {
         "intent": "change.cod",
-        "route_to": "change-archive",
+        "route_to": "change-flow",
         "change_no": "COD076"
       },
       "assertions": [
         "intent is change.cod",
-        "route_to is change-archive",
+        "route_to is change-flow",
         "change_no is COD076"
       ]
     },
@@ -110,12 +110,12 @@
       "body": "PAYMENT NO: 3\nClaim node: Delivery\nAmount: CNY 100000",
       "expected": {
         "intent": "payment_claim.inbound",
-        "route_to": "payment-request",
+        "route_to": "payment-flow",
         "package_name": "BMS"
       },
       "assertions": [
         "intent is payment_claim.inbound",
-        "route_to is payment-request",
+        "route_to is payment-flow",
         "package_name is BMS"
       ]
     },
@@ -143,7 +143,7 @@
       "body": "Please submit quotation. Payment terms: 30/40/30 on delivery/install/accept.",
       "expected": {
         "intent": "fulfillment.rfp",
-        "route_to": "contract-fulfillment-struct",
+        "route_to": "po-flow",
         "enrichment_payment_terms": true,
         "package_name": "BMS"
       },
@@ -155,17 +155,17 @@
     },
     {
       "id": 9,
-      "name": "project-init",
+      "name": "new-project",
       "prompt": "主题 [项目初始化] → project_init → Skill 0。",
       "subject": "[项目初始化] SARL Lab Phase5",
       "body": "项目名：SARL Lab\n绑定邮箱：x@163.com",
       "expected": {
         "intent": "project_init",
-        "route_to": "project-init"
+        "route_to": "new-project"
       },
       "assertions": [
         "intent is project_init",
-        "route_to is project-init"
+        "route_to is new-project"
       ]
     }
   ]

@@ -27,8 +27,16 @@ PACKAGE_SUBDIR_CONSULTANT = "09_交付物"
 
 CARD_FILENAME = "履约条件卡片.html"
 CARD_DATA_FILENAME = "card-data.json"
+# 给人看的 Excel 在项目根；机读 CSV 在 .skill/（隐藏）
+TRACKER_XLSX_SUFFIX = "_Status Tracker.xlsx"
+TRACKER_CSV_NAME = "status_tracker.csv"  # 位于 .skill/
 TRACKER_CSV_LEGACY = "tracker.csv"
-TRACKER_SUFFIX = "_procurement_packages_status_tracker.csv"
+TRACKER_CSV_LEGACY_SUFFIX = "_procurement_packages_status_tracker.csv"
+CHANGE_LOG_XLSX_SUFFIX = "_Change Log.xlsx"
+CHANGE_LOG_CSV_NAME = "change_log.csv"  # 位于 .skill/
+CHANGE_LOG_CSV_LEGACY_SUFFIX = "_change_log.csv"
+# 兼容旧常量名（部分脚本仍引用）
+TRACKER_SUFFIX = TRACKER_CSV_LEGACY_SUFFIX
 SYSTEM_DIR = ".skill"
 LEGACY_SYSTEM_DIRS = ("_系统",)
 PROJECT_ARCHIVE_DIR = "项目档案"
@@ -58,8 +66,12 @@ TRACKER_FIELDNAMES = [
     "商务报价已确认",
     "PO 已发起",
     "已结算",
-    "卡片路径",
-    "文件夹路径",
+]
+PAYMENT_CSV_HEADERS = [
+    "已请金额",
+    "待请款金额",
+    "下一付款节点",
+    "请款进度",
 ]
 
 # Milestone keys in chronological order; collectively represent 状态（无单独状态列）
@@ -109,13 +121,13 @@ PKG_KEY_TO_CSV = {
     "ts_quote_confirmed": "商务报价已确认",
     "ts_po_issued": "PO 已发起",
     "ts_settled": "已结算",
-    "card_path": "卡片路径",
-    "folder_path": "文件夹路径",
 }
 CSV_TO_PKG_KEY = {v: k for k, v in PKG_KEY_TO_CSV.items()}
-# Legacy column aliases (old tracker.csv)
+# Legacy column aliases (old tracker.csv / 已取消的给人看列)
 CSV_TO_PKG_KEY["总金额"] = "amount_excl_tax"
 CSV_TO_PKG_KEY["状态"] = "_legacy_status"
+CSV_TO_PKG_KEY["卡片路径"] = "card_path"
+CSV_TO_PKG_KEY["文件夹路径"] = "folder_path"
 LEGACY_TS_COLUMN_MAP = {
     "时间_待发包": "ts_rfp_issued",
     "时间_待技术确认": "ts_rfp_issued",
@@ -175,8 +187,19 @@ def sanitize_filename(text: str, max_len: int = 80) -> str:
 
 
 def tracker_basename(project: dict[str, Any]) -> str:
+    """兼容旧名：返回旧版根目录 CSV 文件名（迁移用）。"""
     name = sanitize_filename(project.get("project_name") or "project")
-    return f"{name}{TRACKER_SUFFIX}"
+    return f"{name}{TRACKER_CSV_LEGACY_SUFFIX}"
+
+
+def tracker_xlsx_basename(project: dict[str, Any]) -> str:
+    name = sanitize_filename(project.get("project_name") or "project")
+    return f"{name}{TRACKER_XLSX_SUFFIX}"
+
+
+def change_log_xlsx_basename(project: dict[str, Any]) -> str:
+    name = sanitize_filename(project.get("project_name") or "project")
+    return f"{name}{CHANGE_LOG_XLSX_SUFFIX}"
 
 
 def project_archive_dir(project_root: Path, *, create: bool = False) -> Path:
@@ -216,6 +239,66 @@ def package_folder_name(seq: int, package_name: str, supplier_short: str) -> str
         f"{seq:02d}_{sanitize_segment(package_name, 40)}_"
         f"{sanitize_segment(supplier_short, 20)}"
     )
+
+
+def hydrate_package_paths(project_root: Path, pkg: dict[str, Any]) -> None:
+    """台账不再写路径列；脚本仍靠 folder_path / card_path 找包文件夹。"""
+    root = project_root.expanduser().resolve()
+    pkg.setdefault("folder_path", "")
+    pkg.setdefault("card_path", "")
+
+    def _accept(folder: Path) -> None:
+        resolved = folder.expanduser().resolve()
+        pkg["folder_path"] = str(resolved)
+        card = str(pkg.get("card_path") or "").strip()
+        card_path = Path(card).expanduser() if card else resolved / CARD_FILENAME
+        if card and not card_path.is_absolute():
+            card_path = root / card_path
+        if not card_path.is_file():
+            card_path = resolved / CARD_FILENAME
+        pkg["card_path"] = str(card_path)
+
+    raw_folder = str(pkg.get("folder_path") or "").strip()
+    if raw_folder:
+        folder = Path(raw_folder).expanduser()
+        if not folder.is_absolute():
+            folder = root / folder
+        if folder.suffix.lower() in {".html", ".htm", ".json"}:
+            folder = folder.parent
+        if folder.is_dir():
+            _accept(folder)
+            return
+
+    seq_int = 0
+    seq_raw = str(pkg.get("seq") or "").strip()
+    if seq_raw.isdigit():
+        seq_int = int(seq_raw)
+    candidates: list[Path] = []
+    if seq_int:
+        expected = root / package_folder_name(
+            seq_int,
+            str(pkg.get("package_name") or ""),
+            str(pkg.get("supplier_short") or ""),
+        )
+        if expected.is_dir():
+            candidates.append(expected)
+        prefix = f"{seq_int:02d}_"
+        try:
+            candidates.extend(
+                sorted(d for d in root.iterdir() if d.is_dir() and d.name.startswith(prefix))
+            )
+        except OSError:
+            pass
+    seen: list[Path] = []
+    for item in candidates:
+        try:
+            resolved = item.resolve()
+        except OSError:
+            continue
+        if resolved not in seen and resolved.is_dir():
+            seen.append(resolved)
+    if seen:
+        _accept(seen[0])
 
 
 def render_project_background_md(project: dict[str, Any]) -> str:
@@ -457,17 +540,23 @@ def csv_row_to_pkg(row: dict[str, str]) -> dict[str, str]:
 
 
 def resolve_tracker_path(project_root: Path) -> Path | None:
-    """定位 Tracker CSV；不存在时返回将要写入的目标路径。"""
+    """定位 Tracker 机读 CSV（优先 `.skill/status_tracker.csv`）；不存在时返回将要写入的目标路径。"""
     root = project_root.expanduser().resolve()
     project = load_json(system_file(root, PROJECT_JSON), {}) or {}
+    skill = system_dir(root, create=False)
+    preferred = skill / TRACKER_CSV_NAME
 
-    candidates: list[Path] = []
+    candidates: list[Path] = [preferred]
     if project.get("tracker_filename"):
-        candidates.append(root / project["tracker_filename"])
+        # 旧 project.json 可能记根目录相对名，或 .skill/ 相对名
+        tf = str(project["tracker_filename"])
+        candidates.append(root / tf)
+        candidates.append(skill / Path(tf).name)
     if project.get("project_name"):
         candidates.append(root / tracker_basename(project))
     candidates.append(root / TRACKER_CSV_LEGACY)
-    candidates.extend(sorted(root.glob(f"*{TRACKER_SUFFIX}")))
+    candidates.extend(sorted(root.glob(f"*{TRACKER_CSV_LEGACY_SUFFIX}")))
+    candidates.extend(sorted(skill.glob(f"*{TRACKER_CSV_LEGACY_SUFFIX}")))
 
     seen: set[Path] = set()
     for path in candidates:
@@ -478,9 +567,21 @@ def resolve_tracker_path(project_root: Path) -> Path | None:
         if path.is_file():
             return path
 
+    return preferred if project.get("project_name") or skill.is_dir() else root / TRACKER_CSV_LEGACY
+
+
+def resolve_tracker_xlsx_path(project_root: Path) -> Path:
+    """给人看的 Status Tracker Excel（项目根）。"""
+    root = project_root.expanduser().resolve()
+    project = load_json(system_file(root, PROJECT_JSON), {}) or {}
+    if project.get("tracker_xlsx"):
+        p = root / str(project["tracker_xlsx"])
+        if p.is_file() or project.get("project_name"):
+            # 旧名仍可读；新写用标准名
+            pass
     if project.get("project_name"):
-        return root / tracker_basename(project)
-    return root / TRACKER_CSV_LEGACY
+        return root / tracker_xlsx_basename(project)
+    return root / f"project{TRACKER_XLSX_SUFFIX}"
 
 
 def _read_tracker_csv_text(path: Path) -> str:
@@ -506,6 +607,7 @@ def load_tracker_packages(project_root: Path) -> list[dict[str, str]]:
         normalize_pkg_amounts(pkg)
         if not (pkg.get("seq") or "").strip():
             pkg["seq"] = infer_package_seq(pkg, idx)
+        hydrate_package_paths(project_root, pkg)
         for key in MILESTONE_KEYS:
             if pkg.get(key):
                 pkg[key] = format_milestone_date(str(pkg[key]))
@@ -513,13 +615,43 @@ def load_tracker_packages(project_root: Path) -> list[dict[str, str]]:
 
 
 def resolve_change_log_path(project_root: Path) -> Path | None:
-    """项目根 `{project_name}_change_log.csv`（Skill 3 真源）。无项目名则 None。"""
+    """机读 Change Log CSV（优先 `.skill/change_log.csv`）。无项目壳则 None。"""
+    root = project_root.expanduser().resolve()
+    project = load_json(system_file(root, PROJECT_JSON), {}) or {}
+    skill = system_dir(root, create=False)
+    preferred = skill / CHANGE_LOG_CSV_NAME
+
+    candidates: list[Path] = [preferred]
+    name = str(project.get("project_name") or "").strip()
+    if name:
+        safe = sanitize_filename(name)
+        candidates.append(root / f"{safe}{CHANGE_LOG_CSV_LEGACY_SUFFIX}")
+        candidates.append(skill / f"{safe}{CHANGE_LOG_CSV_LEGACY_SUFFIX}")
+    candidates.extend(sorted(root.glob(f"*{CHANGE_LOG_CSV_LEGACY_SUFFIX}")))
+    candidates.extend(sorted(skill.glob(f"*{CHANGE_LOG_CSV_LEGACY_SUFFIX}")))
+
+    seen: set[Path] = set()
+    for path in candidates:
+        path = path.resolve()
+        if path in seen:
+            continue
+        seen.add(path)
+        if path.is_file():
+            return path
+
+    if not name and not skill.is_dir() and not (root / PROJECT_JSON).is_file() and not system_file(root, PROJECT_JSON).is_file():
+        return None
+    return preferred
+
+
+def resolve_change_log_xlsx_path(project_root: Path) -> Path | None:
+    """给人看的 Change Log Excel（项目根）。"""
     root = project_root.expanduser().resolve()
     project = load_json(system_file(root, PROJECT_JSON), {}) or {}
     name = str(project.get("project_name") or "").strip()
     if not name:
         return None
-    return root / f"{name}_change_log.csv"
+    return root / change_log_xlsx_basename(project)
 
 
 def _change_log_package_key(text: str) -> str:
@@ -620,12 +752,27 @@ def confirmed_changes_total_excl_tax(project_root: Path, package_name: str) -> f
     return total
 
 
-def _cleanup_legacy_tracker_files(project_root: Path, keep: Path) -> None:
+def _cleanup_legacy_tracker_files(project_root: Path, keep_csv: Path, keep_xlsx: Path) -> None:
     root = project_root.expanduser().resolve()
-    keep = keep.resolve()
-    for path in [root / TRACKER_CSV_LEGACY, *root.glob(f"*{TRACKER_SUFFIX}")]:
+    skill = system_dir(root, create=False)
+    keep_csv = keep_csv.resolve()
+    keep_xlsx = keep_xlsx.resolve()
+    csv_globs = [
+        root / TRACKER_CSV_LEGACY,
+        *root.glob(f"*{TRACKER_CSV_LEGACY_SUFFIX}"),
+        *skill.glob(f"*{TRACKER_CSV_LEGACY_SUFFIX}"),
+        skill / TRACKER_CSV_NAME,
+    ]
+    for path in csv_globs:
         path = path.resolve()
-        if path != keep and path.is_file():
+        if path != keep_csv and path.is_file():
+            path.unlink()
+    for path in [
+        *root.glob("*_procurement_packages_status_tracker.xlsx"),
+        *root.glob(f"*{TRACKER_XLSX_SUFFIX}"),
+    ]:
+        path = path.resolve()
+        if path != keep_xlsx and path.is_file():
             path.unlink()
 
 
@@ -635,7 +782,9 @@ def save_tracker_packages(project_root: Path, packages: list[dict[str, Any]]) ->
 
     assert_tracker_write(root, packages)
     project = load_json(system_file(root, PROJECT_JSON), {}) or {}
-    path = root / tracker_basename(project) if project.get("project_name") else root / TRACKER_CSV_LEGACY
+    skill = system_dir(root, create=True)
+    path = skill / TRACKER_CSV_NAME
+    xlsx_path = resolve_tracker_xlsx_path(root)
     updated_at = now_iso()
 
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -655,17 +804,21 @@ def save_tracker_packages(project_root: Path, packages: list[dict[str, Any]]) ->
             row = pkg_to_csv_row(pkg)
             writer.writerow([row.get(col, "") for col in TRACKER_FIELDNAMES])
 
-    xlsx_path = path.with_suffix(".xlsx")
     from tracker_xlsx import save_tracker_xlsx
 
-    save_tracker_xlsx(xlsx_path, prepared, updated_at)
+    save_tracker_xlsx(
+        xlsx_path,
+        prepared,
+        updated_at,
+        project_name=str(project.get("project_name") or ""),
+    )
 
-    project["tracker_filename"] = path.name
+    project["tracker_filename"] = f"{SYSTEM_DIR}/{TRACKER_CSV_NAME}"
     project["tracker_xlsx"] = xlsx_path.name
     project["tracker_last_updated"] = updated_at
     save_json(system_file(root, PROJECT_JSON), project)
     write_project_background_md(root, project)
-    _cleanup_legacy_tracker_files(root, path)
+    _cleanup_legacy_tracker_files(root, path, xlsx_path)
     return path
 
 
@@ -1011,6 +1164,21 @@ def find_package(packages: list[dict[str, Any]], package_name: str) -> dict[str,
         if pkg.get("package_name") == package_name:
             return pkg
     return None
+
+
+DROP_MAIL_DIRNAME = "待处理邮件"
+
+
+def drop_mail_dir(project_root: Path, *, create: bool = False) -> Path:
+    """对人可见的待处理邮件夹（项目根下）。不是 .skill/inbox。"""
+    path = project_root.expanduser().resolve() / DROP_MAIL_DIRNAME
+    if create:
+        path.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def project_json_path(project_root: Path) -> Path:
+    return project_root.expanduser().resolve() / ".skill" / PROJECT_JSON
 
 
 def ensure_inbox_dirs(project_root: Path) -> None:

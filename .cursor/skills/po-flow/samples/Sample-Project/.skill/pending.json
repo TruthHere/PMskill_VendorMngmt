@@ -1,0 +1,31 @@
+{
+  "items": [
+    {
+      "pending_id": "p-demo-001",
+      "created_at": "2026-07-12T10:00:00+08:00",
+      "status": "confirmed",
+      "step": "步骤4",
+      "project_code": "SAMPLE",
+      "package_name": "BMS",
+      "fields": {
+        "payment_source": "邮件指示"
+      },
+      "archive_plan": []
+    },
+    {
+      "step": "change_po",
+      "fields": {
+        "package_name": "BMS",
+        "supplier_name": "Schneider",
+        "subject": "[TEST-A1234] \t[Raise PO] PO-TEST-001 Demo Campus Ph5_BMS（change PO）_Schneider"
+      },
+      "subject": "[TEST-A1234] \t[Raise PO] PO-TEST-001 Demo Campus Ph5_BMS（change PO）_Schneider",
+      "eml_path": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/po-flow/tests/redact/output/[TEST-A1234] [Raise PO] PO-TEST-001 Demo Campus Ph5_BMS（change PO）_Schneider.eml",
+      "reason": "change_po_deferred",
+      "note": "识别为 Change PO / 变更增补 PO，已暂存，不按普通 Raise PO 处理。请用 change-flow Skill 关联 Change Log 并闭环。",
+      "pending_id": "p-8T2247150800",
+      "status": "open",
+      "created_at": "2026-07-28T22:47:15+08:00"
+    }
+  ]
+}

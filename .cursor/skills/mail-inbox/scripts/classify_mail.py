@@ -335,13 +335,13 @@ def classify_intent(subject: str, body: str) -> str:
 
 def route_to(intent: str) -> str | None:
     if intent == "project_init":
-        return "project-init"
+        return "new-project"
     if intent.startswith("fulfillment."):
-        return "contract-fulfillment-struct"
+        return "po-flow"
     if intent.startswith("change."):
-        return "change-archive"
+        return "change-flow"
     if intent.startswith("payment_claim."):
-        return "payment-request"
+        return "payment-flow"
     return None
 
 
@@ -394,7 +394,7 @@ def classify_from_message(
         pending = {
             "reason": "intent_low_confidence",
             "question": "邮件意图置信度低，需确认交给哪个 Skill。",
-            "candidates": ["project-init", "contract-fulfillment-struct", "payment-request", "change-archive"],
+            "candidates": ["new-project", "po-flow", "payment-flow", "change-flow"],
         }
 
     route = route_to(intent)
@@ -433,7 +433,9 @@ def main() -> None:
     eml_path = args.eml
     if args.eml:
         path = Path(args.eml).expanduser().resolve()
-        msg = email.message_from_bytes(path.read_bytes())
+        from msg_to_eml import load_mail
+
+        msg = load_mail(path)
         subject = decode_mime_header(msg.get("Subject"))
         body = get_body_text(msg)
         attachments = collect_attachment_meta(msg)

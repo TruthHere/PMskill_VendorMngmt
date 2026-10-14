@@ -1,7 +1,7 @@
 {
   "ok": true,
   "intent": "fulfillment.rfp",
-  "route_to": "contract-fulfillment-struct",
+  "route_to": "po-flow",
   "confidence": "high",
   "hints": {
     "subject": "RFQ for BMS — Lab",
@@ -17,7 +17,7 @@
     "naive_classify"
   ],
   "next": {
-    "skill": "contract-fulfillment-struct",
+    "skill": "po-flow",
     "action": "naive"
   }
 }

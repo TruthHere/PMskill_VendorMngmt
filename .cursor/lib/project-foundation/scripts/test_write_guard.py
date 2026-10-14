@@ -54,7 +54,7 @@ def _seed_project() -> Path:
 class WriteGuardTests(unittest.TestCase):
     def test_fulfillment_cannot_write_change_log(self) -> None:
         with self.assertRaises(WriteGuardError) as ctx:
-            assert_change_log_write(skill="contract-fulfillment-struct")
+            assert_change_log_write(skill="po-flow")
         self.assertIn("变更台账", str(ctx.exception))
         self.assertIn("Skill 3", str(ctx.exception))
 
@@ -62,7 +62,7 @@ class WriteGuardTests(unittest.TestCase):
         root = _seed_project()
         packages = load_tracker_packages(root)
         with self.assertRaises(WriteGuardError) as ctx:
-            assert_tracker_write(root, packages, skill="change-archive")
+            assert_tracker_write(root, packages, skill="change-flow")
         self.assertIn("采购包总表", str(ctx.exception))
 
     def test_payment_cannot_write_contract_amount(self) -> None:
@@ -70,27 +70,27 @@ class WriteGuardTests(unittest.TestCase):
         packages = load_tracker_packages(root)
         packages[0]["amount_excl_tax"] = "1.00"
         with self.assertRaises(WriteGuardError) as ctx:
-            assert_tracker_write(root, packages, skill="payment-request")
+            assert_tracker_write(root, packages, skill="payment-flow")
         self.assertIn("合同额", str(ctx.exception))
 
     def test_payment_cannot_write_change_log(self) -> None:
         with self.assertRaises(WriteGuardError) as ctx:
-            assert_change_log_write(skill="payment-request")
+            assert_change_log_write(skill="payment-flow")
         self.assertIn("变更台账", str(ctx.exception))
 
     def test_pdf_cannot_write_card_data(self) -> None:
         with self.assertRaises(WriteGuardError) as ctx:
-            assert_card_data_write(skill="pdf-read")
+            assert_card_data_write(skill="read-pdf")
         self.assertIn("履约卡片", str(ctx.exception))
         with self.assertRaises(WriteGuardError) as ctx2:
-            assert_solo_output_allowed("card-data.json", skill="pdf-read")
+            assert_solo_output_allowed("card-data.json", skill="read-pdf")
         self.assertIn("card-data.json", str(ctx2.exception))
 
     def test_mpp_cannot_write_tracker_file(self) -> None:
         with self.assertRaises(WriteGuardError) as ctx:
             assert_solo_output_allowed(
                 "Demo_procurement_packages_status_tracker.csv",
-                skill="schedule-mpp-excel",
+                skill="mpp-to-excel",
             )
         self.assertIn("不能把输出写成", str(ctx.exception))
 
@@ -98,24 +98,24 @@ class WriteGuardTests(unittest.TestCase):
         root = _seed_project()
         packages = load_tracker_packages(root)
         packages[0]["payment_progress"] = "供应商请款已收到 · 到货 / Delivery"
-        assert_tracker_write(root, packages, skill="payment-request")
+        assert_tracker_write(root, packages, skill="payment-flow")
 
     def test_fulfillment_may_write_amount(self) -> None:
         root = _seed_project()
         packages = load_tracker_packages(root)
         packages[0]["amount_excl_tax"] = "1100000.00"
-        assert_tracker_write(root, packages, skill="contract-fulfillment-struct")
+        assert_tracker_write(root, packages, skill="po-flow")
 
     def test_fulfillment_cannot_write_claimed(self) -> None:
         root = _seed_project()
         packages = load_tracker_packages(root)
         packages[0]["claimed_amount_excl_tax"] = "500.00"
         with self.assertRaises(WriteGuardError):
-            assert_tracker_write(root, packages, skill="contract-fulfillment-struct")
+            assert_tracker_write(root, packages, skill="po-flow")
 
     def test_skill_from_path(self) -> None:
-        path = Path("/x/.cursor/skills/change-archive/scripts/handle_change_email.py")
-        self.assertEqual(skill_from_path(path), "change-archive")
+        path = Path("/x/.cursor/skills/change-flow/scripts/handle_change_email.py")
+        self.assertEqual(skill_from_path(path), "change-flow")
 
 
 if __name__ == "__main__":

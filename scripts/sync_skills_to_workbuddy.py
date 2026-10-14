@@ -21,24 +21,30 @@ LIB_SRC = REPO / ".cursor" / "lib"
 DEFAULT_DEST = Path.home() / ".workbuddy" / "skills"
 
 RUNTIME_SKILLS = (
-    "skill-orchestration",  # 全局原则与编排真源
-    "contract-fulfillment-struct",
-    "fulfillment-card",
+    "po-flow",
+    "vendor-card",
     "mail-inbox",
-    "schedule-critical-nodes",
-    "schedule-mpp-excel",
-    "pdf-read",
-    "project-init",
-    "payment-request",
-    "change-archive",
-    "cashflow-forecast",
-    "project-directory",
+    "critical-nodes",
+    "mpp-to-excel",
+    "read-pdf",
+    "new-project",
+    "payment-flow",
+    "payment-sheet",
+    "change-flow",
+    "cashflow",
 )
-RUNTIME_LIBS = ("project-foundation",)
+# skill-orchestration = 编排说明书（Rule 配套），不是 Skill
+RUNTIME_LIBS = ("project-foundation", "skill-orchestration")
 
 EXCLUDE_DIR_NAMES = {"__pycache__", "node_modules", "evals", "tests", ".git"}
 EXCLUDE_FILE_NAMES = {".DS_Store", ".mailbox.secret", "mailbox-registry.json"}
-EXCLUDE_GLOBS = ("*.pyc", "*.secret", "*.pyo")
+EXCLUDE_GLOBS = (
+    "*.pyc",
+    "*.secret",
+    "*.pyo",
+    "smoke_*.py",
+    "run_all_evals.py",
+)
 
 
 def skip(rel: Path) -> bool:
@@ -123,7 +129,8 @@ def main() -> None:
 
     for name in RUNTIME_LIBS:
         src = LIB_SRC / name
-        if not (src / "scripts" / "common.py").is_file():
+        # project-foundation has scripts; skill-orchestration is docs-only
+        if not ((src / "scripts" / "common.py").is_file() or (src / "README.md").is_file()):
             print(f"SKIP missing lib: {src}", file=sys.stderr)
             continue
         n = copy_skill(src, dest_root / name)

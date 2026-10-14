@@ -1,0 +1,19 @@
+{
+  "eval_id": 1,
+  "eval_name": "rfp-forward",
+  "prompt": "项目已完成阶段 0。请处理 RFP 转发邮件，初始化采购包 BMS。",
+  "assertions": [
+    "process_result.json exists (pipeline evidence)",
+    "process_result intent is fulfillment.rfp",
+    "process_result step is step1 and auto=true",
+    "standard tracker CSV exists",
+    "tracker has exactly one package",
+    "milestone RFP 发出 is set",
+    "package has 01~07 subfolders",
+    "RFP .eml archived under 07_往来文件",
+    "card HTML passes vendor-card template validation",
+    "card HTML has payment-table (template fingerprint)",
+    "请款申请.html looks like claim-form template",
+    "card-data supplier_name filled by Skill 1"
+  ]
+}

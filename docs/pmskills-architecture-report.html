@@ -334,7 +334,7 @@
   <div class="wrap">
     <h1>PM Skills - 供应商管理系列</h1>
     <div class="series-intro">
-      <p>面向多直采包的供应商管理，本系列把建项、履约、请款、变更、出账预测与通讯录沉淀为可复用的 Skill，用来做进度跟踪、台账记录、风险预判、节点提醒与资金计划。设计上<strong>不另起一套流程</strong>：以项目为单位<strong>绑定公司邮箱</strong>，各方正式往来只需<strong>抄送该地址</strong>，关键节点邮件即可进入系统；邮局前台收信分拣，Skill 0–3 各管一段履约链路，现金流只读算出账、通讯录用群消息收联系人——<strong>人继续写邮件</strong>，系统跟在后面完成跟踪、记录与提醒。</p>
+      <p>面向多直采包的供应商管理，本系列把建项、履约、请款、变更、出账预测与通讯录沉淀为可复用的 Skill，用来做进度跟踪、台账记录、风险预判、节点提醒与资金计划。设计上<strong>不另起一套流程</strong>：以项目为单位<strong>绑定公司邮箱</strong>，各方正式往来只需<strong>抄送该地址</strong>，关键节点邮件即可进入系统；邮局前台收信分拣，Skill 0–3 各管一段履约链路，现金流只读算出账、通讯录用群消息收联系人——<strong>人继续写邮件</strong>，系统跟在后面完成跟踪、记录与提醒。多 Skill 谁先谁后由项目 <strong>Rule「Skill 编排」</strong>管着（说明书，不是业务 Skill）。</p>
     </div>
 
     <div id="panels"></div>
@@ -352,61 +352,61 @@ const SKILLS = [
     takes:[{what:"抄送到项目专用邮箱的正式往来", fmt:"邮件原件"}],
     gives:[{what:"分好类的待办，交给新建项目 / 采购包创建 / 请款登记 / 变更管理", fmt:"派单结果"},{what:"拿不准的事项", fmt:"待确认清单"}],
     },
-  { id:"s0", short:"Skill 0 · 新建项目", skillName:"project-init", layer:"业务",
+  { id:"s0", short:"Skill 0 · 新建项目", skillName:"new-project", layer:"业务",
     role:"新建空项目：文件夹、空台账，并绑定项目专用邮箱——之后正式往来抄送该地址即可进系统。",
     does:["建项目档案","生成空采购包台账","绑定项目专用邮箱","有总进度时可先挂上"],
     doesNot:["不建采购包","不做询价 / 下单 / 请款 / 变更"],
     takes:[{what:"项目名称、编号、甲方、项目经理等基本信息", fmt:"文字"},{what:"本地项目文件夹位置", fmt:"路径"},{what:"项目专用邮箱", fmt:"邮箱账号"},{what:"可选：总进度计划", fmt:"Project 或表格"}],
     gives:[{what:"空项目壳 + 空台账 + 已绑定邮箱", fmt:"项目文件夹 / Excel 台账", demo:{label:"空采购包台账", href:"demos/empty-tracker.html"}}] },
-  { id:"s1", short:"Skill 1 · 采购包创建", skillName:"contract-fulfillment-struct", layer:"业务",
+  { id:"s1", short:"Skill 1 · 采购包创建", skillName:"po-flow", layer:"业务",
     role:"从建采购包开始：询价 → 技术确认 → 下单 → 付款条件 → 合同；写台账与 card-data，调履约卡片（并自动刷请款页）。",
     does:["建采购包并记里程碑","归档报价、技术文件、合同","写履约卡片与付款条件","建包时同步关键节点时间线"],
-    doesNot:["不当邮件总前台","不请款入账","不维护变更台账","不精调请款页（归 payment-form）"],
+    doesNot:["不当邮件总前台","不请款入账","不维护变更台账","不精调请款页（归 payment-sheet）"],
     takes:[{what:"履约相关邮件与附件", fmt:"邮件 + PDF / Excel 等"},{what:"项目进度计划", fmt:"Project 或表格"}],
-    gives:[{what:"采购包状态台账", fmt:"Excel", demo:{label:"采购包状态台账", href:"demos/package-tracker.html"}},{what:"履约条件卡片", fmt:"网页", demo:{label:"履约条件卡片", href:"demos/fulfillment-card.html"}},{what:"请款申请页（经 payment-form）", fmt:"网页", demo:{label:"请款申请页", href:"demos/payment-claim-form.html"}},{what:"关键节点时间线", fmt:"网页", demo:{label:"关键节点时间线", href:"demos/critical-nodes-timeline.html"}}] },
-  { id:"s2", short:"Skill 2 · 请款登记", skillName:"payment-request", layer:"业务",
+    gives:[{what:"采购包状态台账", fmt:"Excel", demo:{label:"采购包状态台账", href:"demos/package-tracker.html"}},{what:"履约条件卡片", fmt:"网页", demo:{label:"履约条件卡片", href:"demos/vendor-card.html"}},{what:"请款申请页（经 payment-sheet）", fmt:"网页", demo:{label:"请款申请页", href:"demos/payment-claim-form.html"}},{what:"关键节点时间线", fmt:"网页", demo:{label:"关键节点时间线", href:"demos/critical-nodes-timeline.html"}}] },
+  { id:"s2", short:"Skill 2 · 请款登记", skillName:"payment-flow", layer:"业务",
     role:"到点提醒下一笔待请；按五步推进请款进度，只写采购包台账。仅客户批复后才算已请。03 只归档，不另开流水账。",
     does:["提前约两周提醒下一笔待请","五步写进台账「请款进度」","客户批复后累加已请、切下一节点","03_请款记录只存档"],
-    doesNot:["不定付款比例","不生成/精调付款申请页（归 payment-form）","不另开 payment_ledger / 第二套账"],
+    doesNot:["不定付款比例","不生成/精调付款申请页（归 payment-sheet）","不另开 payment_ledger / 第二套账"],
     takes:[{what:"履约卡片上的付款节点", fmt:"卡片网页"},{what:"关键节点完成时点", fmt:"时间线"},{what:"请款相关邮件与附件", fmt:"邮件"},{what:"客户批复", fmt:"邮件"}],
     gives:[{what:"更新后的采购包状态台账", fmt:"Excel", demo:{label:"采购包状态台账", href:"demos/package-tracker.html"}}] },
-  { id:"s3", short:"Skill 3 · 变更管理", skillName:"change-archive", layer:"业务",
+  { id:"s3", short:"Skill 3 · 变更管理", skillName:"change-flow", layer:"业务",
     role:"变更从 COD 到 Change PO：只维护变更台账 + 双归档。不定价。不改采购包台账、不写履约卡片。",
     does:["维护变更台账与状态（可手改已取消）","归档变更邮件与图纸","商务金额确认只写台账最终确认金额"],
     doesNot:["不定价、不自算金额","不改采购包主台账","不写履约卡片 / change_items","不直接写现金流"],
     takes:[{what:"变更相关邮件与附件", fmt:"邮件 + 图纸 / 报价"},{what:"变更序号", fmt:"如 COD 号"}],
-    gives:[{what:"项目变更台账", fmt:"Excel", demo:{label:"项目变更台账", href:"demos/change-log.html"}}] },
-  { id:"s4", short:"现金流", skillName:"cashflow-forecast", layer:"产出",
+    gives:[{what:"项目变更台账", fmt:"Excel", demo:{label:"下载 Change Log Excel", href:"demos/change-log.xlsx"}}] },
+  { id:"s4", short:"现金流预测", skillName:"cashflow", layer:"产出",
     role:"独立 Skill：只读采购包台账、关键节点、变更台账最终确认金额，重算按月出账。流程不直接改这张表。",
     does:["只读聚合上游","按月出账预测","变更增量默认挂尾款"],
     doesNot:["不算甲方收入侧","不手猜缺日期的金额","不改 Tracker / 请款 / 变更台账"],
     takes:[{what:"采购包台账（合同额 / 付款条件 / 已请）", fmt:"只读"},{what:"关键节点完成时点", fmt:"只读"},{what:"变更台账最终确认金额", fmt:"只读"}],
-    gives:[{what:"按月出账预测", fmt:"Excel / JSON", demo:{label:"现金流预测", href:"demos/cashflow-forecast.html"}}] },
-  { id:"s5", short:"通讯录", skillName:"project-directory", layer:"产出",
+    gives:[{what:"按月出账预测", fmt:"Excel / JSON", demo:{label:"现金流预测", href:"demos/cashflow.html"}}] },
+  { id:"s5", short:"项目通讯录", skillName:"project-directory", layer:"产出",
     role:"新建项目时先落一张空通讯录表；之后用企微群消息 + 填写页收集对接人，合成项目通讯录。不走邮箱。",
     does:["新建项目时输出空通讯录表","生成群填空文案与填写页","解析群回复并入表"],
     doesNot:["不发邮件 / 不走邮局","不改 Tracker / 请款 / 变更","不跟采购包创建绑死（建包不刷通讯录）"],
     takes:[{what:"新建项目时的项目壳", fmt:"项目档案"},{what:"群里按模板的回复", fmt:"文字 / 填写页"}],
     gives:[{what:"项目通讯录", fmt:"Excel", demo:{label:"项目通讯录", href:"demos/project-directory.html"}},{what:"填写页", fmt:"网页", demo:{label:"填写页", href:"demos/directory-fill-form.html"}}] },
-  { id:"payform", short:"付款申请", skillName:"payment-form", layer:"产出",
+  { id:"payform", short:"付款申请", skillName:"payment-sheet", layer:"产出",
     role:"给供应商填的请款申请页，并可下载公司请款单 Excel。Skill 1 建包后生成；已请写在台账，本页不展示；变更金额读变更台账。",
     does:["生成/刷新请款申请页","页内下载公司模板 Excel","Excel 既往请款读台账已请；变更合计读 Change Log"],
     doesNot:["不入账、不改 Tracker","不渲染履约卡片","不预填本次请款金额","不读已废除的 payment_ledger"],
     takes:[{what:"card-data 与台账合同额", fmt:"结构化数据"},{what:"变更台账最终确认金额", fmt:"只读"}],
     gives:[{what:"请款申请页", fmt:"网页", demo:{label:"请款申请页", href:"demos/payment-claim-form.html"}}] },
-  { id:"tracker", short:"采购包台账", skillName:"", layer:"产出",
+  { id:"tracker", short:"Status Tracker", skillName:"", layer:"产出",
     role:"单纯产出：项目级采购包状态台账。Skill 0 建空表，Skill 1/2 往里写——没有单独的「台账 Skill」。",
     does:["承接空表与包行","记录履约里程碑与合同金额","记录已请 / 待请 / 下一付款节点"],
     doesNot:["变更不写这张表（走变更 Tracker）","自己不是一门独立 Skill"],
     takes:[{what:"Skill 0 / 1 / 2 的业务动作", fmt:"创建或写入"}],
     gives:[{what:"采购包状态台账", fmt:"Excel", demo:{label:"采购包状态台账", href:"demos/package-tracker.html"}},{what:"空台账样子", fmt:"Excel", demo:{label:"空采购包台账", href:"demos/empty-tracker.html"}}] },
-  { id:"chglog", short:"变更台账", skillName:"", layer:"产出",
-    role:"单纯产出：项目变更台账，整张表就是 Skill 3 的活。现金流与请款页直接读「最终确认金额」，不经履约卡片。",
-    does:["承接 COD 起的变更行","推进技术 / 商务 / Change PO 状态","记下最终确认不含税金额","可手改已取消"],
-    doesNot:["不定价","不改采购包 Tracker","不写履约卡片","不是独立 Skill"],
+  { id:"chglog", short:"Change Log", skillName:"", layer:"产出",
+    role:"单纯产出：项目变更台账（短标题 + 详细说明 + 预估/最终金额 + 里程碑戳）。现金流与请款页直接读「最终确认金额」，不经履约卡片。",
+    does:["承接 COD 起的变更行","短标题与详细说明分列","推进技术 / 商务 / Change PO 状态","记下最终确认不含税金额","可手改已取消"],
+    doesNot:["不定价","不改采购包 Tracker","不写履约卡片","不收专业/Note/Who to blame","不是独立 Skill"],
     takes:[{what:"Skill 3 变更流程", fmt:"创建或写入"}],
-    gives:[{what:"项目变更台账", fmt:"Excel", demo:{label:"项目变更台账", href:"demos/change-log.html"}}] },
-  { id:"mpp", short:"进度转 Excel", skillName:"schedule-mpp-excel", layer:"辅助",
+    gives:[{what:"项目变更台账", fmt:"Excel", demo:{label:"下载 Change Log Excel", href:"demos/change-log.xlsx"}}] },
+  { id:"mpp", short:"进度转 Excel", skillName:"mpp-to-excel", layer:"辅助",
     role:"把 Project 进度变成人能打开的甘特表，并导出机器可读表格。",
     does:["读 Project 文件","输出带甘特的 Excel","导出任务表供下游用"],
     doesNot:["不判断关键节点完成时点"],
@@ -415,13 +415,13 @@ const SKILLS = [
       {what:"给人看的甘特表", fmt:"Excel", demo:{label:"下载 Project 视图 Excel", href:"demos/mpp-project-view.xlsx"}},
       {what:"给下游用的任务表", fmt:"表格", demo:{label:"机读任务表示例", href:"demos/mpp-schedule-csv.html"}}
     ] },
-  { id:"critical", short:"关键节点", skillName:"schedule-critical-nodes", layer:"产出",
+  { id:"critical", short:"关键节点", skillName:"critical-nodes", layer:"产出",
     role:"按采购包推出到货/安装/验收等完成时点；建包写入现金流时会带上这些完成日。",
     does:["理解进度并推理节点（明示 / 倒推）","写入 schedule.json","生成可拖动时间线"],
     doesNot:["不直接读原生 Project 文件（先转表）","不写付款比例","不渲染履约卡片"],
     takes:[{what:"进度任务表", fmt:"表格"},{what:"采购包清单", fmt:"台账或列表"}],
     gives:[{what:"各包关键节点完成时点", fmt:"schedule.json"},{what:"全采购包时间线", fmt:"网页", demo:{label:"关键节点时间线", href:"demos/critical-nodes-timeline.html"}}] },
-  { id:"pdf-read", short:"读 PDF", skillName:"pdf-read", layer:"辅助",
+  { id:"read-pdf", short:"读 PDF", skillName:"read-pdf", layer:"辅助",
     role:"把合同/报价/扫描件读成文字（JSON/Markdown）。本包唯一的 PDF 读字能力；不抽付款节点。",
     does:["区分文本件与扫描件","读出正文交给履约或用户"],
     doesNot:["不抽付款节点（归 Skill 1）","不直接改台账","不做合并拆分等通用 PDF 编辑（不在本包）"],
@@ -436,8 +436,8 @@ const OUTPUT_IDS = ["tracker", "chglog", "critical", "payform", "s4", "s5"];
 // 单纯产出 = 流程顺手写下的表，无独立 Skill；独立 Skill 产出 = 有自己算法/入口
 const OUTPUT_ARTIFACT_IDS = ["tracker", "chglog"];
 const OUTPUT_SKILL_IDS = ["critical", "payform", "s4", "s5"];
-// 本包辅助工具：只留进度转换 + 读 PDF（履约卡片渲染归 Skill 1 链路内部；通用 PDF 不在本包）
-const AUX_IDS = ["mpp", "pdf-read"];
+// 本包辅助工具：进度转换 + 读 PDF（编排是 Rule，不是 Skill；履约卡片归 Skill 1；通用 PDF 不在本包）
+const AUX_IDS = ["mpp", "read-pdf"];
 
 function isOutputArtifact(id) { return OUTPUT_ARTIFACT_IDS.includes(id); }
 function isOutputSkill(id) { return OUTPUT_SKILL_IDS.includes(id); }
@@ -471,6 +471,8 @@ const EDGES = [
   { from: "s1", to: "critical", kind: "写入", label: "建包时同步完成时点", zone: "feed" },
   // 付款申请
   { from: "s1", to: "payform", kind: "创建", label: "生成请款申请页（给供应商填）", zone: "feed" },
+  { from: "tracker", to: "payform", kind: "只读", label: "合同额 / 已请（Excel 既往行）", zone: "feed" },
+  { from: "chglog", to: "payform", kind: "只读", label: "最终确认金额（Variations）", zone: "feed" },
   // 现金流（独立 Skill）：只读上游重算，流程不直接改现金流表
   { from: "tracker", to: "s4", kind: "只读", label: "合同额 / 付款条件 / 已请", zone: "feed" },
   { from: "critical", to: "s4", kind: "只读", label: "完成时点 window_end", zone: "feed" },
@@ -520,7 +522,7 @@ const LAYOUT = {
 
 const BIZ = [
   {
-    id:"s0", title:"Skill 0 · 新建项目", skillName:"project-init",
+    id:"s0", title:"Skill 0 · 新建项目", skillName:"new-project",
     one:"先有一个空项目：档案、空台账，并绑定项目专用邮箱。之后正式往来抄送该地址即可进系统。",
     when:"新建项目、绑邮箱、项目刚立项时",
     steps:[
@@ -536,7 +538,7 @@ const BIZ = [
     intent:"项目专用邮箱在此绑定：之后各方正式邮件抄送该地址，系统才有入口可跟。",
   },
   {
-    id:"s1", title:"Skill 1 · 采购包创建", skillName:"contract-fulfillment-struct",
+    id:"s1", title:"Skill 1 · 采购包创建", skillName:"po-flow",
     one:"管一个采购包怎么从询价走到合同：建包、记里程碑、归档附件、写履约卡片与付款条件。",
     when:"询价发出、技术确认、下单、付款条件、合同到达时",
     steps:[
@@ -546,12 +548,12 @@ const BIZ = [
       {n:"付款条件 / 合同", d:"把怎么分几笔、各付多少写进卡片；合同归档；渲卡片时自动刷请款页。"},
     ],
     takes:[{what:"履约相关邮件与附件", fmt:"邮件 + PDF / Excel"},{what:"总进度计划", fmt:"Project 或表格"}],
-    gives:[{what:"采购包状态台账", fmt:"Excel", demo:{label:"采购包状态台账", href:"demos/package-tracker.html"}},{what:"履约条件卡片", fmt:"网页", demo:{label:"履约条件卡片", href:"demos/fulfillment-card.html"}},{what:"请款申请页", fmt:"网页", demo:{label:"请款申请页", href:"demos/payment-claim-form.html"}},{what:"关键节点时间线", fmt:"时间线网页", demo:{label:"关键节点时间线", href:"demos/critical-nodes-timeline.html"}}],
+    gives:[{what:"采购包状态台账", fmt:"Excel", demo:{label:"采购包状态台账", href:"demos/package-tracker.html"}},{what:"履约条件卡片", fmt:"网页", demo:{label:"履约条件卡片", href:"demos/vendor-card.html"}},{what:"请款申请页", fmt:"网页", demo:{label:"请款申请页", href:"demos/payment-claim-form.html"}},{what:"关键节点时间线", fmt:"时间线网页", demo:{label:"关键节点时间线", href:"demos/critical-nodes-timeline.html"}}],
     not:["不代发询价或订单","不请款入账","不维护变更台账","不手猜进度日期"],
-    tip:"这里定「有几笔、各多少」；请款页归 payment-form；入账归 Skill 2。",
+    tip:"这里定「有几笔、各多少」；请款页归 payment-sheet；入账归 Skill 2。",
   },
   {
-    id:"s2", title:"Skill 2 · 请款登记", skillName:"payment-request",
+    id:"s2", title:"Skill 2 · 请款登记", skillName:"payment-flow",
     one:"提醒下一笔待请；五步推进只写采购包台账。仅客户批复后才算已请。03 只归档，不另开流水账。",
     when:"临近完成时点、收到请款材料要推进进度时",
     steps:[
@@ -565,22 +567,22 @@ const BIZ = [
     tip:"请款申请页给填表用；真正「已请」只认客户批复写进同一张采购包台账。",
   },
   {
-    id:"s3", title:"Skill 3 · 变更管理", skillName:"change-archive",
+    id:"s3", title:"Skill 3 · 变更管理", skillName:"change-flow",
     one:"变更从 COD 到 Change PO：只维护变更台账 + 双归档。不定价；不写履约卡片。",
     when:"变更指令、技术送审、商务确认、Change PO 等邮件到来时",
     steps:[
-      {n:"建行并推进状态", d:"按变更序号记入变更台账；可手改「已取消」。"},
+      {n:"建行并推进状态", d:"按变更序号记入变更台账；短标题 + 详细说明；可手改「已取消」。"},
       {n:"双归档", d:"往来邮件与变更资料分别归档到约定位置。"},
       {n:"金额只写台账", d:"商务金额确认 → 台账「最终确认金额」；不写卡片 change_items。"},
       {n:"Change PO 闭环", d:"盖戳结束该条变更，不改采购包主台账。"},
     ],
     takes:[{what:"变更相关邮件与附件", fmt:"邮件 + 图纸 / 报价"},{what:"变更序号", fmt:"如 COD 号"}],
-    gives:[{what:"项目变更台账", fmt:"Excel", demo:{label:"项目变更台账", href:"demos/change-log.html"}}],
+    gives:[{what:"项目变更台账", fmt:"Excel", demo:{label:"下载 Change Log Excel", href:"demos/change-log.xlsx"}}],
     not:["不定价、不自算核定","不改采购包主台账","不写履约卡片","不代发变更指令"],
     tip:"变更台账是权威源；现金流和请款页直接读「最终确认金额」，不再经卡片中转。",
   },
   {
-    id:"s4", title:"现金流预测", skillName:"cashflow-forecast",
+    id:"s4", title:"现金流预测", skillName:"cashflow",
     one:"独立 Skill：只读台账、关键节点、变更台账最终确认金额，拼出按月供应商出账。",
     when:"要看资金计划、按月出账、现金流预测时",
     steps:[
@@ -589,13 +591,13 @@ const BIZ = [
       {n:"写出表", d:"生成现金流预测 Excel / JSON（本 Skill 自己的产物）。"},
     ],
     takes:[{what:"台账 / 关键节点 / 变更台账", fmt:"只读"}],
-    gives:[{what:"按月出账预测", fmt:"Excel / JSON", demo:{label:"现金流预测", href:"demos/cashflow-forecast.html"}}],
+    gives:[{what:"按月出账预测", fmt:"Excel / JSON", demo:{label:"现金流预测", href:"demos/cashflow.html"}}],
     not:["不算甲方收入","不改 Tracker / 请款 / 变更","不手猜缺项","不读已废除的 payment_ledger / change_items"],
     tip:"已请在台账上；已确认变更在变更台账上。箭头指向现金流 = 它来读，不是别人去改它。",
   },  {
     id:"s5", title:"项目通讯录", skillName:"project-directory",
     one:"新建项目时先落空通讯录表；之后用群消息/填写页收对接人，合成项目通讯录。",
-    when:"新建项目后要收联系人、Project Directory 时",
+    when:"新建项目后要收联系人、项目通讯录时",
     steps:[
       {n:"建空表", d:"跟新建项目一起输出空通讯录（不跟建包绑死）。"},
       {n:"出群消息 + 填写页", d:"发可复制群文案和手机填写页。"},
@@ -785,7 +787,7 @@ function feederNoteHtml(outputId) {
 function renderSkillDetail(id) {
   if (!id) {
     return `<div class="card">
-      <p class="detail-meta" style="margin:0 0 8px">点上方图里的节点看流程；点产出只看短标签。鼠标移到线上才显示写了什么 / 读了什么。</p>
+      <p class="detail-meta" style="margin:0 0 8px">点上方图里的节点看流程；点产出看连线。谁先谁后由项目 Rule「Skill 编排」管着（不是业务 Skill）。</p>
       <p class="detail-meta" style="margin:0;color:var(--muted)">不会自动往下跳。想看文字说明时，自己滑到下方即可。</p>
     </div>`;
   }
@@ -1114,7 +1116,7 @@ function renderAuxPanel() {
   }).join("");
   return `<div class="aux-panel">
     <p class="aux-title">辅助工具</p>
-    <p class="aux-sub">本包只有两个：进度转 Excel、读 PDF。被上面流程按需调用，一般不当主入口。履约卡片渲染跟在 Skill 1 里；通用 PDF 编辑不在本包。</p>
+    <p class="aux-sub">本包只有两个：进度转 Excel、读 PDF。被上面流程按需调用，一般不当主入口。履约卡片跟在 Skill 1；通用 PDF 编辑不在本包。谁先谁后是项目 Rule，不是这里的工具。</p>
     <div class="aux-row">${chips}</div>
   </div>`;
 }

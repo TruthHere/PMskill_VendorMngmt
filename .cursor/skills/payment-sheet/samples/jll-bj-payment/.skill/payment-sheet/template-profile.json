@@ -1,0 +1,62 @@
+{
+  "id": "jll-bj-payment",
+  "engine": "cells",
+  "amount_tax": "incl",
+  "title": "付款证书",
+  "title_en": "Payment Certificate",
+  "download_label": "下载付款证书（Excel）",
+  "download_filename": "【付款证书】{project_name}_{vendor_name}_第{payment_no}次请款_{payment_no}.xlsx",
+  "vendor_section_title": "付款证书抬头（供应商填）",
+  "invoice_sheet": "JLL BJ PM Payment",
+  "drop_sheets": [],
+  "form": {
+    "show_includes_variations": false,
+    "attachment_mode": "lines",
+    "amount_tax": "incl",
+    "user_fields": [
+      {
+        "key": "addressee",
+        "label": "主送",
+        "required": true,
+        "placeholder": "客户公司全称，写在付款证书「主送」后面"
+      },
+      {
+        "key": "po_number",
+        "label": "采购单号",
+        "required": true,
+        "placeholder": "PO / 采购订单号"
+      },
+      {
+        "key": "claim_purpose",
+        "label": "本次请款比例及目的",
+        "required": true,
+        "full": true,
+        "input": "textarea",
+        "placeholder": "例如：现申请合同生效后支付合同金额的 35%"
+      }
+    ]
+  },
+  "writes": [
+    {"from": "addressee", "cell": "B6", "type": "text"},
+    {"from": "project_name", "cell": "B8", "type": "text"},
+    {"from": "vendor_name", "cell": "B9", "type": "text"},
+    {"from": "po_number", "cell": "B10", "type": "text"},
+    {"from": "work_package", "cell": "B11", "type": "text"},
+    {"from": "payment_terms", "cell": "C14", "type": "text"},
+    {"from": "claim_purpose", "cell": "C15", "type": "text"},
+    {"from": "contract_value_incl_tax", "cell": "F22", "type": "money"},
+    {"from": "application_date", "cell": "F33", "type": "text"}
+  ],
+  "claim_amount": {
+    "amount_cells": ["C16", "F23"]
+  },
+  "running_totals": {
+    "certified_to_date_cell": "F24",
+    "remaining_cell": "F25",
+    "includes_this_claim": true,
+    "contract_from": "contract_value_incl_tax"
+  },
+  "support_file_cells": ["C18", "C19"],
+  "clear_on_adopt": ["B6", "B8", "B9", "B10", "B11", "C14", "C15", "C16", "C18", "C19", "F22", "F23", "F24", "F25", "F33", "H7"],
+  "notes": "仲量联行付款证书。金额按含税。右上角管理公司名称/地址固定不填。审批栏不填。本技能目前只收 .xlsx。"
+}

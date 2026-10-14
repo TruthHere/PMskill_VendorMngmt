@@ -1,0 +1,34 @@
+{
+  "expectations": [
+    {
+      "text": "project.json exists",
+      "passed": false,
+      "evidence": "missing"
+    },
+    {
+      "text": "tracker file exists",
+      "passed": false,
+      "evidence": "missing"
+    },
+    {
+      "text": "tracker packages list readable",
+      "passed": true,
+      "evidence": "count=0"
+    },
+    {
+      "text": "progress plan archived",
+      "passed": false,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-1/_tmp/new-project-without/项目档案/00_进度计划"
+    },
+    {
+      "text": "empty packages for init-only eval",
+      "passed": false,
+      "evidence": "packages=0"
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "total": 5,
+    "pass_rate": 0.2
+  }
+}

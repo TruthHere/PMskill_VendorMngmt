@@ -6,9 +6,9 @@
       "evidence": "got 'change.cod'"
     },
     {
-      "text": "route_to is contract-fulfillment-struct",
+      "text": "route_to is po-flow",
       "passed": false,
-      "evidence": "got 'change-archive'"
+      "evidence": "got 'change-flow'"
     },
     {
       "text": "package_name is Door Package",

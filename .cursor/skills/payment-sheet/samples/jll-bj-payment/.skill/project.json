@@ -1,0 +1,11 @@
+{
+  "project_name": "Skill2 Demo Project",
+  "project_code": "JLL-PAYCERT-DEMO",
+  "division": "212-4",
+  "billing_entity": "Demo Billing Entity",
+  "tracker_filename": "Skill2 Demo Project_procurement_packages_status_tracker.csv",
+  "payment_form": {
+    "template": ".skill/payment-sheet/template.xlsx",
+    "profile": ".skill/payment-sheet/template-profile.json"
+  }
+}

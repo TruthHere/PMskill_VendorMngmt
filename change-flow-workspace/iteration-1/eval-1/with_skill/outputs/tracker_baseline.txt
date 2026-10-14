@@ -1,0 +1,4 @@
+# 最后更新,2026-09-15T17:27:11+08:00
+,,,,,,,,,,请款,,,,状态,,,,,,
+序号,采购包名称,供应商名称,供应商简称,对接人邮箱,采购包类型,金额不含税,金额含税,金额备注,交期摘要,已请金额,待请款金额,下一付款节点,请款进度,RFP 发出,技术方案已确认,商务报价已确认,PO 已发起,已结算,卡片路径,文件夹路径
+01,Glazing partition,Facade Co,Facade,a@b.com,供应,,,,,,,,无在办,,,2026-09-15,2026-09-15,,/Users/truth_here/Documents/AI Projects/PMskills/change-flow-workspace/iteration-1/_tmp/lifecycle-close-with/01_Glazingpartition_Facade/履约条件卡片.html,/Users/truth_here/Documents/AI Projects/PMskills/change-flow-workspace/iteration-1/_tmp/lifecycle-close-with/01_Glazingpartition_Facade

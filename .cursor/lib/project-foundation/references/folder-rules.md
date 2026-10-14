@@ -2,54 +2,43 @@
 
 ## 项目根目录（阶段 0 创建）
 
-**PM 日常只看两样**：`{项目名称}_procurement_packages_status_tracker.csv` + `项目背景.md`。
+**PM 日常只看根目录的英文 Excel**（不要和机读 CSV 混放）：
 
 ```
 {项目根路径}/
-├── Test project 1_procurement_packages_status_tracker.csv   # 采购包状态总览
-├── Test project 1_change_log.csv                            # 变更 Change Log（change-archive）
-├── Test project 1_项目通讯录.xlsx                            # 供应商对接人（project-directory）
-├── 项目背景.md                                            # 人类可读项目信息 + Tracker 最后更新
-├── .skill/                                                # Skill 内部（Finder 默认隐藏，类似 .git）
+├── Test project 1_Status Tracker.xlsx      # 采购包状态总览（给人看）
+├── Test project 1_Change Log.xlsx          # 变更台账（给人看）
+├── Test project 1_Cash Flow Forecast.xlsx  # 现金流预测（按需生成）
+├── 项目背景.md
+├── 待处理邮件/                              # 人另存的整封 .eml，说「处理待处理邮件」后才读
+├── .skill/                                 # 机读文件（Finder 默认隐藏）
 │   ├── project.json
-│   ├── pending.json                                       # 待确认：每条必须带 skill，只能由该 Skill 关闭
-│   ├── schedule.json                                      # 进度 pending 在这里，不进 pending.json
-│   ├── critical_nodes_timeline.html                     # 与进度区同款时间线（机读旁路）
+│   ├── status_tracker.csv                  # Tracker 真源（脚本读写）
+│   ├── change_log.csv                      # Change Log 真源（Skill 3 写）
+│   ├── pending.json
+│   ├── schedule.json
+│   ├── cashflow_forecast.json
 │   ├── mailbox_state.json
 │   └── inbox/
 ├── 项目档案/
 │   └── 00_进度计划/
-│       └── 关键节点时间线.html                           # 采购包录入时由 schedule-critical-nodes 同步生成
 ├── 01_{采购包名称}_{供应商简称}/
-│   └── 关键节点时间线.html                               # 该包过滤视图（建包时同步）
 └── …
 ```
 
+### 命名（英文后缀）
+
+| 给人看（项目根） | 机读（`.skill/`） |
+|------------------|-------------------|
+| `{项目名}_Status Tracker.xlsx` | `status_tracker.csv` |
+| `{项目名}_Change Log.xlsx` | `change_log.csv` |
+| `{项目名}_Cash Flow Forecast.xlsx` | `cashflow_forecast.json` |
+
+旧版根目录 `*_procurement_packages_status_tracker.csv` / `*_change_log.csv` / `*_现金流预测.xlsx` 仍可被识别；下次保存会迁到新布局。
+
 ### 为什么不用下划线前缀？
 
-早期用 `_系统/`、`_项目档案/` 是为了在 Finder 里把目录顶到列表最前、标记「非日常文件」。这不够直观，现已改为：
-
-| 旧名 | 新名 | 说明 |
-|------|------|------|
-| `_系统/` | `.skill/` | 点开头 = macOS 默认隐藏，根目录更干净 |
-| `_项目档案/` | `项目档案/` | 正常中文名，无下划线 |
-| `tracker.csv` | `{项目名}_procurement_packages_status_tracker.csv` | 见名知意 |
-
-### Tracker 文件命名
-
-```
-{项目名称}_procurement_packages_status_tracker.csv
-```
-
-示例：`Test project 1_procurement_packages_status_tracker.csv`
-
-- 文件名含**项目名** + 固定后缀 `procurement_packages_status_tracker`
-- 文件**第一行**写入最后更新时间（Excel 打开时 A1 可见）：
-  ```
-  # 最后更新,2026-07-19T20:30:00+08:00
-  采购包名称,供应商名称,…
-  ```
-- `项目背景.md` 与 `.skill/project.json` 同步记录 `tracker_last_updated`
+早期用 `_系统/`、`_项目档案/`；现已改为 `.skill/`（隐藏）与 `项目档案/`。
 
 ## 采购包文件夹（步骤 1 创建）
 
@@ -59,6 +48,8 @@
 01_BMS_dismantling_BOSCH/
 ├── 01_合同报价/
 ├── 02_图纸/
+├── 03_请款记录/
+├── 04_变更洽商/
 …
 ```
 
@@ -69,8 +60,17 @@ python3 .cursor/lib/project-foundation/scripts/migrate_project_layout.py \
   --project-root "/path/to/project"
 ```
 
-兼容读取：`.skill/` 与 `_系统/`、`项目档案/` 与 `_项目档案/`、`tracker.csv` 与新版 Tracker 文件名均可识别。
+兼容读取：旧 CSV 名、旧中文 Excel 名均可识别。
+
+## 图纸归档（`02_图纸/`）
+
+| 来件 | 怎么放 |
+|------|--------|
+| dwg / pdf / zip 等图纸附件 | 按 `archive_file` 命名拷进本目录 |
+| 邮件签名、`image001.png` 这类 inline 图 | 不归档 |
+| 图纸只在云盘链接（Box / SharePoint 等），没有可存附件 | **必须留指针**：`{包}_图纸链接_{日期}_v1_云盘指针.md`，写上 URL、密码（如有）、来源邮件主题。不要留空文件夹让人以为没收到图纸 |
+| 不要默认登录云盘把文件拉下来 | 用户明确要求再下载 |
 
 ## 其余规则
 
-文件命名、步骤归档、附件过滤等同前版；详见 archive_file.py 与各步骤 SOP。
+文件命名、步骤归档、附件过滤详见 archive_file.py 与各步骤 SOP。

@@ -19,7 +19,7 @@ from typing import Any
 
 SCRIPTS = Path(__file__).resolve().parent
 SKILLS = SCRIPTS.parents[1]
-FULFILLMENT_SCRIPTS = SKILLS / "contract-fulfillment-struct" / "scripts"
+FULFILLMENT_SCRIPTS = SKILLS / "po-flow" / "scripts"
 for path in (SCRIPTS, FULFILLMENT_SCRIPTS):
     if str(path) not in sys.path:
         sys.path.insert(0, str(path))

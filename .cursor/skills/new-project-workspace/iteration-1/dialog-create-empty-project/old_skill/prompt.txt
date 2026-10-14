@@ -1,0 +1,15 @@
+请在本机新建空项目（不要建采购包）。
+
+主题：[项目初始化] Harbor Lab - HARBOR
+
+项目名称：Harbor Lab
+项目编号：HARBOR
+项目类型：实验室
+项目地址：上海市浦东新区张江路 88 号
+甲方名称：港湾科技有限公司
+项目经理：李四
+币种/含税：CNY 含税
+本地根文件夹路径：/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/old_skill/outputs/HarborLab
+专用邮箱：HarborLab_AI@163.com
+
+无进度计划附件。完成后汇报项目根、Tracker 路径、邮箱是否已绑，并提示可转发 RFP。

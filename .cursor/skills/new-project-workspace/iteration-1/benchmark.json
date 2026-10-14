@@ -1,0 +1,333 @@
+{
+  "metadata": {
+    "skill_name": "new-project",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-08-09T06:31:52Z",
+    "evals_run": [
+      0,
+      1,
+      2
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "project.json exists with project_code HARBOR",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/old_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        },
+        {
+          "text": "tracker exists with empty packages",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/old_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        },
+        {
+          "text": "mailbox.address is HarborLab_AI@163.com",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/old_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        },
+        {
+          "text": "\u9879\u76ee\u80cc\u666f.md exists",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/old_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        },
+        {
+          "text": "no procurement package folders created",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/old_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        },
+        {
+          "text": "used run_init or init_project CLI (not hand-written project.json only)",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/old_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "handler result reason is project_not_initialized",
+          "passed": true,
+          "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+        },
+        {
+          "text": "result auto is false",
+          "passed": true,
+          "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+        },
+        {
+          "text": "pending.json has project_init item",
+          "passed": true,
+          "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+        },
+        {
+          "text": "did not create a complete initialized project via silent init",
+          "passed": true,
+          "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+        },
+        {
+          "text": "note or reply tells PM/Agent to use run_init / \u5165\u53e3 A",
+          "passed": true,
+          "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "handler result auto is true",
+          "passed": true,
+          "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+        },
+        {
+          "text": "mailbox.address updated to HarborLab_AI@163.com",
+          "passed": true,
+          "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+        },
+        {
+          "text": "project_code remains HARBOR",
+          "passed": true,
+          "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+        },
+        {
+          "text": "no new procurement package folders",
+          "passed": true,
+          "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+        },
+        {
+          "text": "did not wipe or recreate tracker packages",
+          "passed": true,
+          "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 0,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "project.json exists with project_code HARBOR",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        },
+        {
+          "text": "tracker exists with empty packages",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        },
+        {
+          "text": "mailbox.address is HarborLab_AI@163.com",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        },
+        {
+          "text": "\u9879\u76ee\u80cc\u666f.md exists",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        },
+        {
+          "text": "no procurement package folders created",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        },
+        {
+          "text": "used run_init or init_project CLI (not hand-written project.json only)",
+          "passed": true,
+          "evidence": "root=/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/dialog-create-empty-project/with_skill/outputs/HarborLab; result_keys=['status', 'project_code', 'project_name', 'project_root', 'tracker_csv', 'tracker_xlsx', 'mailbox', 'package_folders_exist', 'schedule_imported']"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "handler result reason is project_not_initialized",
+          "passed": true,
+          "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+        },
+        {
+          "text": "result auto is false",
+          "passed": true,
+          "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+        },
+        {
+          "text": "pending.json has project_init item",
+          "passed": true,
+          "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+        },
+        {
+          "text": "did not create a complete initialized project via silent init",
+          "passed": true,
+          "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+        },
+        {
+          "text": "note or reply tells PM/Agent to use run_init / \u5165\u53e3 A",
+          "passed": true,
+          "evidence": "reason=project_not_initialized; auto=False; project_exists=False"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "handler result auto is true",
+          "passed": true,
+          "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+        },
+        {
+          "text": "mailbox.address updated to HarborLab_AI@163.com",
+          "passed": true,
+          "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+        },
+        {
+          "text": "project_code remains HARBOR",
+          "passed": true,
+          "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+        },
+        {
+          "text": "no new procurement package folders",
+          "passed": true,
+          "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+        },
+        {
+          "text": "did not wipe or recreate tracker packages",
+          "passed": true,
+          "evidence": "auto=True; mailbox=HarborLab_AI@163.com"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "old_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "tokens": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "tokens": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.00",
+      "time_seconds": "+0.0",
+      "tokens": "+0"
+    }
+  },
+  "notes": []
+}

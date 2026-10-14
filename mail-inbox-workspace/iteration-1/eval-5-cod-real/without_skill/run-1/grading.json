@@ -6,7 +6,7 @@
       "evidence": "got 'unknown'"
     },
     {
-      "text": "route_to is change-archive",
+      "text": "route_to is change-flow",
       "passed": false,
       "evidence": "got None"
     },

@@ -1,0 +1,5 @@
+语境：mail-inbox 分发 project_init。项目 /Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/mail-handler-confirm-existing-mailbox/old_skill/outputs/HarborExisting 已由 Skill 0 初始化完毕（已有 project.json，code=HARBOR，原邮箱 old@163.com）。
+
+邮件文件：/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/new-project-workspace/iteration-1/mail-handler-confirm-existing-mailbox/old_skill/outputs/mailbox.eml，正文要求把专用邮箱改为 HarborLab_AI@163.com。
+
+请按邮局入口处理：确认档案并回写邮箱，不要重建项目、不要建采购包。

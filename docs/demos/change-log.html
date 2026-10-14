@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sample Project · 项目变更台账 · 示例</title>
+<title>项目变更台账 · 示例（对齐 change-flow 最新模板）</title>
 <style>
-  :root { --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --hdr:#334155; --page:#f8fafc; --done:#dbeafe; --done-text:#1d4ed8; }
+  :root { --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --hdr:#334155; --page:#f8fafc; --done:#dbeafe; --done-text:#1d4ed8; --cancel:#fee2e2; --cancel-text:#b91c1c; --desc:#f8fafc; }
   * { box-sizing: border-box; }
   body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; background:var(--page); color:var(--ink); padding:32px 20px 48px; line-height:1.5; }
-  .wrap { max-width: 1200px; margin: 0 auto; }
-  .meta { font-size:12px; color:var(--muted); margin-bottom:14px; padding:10px 14px; background:#fff; border:1px solid var(--line); border-radius:8px; }
+  .wrap { max-width: 1400px; margin: 0 auto; }
+  .meta { font-size:12px; color:var(--muted); margin-bottom:14px; padding:10px 14px; background:#fff; border:1px solid var(--line); border-radius:8px; line-height:1.55; }
+  .meta a { color:#0f766e; font-weight:600; }
   h1 { font-size:22px; margin:0 0 6px; }
   .project-name { font-size:13px; color:var(--muted); margin:0 0 6px; }
   .project-name strong { color:var(--ink); font-size:16px; font-weight:700; }
@@ -20,40 +21,130 @@
   .meta-row td { background:#fff; color:var(--muted); }
   .head-row th { background:var(--hdr); color:#fff; font-weight:600; text-align:center; white-space:nowrap; }
   .status { background:var(--done); color:var(--done-text); font-weight:600; text-align:center; white-space:nowrap; }
+  .status.cancel { background:var(--cancel); color:var(--cancel-text); }
   .left { text-align:left; }
   .num { text-align:right; white-space:nowrap; }
+  .stamp { text-align:center; white-space:nowrap; font-size:11px; color:#334155; }
+  .title { font-weight:600; }
+  .desc { background:var(--desc); max-width:280px; white-space:pre-wrap; font-size:11px; color:#334155; }
+  .note { font-size:12px; color:var(--muted); margin-top:12px; }
 </style>
 <link rel="stylesheet" href="resizable-table.css">
 </head>
 <body>
 <div class="wrap">
-  <p class="meta">示例 · Skill 3 变更管理产出 · 对应 Excel：<code>Sample Project_change_log.csv</code></p>
+  <p class="meta">
+    对齐 Skill 3 <code>change_log.template.csv</code> / <code>change-log-schema.md</code>。
+    真实文件：<code>{项目名}_change_log.csv</code> ·
+    <a href="change-log.xlsx" download="Sample Project_Change Log.xlsx">下载本示例 Excel</a>
+    （机读在 <code>.skill/change_log.csv</code>；第 1 行 COD076 来自 skill 样例 SARL Ph5）
+  </p>
   <p class="project-name">项目 · <strong>Sample Project</strong></p>
   <h1>项目变更台账</h1>
-  <p class="sub">一条变更从 COD 到 Change PO 的状态推进；金额确认后同步到履约卡片。</p>
+  <p class="sub">短标题扫目录、详细说明放 COD 正文浓缩；预估 / 最终金额拆两列（不含税）。不定价；不改采购包 Tracker；不写履约卡片。现金流 / 请款页直接读「最终确认金额」（跳过已取消）。</p>
   <p class="resize-hint">表头右缘可拖动调节列宽。</p>
   <div class="sheet">
-    <table class="resizable-table" data-col-widths="76,112,88,168,92,96,72,108,88,88,96,88,80,80,96,96,144,128">
-      <tr class="meta-row"><td colspan="18">Sample Project · 最后更新：2026-08-09 16:05</td></tr>
+    <table class="resizable-table" data-col-widths="72,110,80,150,260,88,100,88,100,88,88,88,80,80,80,88,88,72,150,110">
+      <tr class="meta-row"><td colspan="20"># 最后更新,2026-09-07T21:32:04+08:00</td></tr>
       <tr class="head-row">
-        <th>变更序号</th><th>采购包</th><th>供应商</th><th>变更内容</th><th>预估金额</th><th>最终确认金额</th><th>时间影响</th><th>当前状态</th>
-        <th>COD已发出</th><th>PMI已发出</th><th>技术文件提交</th><th>技术审核中</th><th>技术确认</th><th>商务确认</th><th>商务金额确认</th><th>Change PO下发</th><th>归档路径</th><th>备注</th>
+        <th>变更序号</th>
+        <th>采购包名称</th>
+        <th>供应商</th>
+        <th>变更内容</th>
+        <th>详细说明</th>
+        <th>预估金额</th>
+        <th>最终确认金额</th>
+        <th>时间影响</th>
+        <th>当前状态</th>
+        <th>COD已发出</th>
+        <th>PMI已发出</th>
+        <th>技术文件提交</th>
+        <th>技术审核中</th>
+        <th>技术确认</th>
+        <th>商务确认</th>
+        <th>商务金额确认</th>
+        <th>Change PO下发</th>
+        <th>已取消</th>
+        <th>归档路径</th>
+        <th>备注</th>
+      </tr>
+      <tr>
+        <td class="left">COD076</td>
+        <td class="left">GC works</td>
+        <td class="left">Infinity</td>
+        <td class="left title">GC work to accommodate additional network ports in HWT battery</td>
+        <td class="left desc">According to HWT battery’s latest requirement update, some IT ports need to be added in the labs and office area. Therefore, GC needs to provide conduits and related site corporation to proceed this change.</td>
+        <td class="num">¥20,000.00</td>
+        <td class="num"></td>
+        <td class="left">No schedule impact</td>
+        <td class="status">PMI 已发出</td>
+        <td class="stamp">2026-07-13</td>
+        <td class="stamp">2026-07-13</td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td class="left">01_GC_works_Infinity/04_变更洽商/</td>
+        <td></td>
       </tr>
       <tr>
         <td class="left">COT003</td>
         <td class="left">Glazing partition</td>
         <td class="left">Facade Co</td>
-        <td class="left">增加一道防火门</td>
+        <td class="left title">增加一道防火门</td>
+        <td class="left desc">门洞两侧补强、防火门及五金按最新消防图纸施工；不含门禁与弱电部分。</td>
         <td class="num">¥15,000.00</td>
         <td class="num">¥16,800.00</td>
         <td></td>
         <td class="status">Change PO 下发</td>
-        <td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td><td>2026-08-08</td>
+        <td class="stamp">2026-08-08</td>
+        <td class="stamp">2026-08-08</td>
+        <td class="stamp">2026-08-08</td>
+        <td class="stamp">2026-08-08</td>
+        <td class="stamp">2026-08-08</td>
+        <td class="stamp">2026-08-08</td>
+        <td class="stamp">2026-08-08</td>
+        <td class="stamp">2026-08-08</td>
+        <td></td>
         <td class="left">01_Glazingpartition_Facade/04_变更洽商/</td>
-        <td class="left">不改采购包 Tracker；金额来源邮件</td>
+        <td class="left">金额来源邮件；不含税</td>
+      </tr>
+      <tr>
+        <td class="left">COT007</td>
+        <td class="left">BMS</td>
+        <td class="left">CtrlSys</td>
+        <td class="left title">加点位取消方案回退</td>
+        <td class="left desc">原 COD 要求增加若干点位；业主决定维持原设计，本变更取消。</td>
+        <td class="num">¥8,000.00</td>
+        <td class="num"></td>
+        <td></td>
+        <td class="status cancel">已取消</td>
+        <td class="stamp">2026-08-10</td>
+        <td class="stamp">2026-08-11</td>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+        <td class="stamp">2026-08-15</td>
+        <td class="left">01_BMS_CtrlSys/04_变更洽商/</td>
+        <td class="left">手改取消；之后邮件只归档不推进</td>
+      </tr>
+      <tr>
+        <td class="left">COT012</td>
+        <td class="left">IT-cabling</td>
+        <td class="left">CablePro</td>
+        <td class="left title">机房多走一趟桥架</td>
+        <td class="left desc">机房北侧新增一段桥架以承接新增网络端口路径；与 GC 开孔配合。</td>
+        <td class="num">¥22,000.00</td>
+        <td class="num"></td>
+        <td class="left">No schedule impact</td>
+        <td class="status">技术确认</td>
+        <td class="stamp">2026-08-20</td>
+        <td class="stamp">2026-08-21</td>
+        <td class="stamp">2026-08-25</td>
+        <td class="stamp">2026-08-25</td>
+        <td class="stamp">2026-08-28</td>
+        <td></td><td></td><td></td><td></td>
+        <td class="left">01_IT-cabling_CablePro/04_变更洽商/</td>
+        <td class="left">商务尚未启动</td>
       </tr>
     </table>
   </div>
+  <p class="note">列序与模板一致：变更内容（短）+ 详细说明（长）→ 预估/最终金额 → 当前状态 → 里程碑戳 → 已取消。不含 Deciplines / Note / Who to blame。</p>
 </div>
 <script src="resizable-table.js"></script>
 </body>

@@ -1,0 +1,34 @@
+{
+  "ok": true,
+  "eml_path": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/change-flow/samples/SARL-Ph5-COD076-demo/01_GC_works_Infinity/04_变更洽商/变更_COD076_PMI.eml",
+  "intent": "change.pmi",
+  "route_to": "change-flow",
+  "confidence": "high",
+  "project_root": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/change-flow/samples/SARL-Ph5-COD076-demo",
+  "hints": {
+    "subject": "Apple SARL Ph5 - [PMI] COD076 - GC work to accommodate additional\r\n network ports in HWT battery",
+    "change_no": "COD076"
+  },
+  "enrichment": {
+    "payment_terms": false,
+    "has_quote_attachment": false,
+    "has_drawing": false,
+    "schedule_attachment": false
+  },
+  "attachments": [
+    {
+      "filename": "img-398b7b65-6ea5-4b0e-9a0d-1f07062fdf13",
+      "kind": "other"
+    }
+  ],
+  "pending": null,
+  "did": [
+    "ingest",
+    "classify"
+  ],
+  "next": {
+    "skill": "change-flow",
+    "action": "handle_change_pmi",
+    "note": "业务 Skill 消费本 JSON；mail-inbox 不改业务数据"
+  }
+}

@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>采购包技能介绍</title>
+<style>
+  :root {
+    --table: #d5e1e8;
+    --sheet: #f4f7f8;
+    --ink: #172033;
+    --muted: #5c6b78;
+    --line: #c3d0d8;
+    --station: #1f4e46;
+    --entry: #243e5c;
+    --craft: #8a4b32;
+    --readonly: #3e5870;
+    --stamp: #9e2b23;
+    --focus: #1f4e46;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.35) 1px, transparent 1px) 0 0 / 28px 28px,
+      var(--table);
+    font-family: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+  .spine {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 46px;
+    background: var(--station);
+    color: #e7f2ee;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spine span {
+    writing-mode: vertical-rl;
+    letter-spacing: .55em;
+    font-family: "Songti SC", "Noto Serif SC", serif;
+    font-size: 15px;
+  }
+  main {
+    margin-left: 46px;
+    padding: 48px 6vw 96px;
+    max-width: 920px;
+  }
+  a { color: inherit; }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+  .cover {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px 28px;
+    align-items: end;
+    margin-bottom: 28px;
+  }
+  .kicker {
+    margin: 0;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  h1 {
+    margin: 6px 0 0;
+    font-family: "Songti SC", "Noto Serif SC", serif;
+    font-weight: 600;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .lede {
+    grid-column: 1 / -1;
+    max-width: 40em;
+    margin: 8px 0 0;
+    font-size: 18px;
+  }
+  .chop {
+    width: 92px;
+    height: 92px;
+    border: 2px solid var(--stamp);
+    border-radius: 50%;
+    color: var(--stamp);
+    display: grid;
+    place-items: center;
+    transform: rotate(-12deg);
+    font-family: "Songti SC", "Noto Serif SC", serif;
+    letter-spacing: .2em;
+    font-size: 15px;
+    background: rgba(255,255,255,.35);
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 8px 0 36px;
+  }
+  .legend span, .kind {
+    display: inline-block;
+    color: white;
+    font-size: 12px;
+    letter-spacing: .08em;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+  .legend .station, .fork a.station, .index a.station, .sheet.station .tab, .sheet.station .kind { background: var(--station); }
+  .legend .entry, .fork a.entry, .index a.entry, .sheet.entry .tab, .sheet.entry .kind { background: var(--entry); }
+  .legend .craft, .fork a.craft, .index a.craft, .sheet.craft .tab, .sheet.craft .kind { background: var(--craft); }
+  .legend .readonly, .fork a.readonly, .index a.readonly, .sheet.readonly .tab, .sheet.readonly .kind { background: var(--readonly); }
+  .map, .sheet {
+    background: var(--sheet);
+    border-radius: 0 14px 14px 14px;
+    padding: 28px 28px 22px;
+    box-shadow: 0 16px 40px rgba(23, 40, 48, .08);
+  }
+  .map h2, .sheet h2 {
+    font-family: "Songti SC", "Noto Serif SC", serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.25;
+    margin: 0 0 8px;
+  }
+  .map h2 { font-size: 32px; }
+  h3 {
+    margin: 22px 0 8px;
+    font-size: 13px;
+    letter-spacing: .14em;
+    color: #3e4c58;
+    font-weight: 600;
+  }
+  .rail {
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+    border-left: 2px solid var(--line);
+  }
+  .rail li {
+    margin: 0 0 14px;
+    padding: 0 0 0 16px;
+  }
+  .rail strong { font-weight: 600; }
+  .fork {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .fork a, .index a {
+    display: block;
+    text-decoration: none;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+  .fork a small, .index a small { display: block; opacity: .8; font-size: 12px; }
+  .note {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 15px;
+  }
+  .index {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 0 12px;
+    margin: 28px 0 8px;
+    background: var(--table);
+  }
+  .index a {
+    white-space: nowrap;
+    color: white;
+  }
+  .sheet {
+    position: relative;
+    margin-top: 22px;
+    scroll-margin-top: 150px;
+    border-radius: 12px;
+    border-left: 8px solid var(--line);
+  }
+  .sheet.station { border-left-color: var(--station); }
+  .sheet.entry { border-left-color: var(--entry); }
+  .sheet.craft { border-left-color: var(--craft); }
+  .sheet.readonly { border-left-color: var(--readonly); }
+  .tab {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 12px;
+    padding: 3px 10px;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 13px;
+    letter-spacing: .04em;
+  }
+  .sheet-head .kind { margin: 0 0 8px; }
+  .sheet-head h2 code, code {
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: .72em;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .lead { margin: 0; font-size: 18px; }
+  .mode {
+    display: inline-block;
+    margin: 12px 0 0;
+    padding: 2px 8px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    color: var(--ink);
+    background: white;
+    font-size: 13px;
+    letter-spacing: .04em;
+  }
+  .qs { display: grid; gap: 10px; }
+  .q {
+    display: grid;
+    gap: 4px;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+  }
+  .q p { margin: 0; }
+  .q p:first-child { font-weight: 600; }
+  .works { margin: 0; padding-left: 1.1em; }
+  .works li { margin: 4px 0; }
+  .source { margin-top: 18px; }
+  .source summary {
+    cursor: pointer;
+    font-weight: 600;
+    list-style: none;
+  }
+  .source summary::-webkit-details-marker { display: none; }
+  .source summary::before {
+    content: "＋ ";
+    color: var(--muted);
+  }
+  .source[open] summary::before { content: "－ "; }
+  .source summary span {
+    margin-left: 8px;
+    font-weight: 400;
+    color: var(--muted);
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 12px;
+  }
+  pre {
+    margin: 12px 0 0;
+    padding: 16px;
+    max-height: 70vh;
+    overflow: auto;
+    background: #172033;
+    color: #e7eef2;
+    border-radius: 8px;
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+  }
+  .toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 18px;
+  }
+  button {
+    font: inherit;
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 14px;
+    cursor: pointer;
+  }
+  button:hover { background: white; }
+  footer {
+    margin-top: 36px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  @media (max-width: 720px) {
+    .spine { display: none; }
+    main { margin-left: 0; padding: 28px 18px 72px; }
+    .cover { grid-template-columns: 1fr; }
+    .chop { justify-self: end; }
+    .fork { grid-template-columns: 1fr; }
+    .source summary span { display: block; margin: 4px 0 0; }
+    .map, .sheet { padding: 22px 16px 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="spine" aria-hidden="true"><span>采购包</span></div>
+<main>
+  <header class="cover">
+    <div>
+      <p class="kicker">PM Skills · 采购包</p>
+      <h1>先看你站在哪一站</h1>
+    </div>
+    <div class="chop" aria-hidden="true">只指路</div>
+    <p class="lede">十一份技能管采购包这一路。履约、请款、变更这三站不用点名：邮件放进待处理，说一声处理，分对了就办。立项要在对话里说。手艺和只读可以单独叫，你只说这件事，就只做这件事。谁先谁后的规矩单写在编排里，它自己不是技能，所以不占这一夹。</p>
+  </header>
+  <div class="legend" aria-label="四种角色">
+    <span class="station">工位 · 邮件分到就办（立项除外）</span>
+    <span class="entry">入口 · 你把信放进夹</span>
+    <span class="craft">手艺 · 可以单独叫</span>
+    <span class="readonly">只读 · 可以单独叫</span>
+  </div>
+
+  <section class="map" id="map">
+    <h2>主路</h2>
+    <p>大多数活沿着这一条走。履约、请款、变更是工位：信分到就办，不用你再点名。手艺和只读可以单独叫。你只说转表、读 PDF、看节点、看现金流，就停在那一份的产出上。</p>
+    <ol class="rail">
+      <li><strong>立项不走邮件。</strong> <a href="#new-project">项目初始化</a>在对话里说。必填问齐再建立文件夹，这一站不建采购包。给了进度计划或客户请款单，同一回合接着办。待处理邮件里像建项的信不会自动建项目。</li>
+      <li><strong>邮件进夹。</strong> 整封信放进「待处理邮件」，说处理。 <a href="#mail-inbox">待处理邮件</a> 负责认这封信是哪一类。</li>
+      <li>
+        <strong>这封信在办哪一件？</strong>
+        <div class="fork">
+          <a class="station" href="#po-flow">履约<small>建包、合同、付款条件</small></a>
+          <a class="station" href="#payment-flow">请款<small>五步，批复才算已请</small></a>
+          <a class="station" href="#change-flow">变更<small>单独一本台账</small></a>
+        </div>
+      </li>
+      <li><strong>手艺在底下被喊，不另开一条业务。</strong> 出卡片会顺手刷请款页。合同先读成文字，再由履约去抽付款节点。进度先转成表，再推关键节点。刚建的包，同一回合只补这个包的节点，总包那几行留着。</li>
+      <li><strong>想看以后每个月出去多少。</strong> <a href="#cashflow">现金流预测</a>。你开口要看才算。它不写回请款，也不写回变更。</li>
+    </ol>
+    <p class="note">单独叫手艺或只读时，不要顺手去建包、改状态表或记已请。三本账仍分开：履约管采购包那一行，请款管请款那四栏，变更管变更台账。</p>
+  </section>
+
+  <div class="toolbar">
+    <button type="button" id="toggle-src">展开全部原文</button>
+  </div>
+  <nav class="index" aria-label="技能目录">
+    <a href="#new-project" class="station">0 项目初始化</a><a href="#po-flow" class="station">1 合同履约</a><a href="#payment-flow" class="station">2 请款</a><a href="#change-flow" class="station">3 变更存档</a><a href="#mail-inbox" class="entry">收 待处理邮件</a><a href="#vendor-card" class="craft">卡 履约卡片</a><a href="#payment-sheet" class="craft">单 请款申请页</a><a href="#read-pdf" class="craft">读 读 PDF</a><a href="#mpp-to-excel" class="craft">表 进度计划转表</a><a href="#critical-nodes" class="craft">点 关键节点</a><a href="#cashflow" class="readonly">钱 现金流预测</a>
+  </nav>
+  
+<article class="sheet station" id="new-project">
+  <a class="tab" href="#new-project">0 项目初始化</a>
+  <header class="sheet-head">
+    <p class="kind">工位</p>
+    <h2>项目初始化 <code>new-project</code></h2>
+    <p class="lead">先把空项目立起来。采购包从下一站才开始。</p>
+    <p class="mode">对话里建，不吃待处理邮件</p>
+  </header>
+  <section>
+    <h3>怎么用</h3>
+    <p>在对话里说「新建项目」。它把没给的必填问完，再建立文件夹。像建项的邮件留在待处理里，不会从那夹自动建项目。</p>
+  </section>
+  <section>
+    <h3>它干什么</h3>
+    <p>你说要新建项目，它先把没给的必填一次问完：项目名称、编号、类型、地址、甲方、项目经理、文件夹放哪、用什么币、金额含不含税。齐了才建文件夹。你能看见的是项目背景、一张空的采购包状态表、进度计划文件夹、待处理邮件。这次要是顺便给了进度计划，或一份客户请款单（只要 .xlsx），同一回合接着办。</p>
+  </section>
+  <section>
+    <h3>什么时候用</h3>
+    <p>你说新建项目、项目初始化、阶段 0、文件夹放哪。采购包、请款入账、变更都不要在这一站做。</p>
+  </section>
+  <section>
+    <h3>你会碰到的问题</h3>
+    <div class="qs"><div class='q'><p>必填还差几项，能先建个空壳吗？</p><p>不能。缺一项就不跑，也不先建文件夹。</p></div>
+<div class='q'><p>币种我没说，按人民币含税行不行？</p><p>不行。币种和含不含税用你的原话，没有默认值。</p></div>
+<div class='q'><p>要绑项目邮箱吗？</p><p>这版不问邮箱，也不连邮箱。邮件是你自己另存进「待处理邮件」。</p></div>
+<div class='q'><p>文件夹里已经有一个项目了？</p><p>先问你：接着用这个，还是换一个空文件夹。接着用就不要再跑建项。</p></div></div>
+  </section>
+  <section>
+    <h3>做成了长这样</h3>
+    <ul class="works"><li>看得到项目背景、采购包状态表、进度计划文件夹、待处理邮件。</li>
+<li>没有空采购包，也没有「已处理邮件」。</li>
+<li>对人有一份关键节点时间线。没进度的话，先是一张空壳。</li>
+<li>给了 .xlsx 请款单，模板已经认过。没给，你会听到一句：请款单生成尚未启用。</li></ul>
+  </section>
+  <details class="source">
+    <summary>附上原文 <span>.cursor/skills/new-project/SKILL.md</span></summary>
+    <pre>---
+name: new-project
+description: &gt;-
+  业务 Skill 0 · 项目初始化。用户在对话里说新建项目时，先追问没给的必填信息，
+  问齐再跑 init_project：项目背景、采购包状态表、进度计划文件夹、待处理邮件。
+  必填含币种和是否含税。不问邮箱。给了进度计划或客户请款单则同一回合接着做。
+  不建采购包、不做 RFP/PO/请款入账/变更。务必在用户提到项目初始化、新建项目、
+  阶段 0、Skill 0、init_project、项目文件夹放哪时使用。
+---
+
+# 项目初始化（Skill 0 · new-project）
+
+只把「空项目」立起来。**从 RFP 建包起**归 Skill 1。
+
+| 做 | 不做 |
+|----|------|
+| 问齐必填 → `.skill/`、空的采购包状态表、`项目背景.md`、`项目档案/00_进度计划/`、`待处理邮件/` | 采购包 / 请款入账 / 变更 / 「已处理邮件」 / 从待处理邮件里建项 / 连邮箱 |
+| 同一回合：有进度计划则按编排表 B；给了客户请款单 `.xlsx` 则交给 payment-sheet 认模板 | 自己填请款单、刷请款页、把认模板写进 `init_project` |
+| 文件夹里已有项目时先问人 | 覆盖已有项目；删用户原来的文件 |
+
+## 编排硬规则（摘要）
+
+跨 Skill / 进度 / 合同 PDF / 邮件分发 → 先读 `&lt;skills-root&gt;/skill-orchestration/ALWAYS.md`（细节见同目录 `README.md`）。
+`skills-root` = 本机 Skills 安装根（WorkBuddy 常见 `~/.workbuddy/skills/`）。命令写成 `python3 &lt;skills-root&gt;/&lt;技能名&gt;/scripts/…`。
+
+## 怎么问
+
+用户说新建项目后，**缺的必填一次性列出来**。没齐不要跑脚本、不要建文件夹。
+
+必填：
+
+| 问什么 | CLI | 没答 |
+|--------|-----|------|
+| 项目名称 | `--name` | 不建 |
+| 项目编号 | `--code` | 不建 |
+| 项目类型（实验室工装这种白话） | `--type` | 不建 |
+| 项目地址 | `--address` | 不建 |
+| 甲方 | `--client` | 不建 |
+| 项目经理 | `--pm` | 不建 |
+| 文件夹放在电脑哪 | `--root` | 不建 |
+| 用什么币，金额含不含税 | `--currency` | 不建 |
+
+币种和含税合成一句再传。用户说「人民币、含税」就写 `--currency &quot;人民币 含税&quot;`。没有默认值，禁止自己填成 `CNY 含税`。
+
+必填齐了，再问两句。用户说「没有」就继续建，不卡：
+
+- 有没有进度计划（有就在这次对话里给）
+- 有没有客户请款单表格（只要 `.xlsx`）
+
+**不要问**：邮箱、授权码、开票主体、分部号、甲方对接人、设计顾问、造价顾问、建筑面积、开工竣工、项目总价、总包、供应商名单。
+
+进度计划和请款单在这次对话里收，不放进「待处理邮件」。
+
+## 建项命令
+
+先看目标文件夹里有没有 `.skill/project.json`。有的话脚本会拒绝，你先问：接着用这个项目，还是换一个空文件夹。接着用就不要再跑建项。
+
+```bash
+python3 &lt;skills-root&gt;/project-foundation/scripts/init_project.py \
+  --root &quot;/path/to/project&quot; \
+  --name &quot;Sample Project&quot; \
+  --code &quot;SAMPLE&quot; \
+  --type &quot;实验室工装&quot; \
+  --address &quot;上海市浦东新区 xxx&quot; \
+  --client &quot;xxx 有限公司&quot; \
+  --pm &quot;张三&quot; \
+  --currency &quot;人民币 含税&quot;
+```
+
+脚本不会删文件夹里原来的文件。已建过再跑，退出码 2，原因 `already_initialized`。
+
+建完用户能看见的就是：`项目背景.md`、采购包状态表、`项目档案/00_进度计划/`、`待处理邮件/`。不建空采购包。变更台账等真有变更再出现。
+
+1. 问齐再跑上面的命令。
+2. **若有**进度计划：归档到 `项目档案/00_进度计划/` → **skill-orchestration 表 B**。没有就跳过。
+3. 同一回合写出对人那一份时间线：`项目档案/00_进度计划/关键节点时间线.html`（没进度就先出空壳）。
+4. 用户给了客户请款单 **`.xlsx`**：同一回合交给 **payment-sheet** 认模板（还没有采购包，不要 sync）。没给，或给了 `.xls` / Word：建项不阻塞，必须说「还没有请款单模板，请款单生成尚未启用」；不是 `.xlsx` 再加一句目前只收 `.xlsx`。禁止用技能自带样例充数。
+5. 汇报：文件夹在哪、状态表在哪、`待处理邮件` 已建好。下一步告诉用户：可以把整封邮件另存进「待处理邮件」，然后说「处理待处理邮件」。建包后的关键节点仍是项目里那一份时间线，包级节点要当时补，不是现在、也不是建包脚本自动编的。
+
+禁止写「建包后会自动同步时间线并补包级节点」。
+
+## 完成检查
+
+- [ ] 八项必填都来自用户原话，币种和是否含税没有改成默认值
+- [ ] 看得见项目背景、采购包状态表、进度计划文件夹、待处理邮件
+- [ ] 有进度则已按表 B；对人只报 `项目档案/00_进度计划/关键节点时间线.html`
+- [ ] 请款单按上面第 4 条处理
+</pre>
+  </details>
+</article>
+
+<article class="sheet station" id="po-flow">
+  <a class="tab" href="#po-flow">1 合同履约</a>
+  <header class="sheet-head">
+    <p class="kind">工位</p>
+    <h2>合同履约 <code>po-flow</code></h2>
+    <p class="lead">从建包起。把履约邮件收成状态表、包文件夹和一张能打开的卡片。</p>
+    <p class="mode">邮件分到就办，不用点名</p>
+  </header>
+  <section>
+    <h3>怎么用</h3>
+    <p>履约邮件放进「待处理邮件」，说「处理待处理邮件」。分到这一站就建包、归档、出卡片。你要改已经建好的某一包，在对话里指出那个包。</p>
+  </section>
+  <section>
+    <h3>它干什么</h3>
+    <p>它吃的是履约这件事：RFP、技术确认、Raise PO、付款条件、合同。结果是采购包状态表更新、包文件夹归档、一份干净的卡片数据，然后交给履约卡片去出页面。页面它自己不画。请款入账和变更它也不办。</p>
+  </section>
+  <section>
+    <h3>什么时候用</h3>
+    <p>你提到采购包、RFP、技术确认、Raise PO、付款条件、履约邮件、状态表。项目还没建，先走上一站。请款进度和变更台账不要塞进这一站。</p>
+  </section>
+  <section>
+    <h3>你会碰到的问题</h3>
+    <div class="qs"><div class='q'><p>回信主题里引用了原来的 RFP，会再建一个包吗？</p><p>不该建。只看这封回信最新一段在办什么。分类器把引用正文判成高置信，也不算数。</p></div>
+<div class='q'><p>包建好了，到货日是不是脚本写好了？</p><p>没有。脚本最多重画项目里那一份时间线。这一回合还要把这个新包的节点补上。邮件里没有到货日，就标待确认。</p></div>
+<div class='q'><p>邮件正文和报价单金额不一致？</p><p>以报价附件为准。对不上就挂起问你，不挑一个悄悄写死。</p></div>
+<div class='q'><p>图纸只给了网盘链接？</p><p>包里的图纸文件夹要留一份指针，写上链接和密码。不要登网盘去下。</p></div></div>
+  </section>
+  <section>
+    <h3>做成了长这样</h3>
+    <ul class="works"><li>状态表多了这个包，文件夹在，里程碑盖了该盖的时间。</li>
+<li>履约条件卡片能打开。有请款单模板的话，请款申请页也一起刷好了。</li>
+<li>吃不准的在待确认里，你能看见问的是哪一项。</li></ul>
+  </section>
+  <details class="source">
+    <summary>附上原文 <span>.cursor/skills/po-flow/SKILL.md</span></summary>
+    <pre>---
+name: po-flow
+description: &gt;-
+  合同履约结构化（Skill 1 · MVP · 从建包起）。履约邮件（RFP/技术确认/Raise PO/付款条件/合同）→
+  归档 → Tracker → 干净 card-data → 调用 vendor-card 出界面。
+  项目初始化归 Skill 0；请款入账归 Skill 2；变更归 Skill 3；进度勿手猜日期。
+  务必在用户提到采购包、RFP/RFQ、Raise PO、履约卡片、Tracker、里程碑、付款条件（非请款申报）、pending、履约邮件时使用。
+---
+
+# 合同履约结构化（Skill 1）
+
+一句话：**从建包起**，把履约邮件变成 Tracker + 包文件夹 + 干净 `card-data`，再交给履约卡片 Skill 出 HTML。做到哪为止，见下面的表。
+
+## 编排硬规则（摘要）
+
+跨 Skill / 进度 / 合同 PDF / 邮件分发 → 先读 `&lt;skills-root&gt;/skill-orchestration/ALWAYS.md`（细节见同目录 `README.md`）。
+单独使用功能 Skill 时禁止擅自串联履约/请款；脚本已串完的不要双跑；时间线对人只有 `项目档案/00_进度计划/关键节点时间线.html` 一份。
+`skills-root` = 本机 Skills 安装根（WorkBuddy 常见 `~/.workbuddy/skills/`）。命令写成 `python3 &lt;skills-root&gt;/&lt;技能名&gt;/scripts/…`。
+
+## 做什么 / 不做什么
+
+| 做 | 不做 |
+|----|------|
+| 处理 `fulfillment.*` 邮件（或粘贴） | 项目初始化 → Skill 0 |
+| 建包 / 更新 Tracker / 归档 `.eml` | 请款申报入账 → Skill 2 |
+| 写出/更新 `card-data.json`，调用 vendor-card | 变更 / Change PO → Skill 3 |
+| 搞不定的字段进 `pending.json`，再问人 | 手写 HTML；手猜进度日期 |
+| | 代写 RFP、代发 Raise PO |
+
+前置：`.skill/project.json` 已存在（否则先 Skill 0）。
+
+## 主路径
+
+优先走脚本（邮件已在盘上时）：
+
+```bash
+python3 &lt;skills-root&gt;/po-flow/scripts/process_email.py \
+  --eml &quot;/path/to/mail.eml&quot; \
+  --project-root &quot;/path/to/project&quot; \
+  --route-json &quot;/path/to/route.json&quot;   # mail-inbox 分发时带上
+```
+
+对话里改数据后刷界面（`process_email` 内部已含则不必再跑）：
+
+```bash
+python3 &lt;skills-root&gt;/vendor-card/scripts/render_card.py \
+  --package-dir &quot;/path/to/{序号}_{采购包}_{供应商}/&quot; \
+  --patch &#x27;{&quot;supplier_name&quot;:&quot;…&quot;, …}&#x27;
+```
+
+收信入口是项目根 **`待处理邮件/`**（`mail-inbox` 的 `process_drop_folder.py`）。本 Skill 只消费分过来的 `fulfillment.*`。误投初始化/变更时 `process_email` 只拒收挂 pending（兜底，**不是**第二套分类器；防误伤真源在 mail-inbox）。这版不要教用户连邮箱。
+
+**线程回信**：分类器只认关键词、不懂「这是回信」。`Re:` 里引用的原 RFP 常被判成 `fulfillment.rfp` + `confidence: high`。**high 不等于对。** Agent 必须读正文**最新一段**，按 mail-inbox 意图表覆写 `intent`，route.json 加 `&quot;intent_verified&quot;: true` 再跑 `process_email`。不要另造分类器，也不要跟着错判再建一次包。脚本兜底：已建包 + 回信主题 + 仍判成 RFP → pending `possible_thread_reply`，等你覆写。
+
+## 硬规则（短）
+
+1. **先理解再处理**（全局）：见 `skill-orchestration`「全局原则」。本 Skill：先搞清步骤与附件再写 Tracker / `card-data`；脚本抽不出则打开附件读懂或 `pending`。回信按上面「线程回信」办。
+2. **归档**：归属某包的邮件 → 整封 `.eml` 进 `07_往来文件/`。`01_合同报价/` 只放报价/合同，禁止签名动图。图纸：有 dwg/pdf/zip 进 `02_图纸/`；签名/inline 图跳过；**只有 Box/SharePoint 等链接时必须在 `02_图纸/` 留指针文件**（URL+密码），不要留空文件夹让人以为没图纸。不要擅自登录云盘下载。
+3. **金额（附件为准）**：Tracker 必须有「不含税 / 含税」。**报价附件 &gt; 邮件正文**。冲突 → 写附件并 `pending`（`amount_mismatch_body_vs_quote`）；有附件抽不出 → `quote_amount_unparsed`；两侧不全 → `tax_rate_uncertain`。
+4. **对接人**：To/Cc/From 里供应商域名都收，`; ` 拼接。
+5. **里程碑**（有时间戳=完成）：RFP 发出 → 技术方案已确认 → 商务报价已确认 → PO 已发起 → 已结算。Raise PO 同时打「商务报价已确认 + PO 已发起」。
+6. **付款节点**：任意履约邮件正文能解析就写入 `card-data`（中+英）；合同/报价 PDF 先走 `read-pdf` 读正文，再由本 Skill `extract_contract_pdf.py` 抽节点候选。
+7. **界面**：只维护 `card-data` → 调 **vendor-card**（出卡片，并自动调 **payment-sheet** 刷请款申请页）。`process_email` / `render_card` 已成功且有 `claim_form_path`（或 `did` 含 `payment-sheet.sync`）时，**同一回合不要再手跑** `render_card` / `payment-sheet` sync（除非脚本失败要补）。
+8. **进度（与编排对齐）**：
+   - 见到 `.mpp` / 甘特 / Master Schedule → 按 `skill-orchestration` 表 B：`mpp-to-excel` → **Agent 主导** `critical-nodes` → 再渲染卡片；**禁止手猜日期**。
+   - `add_package` / `process_email` 建包后，脚本**最多**重渲**项目级**时间线 HTML：`项目档案/00_进度计划/关键节点时间线.html`（有已有 `critical_nodes` 时只重渲、不覆盖节点；尚无节点则 skip）。**不会**给这个新包自动补「到货」等关键节点。
+   - **RFP 建包成功后（同一回合）**：Agent 必须把包名、类型、邮件里的交期/到货日交给 `critical-nodes`（按编排表 B）**merge** 该包节点；**不要**手改 `schedule.json`；**不要**再手跑 `analyze_schedule` 覆盖总包/已有推理。
+   - 对人汇报只指项目档案那一份时间线；**不要**把包文件夹里的 `关键节点时间线.html` 当成交付物介绍。
+9. **口径只看本项目 + 这封邮件**。不要翻本机其它旧项目的 Tracker / 文件夹来猜类型、节点。旧表结构会过期，翻了也白干。
+
+细则（表头、邮件样例、邮箱参数）：`references/` 与基建库 `project-foundation`（安装后与 Skill 并列的 `project-foundation`，不是 Skill）。
+
+## 步骤（邮件 → 动作）
+
+| 步骤 | 识别 | 主要动作 |
+|------|------|----------|
+| 1 RFP | RFP/RFQ | `add_package` / process_email：建包、`RFP 发出`、归档、可选付款节点、渲染 → **再**按表 B 把本包交给 critical-nodes merge |
+| 2 技术确认 | 顾问确认技术（以**最新回复**为准，不是引用里的 RFP） | 归档图纸或云盘指针 → `技术方案已确认`（RFP 发出那栏不动）→ 更新 card-data；未闭环行动项对人说清 |
+| 3 Raise PO | Raise PO | 归档报价 → 抽金额 → `PO 已发起` → 更新 card-data |
+| 4 付款/合同 | 付款指示或合同 | read-pdf 读正文 → 本 Skill 解析节点 → card-data → 渲染；总包滚动款归 Skill 2 |
+| 极简归档 | PO 后杂文件 | `archive_file.py` 进 03~06 |
+
+误投初始化 / 变更 / 请款时，`process_email` 拒收并挂 pending，提示走 Skill 0 / 3 / 2。正常应由 mail-inbox 直接分对。
+
+**步骤 2 收尾（脚本不会替你做完的两件事）**：
+
+| 情况 | Agent 做什么 |
+|------|----------------|
+| 附件只有 inline 图，图纸在云盘链接里 | `process_email` 会尽量在 `02_图纸/` 写指针；若脚本没写到，自己补一份 `.md`（链接+密码+来源邮件）。对人说「图纸在云盘，文件夹里是指针」 |
+| 顾问夹了 PM 待办（如报价前先去现场核实） | **不是**卡片字段，别硬塞八格。写入对人确认清单；若卡住下一步（报价 / Raise PO 之前必须做完）→ `pending.json`，`reason=open_action_item` |
+
+## 产出
+
+- Tracker：`.skill/status_tracker.csv` + 根目录 `{项目名}_Status Tracker.xlsx`
+- 包目录：`{序号}_{采购包}_{供应商简称}/`（含 `01`…`09`，往来在 `07`；简称见 `scripts/supplier_naming.py`，约 ≤20 字整段保留）
+- `card-data.json` → 经 vendor-card 得到 `履约条件卡片.html`；经 payment-sheet 得到 `请款申请.html`
+- 进度：新包节点按上面第 8 条交给 critical-nodes merge
+- `pending.json`：待确认项
+
+包类型：供应 / 供装完整支持；顾问、总包占位。建包后要改类型：`update_tracker.py --action update --package-name … --package-type 供装`。打印出来的「采购包类型」必须已经是新值；还是旧值就当失败，不要只看「命令成功了」。
+
+## 对人确认
+
+先自动落盘，再问。示例：
+
+```
+【Skill1 · 待确认】项目 SAMPLE · 步骤1 · RFP
+1. 采购包名称：BMS
+2. 供应商：BOSCH Building Technologies
+3. 对接人邮箱：procurement@bosch-build.example.com
+4. 采购包类型：供应
+回复：全部确认 / 2 供应商=xxx / 取消
+
+【Skill1 · 待确认】项目 SAMPLE · 步骤2 · 技术确认
+1. 采购包：BMS（已有包，未新建）
+2. 分类器原判：fulfillment.rfp / high → 已覆写为 fulfillment.tech_confirm
+3. Tracker：技术方案已确认 = 2026-09-15（RFP 发出未改）
+4. 图纸：无 dwg/pdf；已在 02_图纸 留下云盘指针
+5. 未闭环：报价前须现场核实安装位置（已记 pending，未写入卡片）
+回复：全部确认 / 5 先不做 / 取消
+```
+
+## 相关 Skill（需要时再读）
+
+| 需要时 | 去哪 |
+|--------|------|
+| 编排 / 禁止双跑 | `skill-orchestration` |
+| 基建 / Tracker 表头 | `&lt;skills-root&gt;/project-foundation`（共用库，不是 Skill） |
+| 出 HTML | `vendor-card` |
+| 收信分发 | `mail-inbox` |
+| 初始化 | `new-project` |
+| 进度 | `mpp-to-excel` → `critical-nodes`（建包后 merge 本包节点） |
+| 合同 / 报价 PDF | `read-pdf`（只读正文）→ 本 Skill 抽付款节点 |
+| 请款 / 变更 | `payment-flow` / `change-flow` |
+
+本目录：`references/email-templates.md`、`mailbox-setup.md`、`deps-ocr-pdf.md`。
+
+## 演示
+
+```bash
+python3 &lt;skills-root&gt;/po-flow/scripts/run_e2e_demo.py
+# → samples/Sample-Project/
+```
+</pre>
+  </details>
+</article>
+
+<article class="sheet station" id="payment-flow">
+  <a class="tab" href="#payment-flow">2 请款</a>
+  <header class="sheet-head">
+    <p class="kind">工位</p>
+    <h2>请款 <code>payment-flow</code></h2>
+    <p class="lead">只盯每一包的下一笔。客户批复之前，已请金额不动。</p>
+    <p class="mode">邮件分到就办，不用点名</p>
+  </header>
+  <section>
+    <h3>怎么用</h3>
+    <p>请款邮件放进「待处理邮件」，说处理。分到这一站就推进请款五步。你也可以在对话里说扫一遍快到期的包，或把客户批复记上。改请款页、下载 Excel 不走这一站。</p>
+  </section>
+  <section>
+    <h3>它干什么</h3>
+    <p>它按关键节点的完成日，提前大约两周提醒你：这一包下一笔该请了。请款走五步：供应商来请、发给 QS、QS 确认金额、发给客户、客户批复。五步都记在采购包状态表的「请款进度」上。只有客户批复，才把这笔加进已请金额，并切到下一节点。邮件和 Excel 放进这个包的请款记录文件夹，不另开一本账。</p>
+  </section>
+  <section>
+    <h3>什么时候用</h3>
+    <p>你说请款提醒、请款进度、下一笔待请、QS 核对、客户批复、PAYMENT NO。要改请款页、要下载客户那张 Excel，走请款申请页那一份，不要用这一份。</p>
+  </section>
+  <section>
+    <h3>你会碰到的问题</h3>
+    <div class="qs"><div class='q'><p>供应商请款函来了，已请金额要加吗？</p><p>不加。进度记成已收到。已请金额等客户批复。</p></div>
+<div class='q'><p>五步没走完，直接记批复？</p><p>脚本拦住，记成待确认。你明确说这是补录，才允许跳。</p></div>
+<div class='q'><p>请款页是谁做的？</p><p>请款申请页那份技能。这一份只消费那一页，用来推进状态和归档。</p></div>
+<div class='q'><p>账记在哪？</p><p>只记采购包状态表那一行。请款记录文件夹是档案柜。</p></div></div>
+  </section>
+  <section>
+    <h3>做成了长这样</h3>
+    <ul class="works"><li>状态表上的请款进度，对得上五步里的某一步。</li>
+<li>客户还没批复，已请金额没有变。</li>
+<li>这封邮件和附件在该包的请款记录里。</li></ul>
+  </section>
+  <details class="source">
+    <summary>附上原文 <span>.cursor/skills/payment-flow/SKILL.md</span></summary>
+    <pre>---
+name: payment-flow
+description: &gt;-
+  请款（Skill 2 · payment-flow）。按 critical-nodes 的 window_end 提前约两周，
+  只提醒每包「下一笔待请」；追踪请款五步（供应商来请款 → 发QS → QS确认金额 → 发客户
+  → 客户批复），状态只写采购包 Tracker；仅客户批复后计入已请金额。03_请款记录只归档邮件/
+  Excel/附件，不另开流水账。消费同包请款申请.html（payment-sheet 生成）。务必在用户提到
+  请款提醒、请款记录、PAYMENT NO、03_请款记录、请款进度、下一笔待请、QS核对、客户批复、
+  payment-flow、Skill 2 请款时使用。精调请款页/出 Excel → 用 payment-sheet，勿用本 Skill。
+---
+
+# 请款（Skill 2 · payment-flow）
+
+**业务 Skill**：Skill 2。负责请款**状态**（提醒、五步、客户批复后改已请）与**存档**。账只写在下面这张表里。
+
+**全局原则**：先理解再处理（见 `skill-orchestration`）——先看清这封信在五步的哪一步，再写 Tracker。
+
+## 编排硬规则（摘要）
+
+跨 Skill / 进度 / 合同 PDF / 邮件分发 → 先读 `&lt;skills-root&gt;/skill-orchestration/ALWAYS.md`（细节见同目录 `README.md`）。
+单独使用功能 Skill 时禁止擅自串联履约/请款；脚本已串完的不要双跑；时间线对人只有 `项目档案/00_进度计划/关键节点时间线.html` 一份。
+`skills-root` = 本机 Skills 安装根（WorkBuddy 常见 `~/.workbuddy/skills/`）。命令写成 `python3 &lt;skills-root&gt;/&lt;技能名&gt;/scripts/…`。
+
+## 状态口径（对人）
+
+| 原则 | 做法 |
+|------|------|
+| **Tracker 唯一状态** | 已请 / 待请 / 下一付款节点 / 请款进度 —— 都只写总表这一行 |
+| **只显示下一笔待请** | 提醒与对话：每包只报 Tracker「下一付款节点」 |
+| **五步都要记** | 记在「请款进度」；细则 `references/claim-stages.md` |
+| **真正完成 = 客户批复** | 只有批复才加算「已请金额」、进度改 `无在办`、切下一节点 |
+| **03 只归档** | 邮件、批复、请款 Excel、附件；不维护 `payment_ledger.json` |
+| **跳级脚本拦** | 没走完前面的步就想批复 → pending；补录才 `--allow-skip` |
+
+## 界面划分
+
+| 页面 / 产物 | 归谁 |
+|-------------|------|
+| `履约条件卡片.html` | **vendor-card** |
+| `请款申请.html`、浏览器一键下 Excel | **payment-sheet**（发给客户前用） |
+| Tracker 请款四列、提醒、邮件推进、03 归档 | **本 Skill（Skill 2）** |
+| 付款条件写入卡片 | **Skill 1** |
+
+## 权威参考
+
+| 文件 | 何时读 |
+|------|--------|
+| `references/claim-stages.md` | 五步箭头、谁推、是否占用 |
+| `references/tracker-payment.md` | Tracker 四列 + 03 档案柜 |
+| `references/bot-reminders.md` | 14 天提醒话术 |
+| `references/checklist-by-node.md` | 节点支持文件（给人看） |
+| `payment-sheet/references/claim-form.md` | 请款页/Excel 字段 |
+
+## 三功能
+
+```
+critical_nodes.window_end + Tracker 下一付款节点
+        │
+        ▼
+① 扫描提醒（lead-days=14）→ 机器人问 PM
+        │
+        ▼
+② 供应商请款 → Tracker「请款进度」= 已收到（不占已请）
+        → 发QS → QS确认 → 打开请款页/Excel → 发客户
+        │
+        ▼
+③ 客户批复 → 已请金额累加；下一节点前进；进度=无在办
+        同时把邮件/Excel 副本放进 03_请款记录/
+```
+
+### 1. 适时提醒
+
+```bash
+python3 &lt;skills-root&gt;/payment-flow/scripts/scan_due_payments.py \
+  --project-root &quot;/path/to/project&quot; \
+  --lead-days 14 \
+  --write
+```
+
+### 2. 请款页（消费，不生成）
+
+```bash
+python3 &lt;skills-root&gt;/vendor-card/scripts/render_card.py \
+  --package-dir &quot;/path/to/01_xxx_Vendor&quot; \
+  --patch &#x27;{}&#x27;
+```
+
+只刷请款页：`payment-sheet/scripts/sync_claim_form.py`。
+
+### 3. 推进请款步骤（写 Tracker + 可选归档）
+
+```bash
+python3 &lt;skills-root&gt;/payment-flow/scripts/record_payment.py \
+  --package-dir &quot;/path/to/01_xxx_Vendor&quot; \
+  --node &quot;到货 / Delivery&quot; \
+  --amount-excl-tax 300000 \
+  --status qs_sent
+```
+
+客户批复：`--status certified`（必填金额）。  
+邮箱：`record_payment_email.py`（默认 `vendor_received`，并把 `.eml` 拷进 03）。
+
+## 挂钩
+
+| 对方 | 关系 |
+|------|------|
+| Skill 1 | 履约；调 vendor-card |
+| payment-sheet | 请款页 + Excel |
+| Skill 3 | 变更台账；本 Skill 不写 |
+| 现金流 | 只读 Tracker「下一付款节点」之前视为已付 |
+
+## 冒烟
+
+```bash
+python3 &lt;skills-root&gt;/payment-flow/scripts/smoke_skill2.py
+```
+
+## Agent 清单
+
+- [ ] 是否分清五步？未把来信/发客户当成已请完？
+- [ ] 附件是否进了 `03_请款记录/`？
+- [ ] 跳级是否挂 pending？
+- [ ] 请款页是否已由 payment-sheet 生成？
+</pre>
+  </details>
+</article>
+
+<article class="sheet station" id="change-flow">
+  <a class="tab" href="#change-flow">3 变更存档</a>
+  <header class="sheet-head">
+    <p class="kind">工位</p>
+    <h2>变更存档 <code>change-flow</code></h2>
+    <p class="lead">变更单独一本台账。不定价，也不去改采购包那一行。</p>
+    <p class="mode">邮件分到就办，不用点名</p>
+  </header>
+  <section>
+    <h3>怎么用</h3>
+    <p>变更邮件放进「待处理邮件」，说处理。分到这一站就写入变更台账并归档。标成已取消要你改台账，邮件不会自动改成取消。</p>
+  </section>
+  <section>
+    <h3>它干什么</h3>
+    <p>它把变更邮件写成变更台账，并把邮件、图纸按规则归档。状态顺着走：COD、PMI、技术审核、技术确认、商务确认、商务金额确认、Change PO。你也可以手把某一行改成已取消。金额只照抄，不含税。它不帮你核定该值多少钱。</p>
+  </section>
+  <section>
+    <h3>什么时候用</h3>
+    <p>你提到变更、COD、PMI、技术文件审核、商务金额、CP Confirm、Change PO、变更序号、变更洽商。</p>
+  </section>
+  <section>
+    <h3>你会碰到的问题</h3>
+    <div class="qs"><div class='q'><p>帮我算这笔变更多少钱？</p><p>不算。预估和最终金额都是原样抄进台账，而且是不含税。</p></div>
+<div class='q'><p>变更确认了，采购包状态表要改吗？</p><p>不改。履约卡片也不写。请款和现金流自己来读这本台账。</p></div>
+<div class='q'><p>技术还没确认，商务邮件先到了？</p><p>挂起问你，不跳级硬推。</p></div>
+<div class='q'><p>这行我手改成已取消了？</p><p>之后的邮件还可以归档，但状态和金额不再往前推。</p></div></div>
+  </section>
+  <section>
+    <h3>做成了长这样</h3>
+    <ul class="works"><li>变更台账有这一行，主键是变更序号加采购包名称。</li>
+<li>对应那一列盖了时间戳，旧戳没被盖掉。</li>
+<li>邮件在变更洽商和往来文件里。图纸进了变更洽商，也进了图纸文件夹。</li>
+<li>采购包状态表没被这封变更邮件改动。</li></ul>
+  </section>
+  <details class="source">
+    <summary>附上原文 <span>.cursor/skills/change-flow/SKILL.md</span></summary>
+    <pre>---
+name: change-flow
+description: 变更存档（Skill 3 · change-flow）。只做变更归档与状态推进：维护 Change Log（CSV），按 COD→PMI→技术审核中→技术确认→商务确认→商务金额确认→Change PO 下发更新状态（可手改为已取消），归档邮件/附件。不定价、不核定变更金额；不修改采购包 Tracker；不写入履约卡片。务必在用户或其他 Skill 提到变更、COD、PMI、Change Log、变更台账、变更存档、技术文件审核、技术确认、商务金额确认、CP Confirm、Change PO、change_po_deferred、已取消、变更序号/COT、04_变更洽商时使用。
+---
+
+# 变更存档（Skill 3）
+
+一句话：把变更邮件变成 **Change Log + 双归档**。做到哪为止，见下面的表。
+
+## 编排硬规则（摘要）
+
+跨 Skill / 进度 / 合同 PDF / 邮件分发 → 先读 `&lt;skills-root&gt;/skill-orchestration/ALWAYS.md`（细节见同目录 `README.md`）。
+单独使用功能 Skill 时禁止擅自串联履约/请款；脚本已串完的不要双跑；时间线对人只有 `项目档案/00_进度计划/关键节点时间线.html` 一份。
+`skills-root` = 本机 Skills 安装根（WorkBuddy 常见 `~/.workbuddy/skills/`）。命令写成 `python3 &lt;skills-root&gt;/&lt;技能名&gt;/scripts/…`。
+
+## 做什么 / 不做什么
+
+| 做 | 不做 |
+|----|------|
+| 消费 `change.*`（经 mail-inbox）→ 更新 Change Log | 改采购包 Tracker → Skill 1 |
+| 邮件 07+04、图纸 04+02 双归档 | 请款入账 → Skill 2 |
+| 商务金额确认：只写台账「最终确认金额」 | 代发 COD/PMI/PO；IMAP 收信 |
+| 处理 `change.change_po`；关闭历史 `change_po_deferred` | 写入履约卡片 / `change_items` |
+| 歧义进 `pending.json`，再问人 | 变更影响连锁分析；自算核定金额 |
+
+前置：项目已初始化（有 `.skill/project.json` + 采购包）。不另建项目、不另开邮箱。
+
+## 主路径
+
+```bash
+python3 &lt;skills-root&gt;/change-flow/scripts/handle_change_email.py \
+  --project-root &quot;/path/to/project&quot; \
+  --eml &quot;/path/to/msg.eml&quot; \
+  --route-json &quot;/path/to/route.json&quot;
+```
+
+评测：`python3 &lt;skills-root&gt;/change-flow/scripts/run_all_evals.py`
+
+## 硬规则（短）
+
+1. **先理解再处理**：见 `skill-orchestration`。先认清阶段与变更序号再推状态；吃不准 → pending。线程回信只看最新一段（引用里的 COD/RFP 不算本封意图），见 mail-inbox 意图表「线程回信怎么判」。
+2. **Change Log 权威**：机读 `.skill/change_log.csv`；给人看 `{项目名}_Change Log.xlsx`。模板 `assets/change_log.template.csv`。主键 = 变更序号 + 采购包名称。**允许你手改 CSV（在 .skill）或对照 Excel**。Skill 3 **只做邮件驱动的写入**，不因发现手改再二次判断、不纠偏、不重算。
+3. **里程碑**（与采购包 Tracker 同语义）：每节点一列，单元格有时间戳=已达成（首次锁定）。列序：`COD已发出` → … → `Change PO下发` → `已取消`。`当前状态` 只作总览。优先用邮件 Date。
+4. **已取消**：终态侧枝。你手改 `当前状态=已取消`（或填「已取消」列）后，后续变更邮件**仍可归档**，但**不再推进状态/金额**。前序戳保留当历史。
+5. **顾问确认 ≡ 技术确认**：不另设顾问确认列/阶段。
+6. **先技术后商务**：技术确认前不进商务；乱序 → pending，禁止跳级硬推。
+7. **金额**：预估/最终均为**不含税**，原样转录。现金流和请款页读「最终确认金额」，本 Skill 不写它们的账。
+8. **不加「是否请款」**：变更与请款分开；现金流预测读 Change Log 进「已确认变更」；请款侧用勾选「是否含变更」复核。
+9. **分类**：以 mail-inbox 的意图为准，不另造分类器。
+
+细则：`references/change-log-schema.md`、`email-stages.md`、`folder-rules.md`。
+
+## 步骤（邮件 → 动作）
+
+| 阶段 | 识别 | 主要动作 |
+|------|------|----------|
+| COD | COD / Change Order | 建行、`COD已发出` 戳、抽短标题/详细说明/预估/时间影响、双归档 |
+| PMI | PMI / 指令 | `PMI已发出` 戳、归档（须已有 COD 行） |
+| 技术首提 | submittal / 图纸送审 | `技术文件提交`+`技术审核中`；图纸 04+02 |
+| 技术确认 | approved / no further comment | `技术确认` 戳 |
+| 商务确认 | 转 QS / commercial | `商务确认` 戳（须已有技术确认） |
+| 商务金额确认 | CP confirm / 最终金额 | 写最终金额到 Change Log |
+| Change PO | `(Change PO)` 等 | `Change PO下发`；关闭历史 deferred pending |
+| 已取消 | **手改** CSV（非邮件主路径） | 标终态；之后邮件只归档不推进 |
+
+中间扯皮意见：不改当前状态（专用邮箱通常也收不到）。
+
+## 产出
+
+- `.skill/change_log.csv`（机读）+ `{项目名}_Change Log.xlsx`（项目根，给人看）
+- `{包}/04_变更洽商/`、`07_往来文件/`（图纸另入 `02_图纸/`）
+- `pending.json`：包不清、序号不清、乱序、金额不清等
+
+## 检查清单
+
+- [ ] 主键（序号 + 包）正确；状态未回退；先技术后商务（已取消除外）
+- [ ] 对应里程碑列已盖戳（含 COD/PMI）；未覆盖旧戳
+- [ ] 已取消行：后续邮件未把状态改回去
+- [ ] 金额不含税且 CSV 未串列
+- [ ] 邮件 07+04、图纸 04+02 已双归档
+
+## 相关 Skill
+
+| 需要时 | 去哪 |
+|--------|------|
+| 编排 | `skill-orchestration` |
+| 收信分发 | `mail-inbox` |
+| 基建 / Tracker | `&lt;skills-root&gt;/project-foundation`（共用库，不是 Skill） |
+| 出 HTML | `vendor-card`（**不**由本 Skill 触发） |
+| 履约（非变更） | `po-flow` |
+| 请款 | `payment-flow` |
+| 现金流 | `cashflow`（读 Change Log） |
+</pre>
+  </details>
+</article>
+
+<article class="sheet entry" id="mail-inbox">
+  <a class="tab" href="#mail-inbox">收 待处理邮件</a>
+  <header class="sheet-head">
+    <p class="kind">入口</p>
+    <h2>待处理邮件 <code>mail-inbox</code></h2>
+    <p class="lead">整封邮件放进文件夹，说一声处理。它只负责分对站。</p>
+    <p class="mode">你放进夹，说一声处理</p>
+  </header>
+  <section>
+    <h3>怎么用</h3>
+    <p>把整封 .eml，或 Outlook 另存的 .msg，放进项目根的「待处理邮件」，然后说「处理待处理邮件」。.msg 会先转成标准邮件再认。它认完信，交给履约、请款或变更。这三站不用你再点名。看不准的留下问你，不改账。</p>
+  </section>
+  <section>
+    <h3>它干什么</h3>
+    <p>你把整封 .eml 或 Outlook 的 .msg 放进项目根的「待处理邮件」，然后说处理待处理邮件。.msg 先转成标准邮件。它扫描、分类，能确定的交给履约、请款或变更。办成的，归档进采购包对应文件夹，并把待处理里的原件拿走。它自己不改状态表，不写变更台账，不记已请金额。</p>
+  </section>
+  <section>
+    <h3>什么时候用</h3>
+    <p>你说处理待处理邮件、把这封信分给履约 / 请款 / 变更。建项不要从这夹里做。</p>
+  </section>
+  <section>
+    <h3>你会碰到的问题</h3>
+    <div class="qs"><div class='q'><p>要连邮箱自动收吗？</p><p>这版不要。你自己另存 .eml，或从 Outlook 另存 .msg，放进去。</p></div>
+<div class='q'><p>看不准，或者是回信？</p><p>原件留在待处理里。回信先读最新一段，跟你对上意图，再交出去。</p></div>
+<div class='q'><p>像一封新建项目的邮件？</p><p>留下。告诉你回到对话里建项，不在这夹里建。</p></div>
+<div class='q'><p>办完的放哪？</p><p>进采购包里该去的文件夹。不另建「已处理邮件」。</p></div></div>
+  </section>
+  <section>
+    <h3>做成了长这样</h3>
+    <ul class="works"><li>你听到一份清单：办成了什么、哪封是重复的、哪封还要你拍板。</li>
+<li>办成的原件已经不在待处理里。</li>
+<li>看不准的还在，账没有被悄悄改掉。</li></ul>
+  </section>
+  <details class="source">
+    <summary>附上原文 <span>.cursor/skills/mail-inbox/SKILL.md</span></summary>
+    <pre>---
+name: mail-inbox
+description: &gt;-
+  辅助 Skill：待处理邮件入口。用户把整封 .eml，或 Outlook 另存的 .msg，放进项目根「待处理邮件」并说
+  「处理待处理邮件」时，扫描、分类、交给履约/请款/变更。办成的归档进采购包并拿走原件。
+  不建已处理邮件，不连邮箱。看不准和回信留给对话问人。务必在提到待处理邮件、
+  处理邮件、邮件分类、mail-inbox、把邮件分给履约/变更/请款时使用。
+---
+
+# 邮件入口（mail-inbox · 辅助 Skill）
+
+**这版给人用的入口**是项目根目录的 `待处理邮件/`。用户自己把整封邮件放进去，再说「处理待处理邮件」。标准邮件是 `.eml`。从 Outlook 另存的 `.msg` 也收：先转成标准邮件，再走同一条分类。转好的那封才归档。不要教用户连邮箱，不要跑 IMAP / 企微轮询。
+
+**全局原则**：先理解再处理（见 `skill-orchestration`）——分类看主题+正文；低置信不要改台账。`Re:` / 引用原文的回信：先读**最新一段**，按 `intent-taxonomy.md`「线程回信怎么判」覆写后再交业务 Skill。
+
+## 编排硬规则（摘要）
+
+跨 Skill / 进度 / 合同 PDF / 邮件分发 → 先读 `&lt;skills-root&gt;/skill-orchestration/ALWAYS.md`（细节见同目录 `README.md`）。
+单独使用功能 Skill 时禁止擅自串联履约/请款；脚本已串完的不要双跑；时间线对人只有 `项目档案/00_进度计划/关键节点时间线.html` 一份。
+`skills-root` = 本机 Skills 安装根（WorkBuddy 常见 `~/.workbuddy/skills/`）。命令写成 `python3 &lt;skills-root&gt;/&lt;技能名&gt;/scripts/…`。
+
+## 定位
+
+读 `待处理邮件/` → 分类 → 交给业务 Skill。
+
+| 做 | 不做 |
+|----|------|
+| 扫描项目根 `待处理邮件/` 里的 `.eml` 和 `.msg` | 改采购包 Tracker、Change Log、请款账（交给业务 Skill） |
+| 能确定的：分类并分发；归档成功后拿走待处理里的原件 | 建「已处理邮件」文件夹 |
+| 回信、看不准、像新建项目的：留下，在对话里问 | 从这夹里跑建项；连邮箱、IMAP、企微轮询 |
+
+## 权威文档
+
+| 文件 | 内容 |
+|------|------|
+| `references/intent-taxonomy.md` | 意图优先级、防误伤、enrichment |
+| `references/io-contract.md` | 输入输出 JSON、路由字段 |
+| `references/agent-mail.md` | 企微 agent-mail → `.eml` 入口 |
+| `skill-orchestration`（Rule/说明书，非 Skill） | 系统内谁先谁后（唯一编排真源） |
+
+## 脚本入口
+
+用户说「处理待处理邮件」并指出项目后，只跑这一条：
+
+```bash
+python3 &lt;skills-root&gt;/mail-inbox/scripts/process_drop_folder.py \
+  --project-root &quot;/path/to/project&quot;
+```
+
+然后用脚本打印的清单回答用户。每条看 `status`：
+
+| status | 你怎么说 |
+|--------|----------|
+| `done` | 办成了什么，归档在哪 |
+| `skipped_duplicate` | 这封已经在某个归档夹，没有再办 |
+| `archived_needs_you` | 文件已归档，但这件事还要用户拍板（把 `note` 说出来） |
+| `needs_you` | 原件还在待处理里。回信要先读最新一段，看不准就问用户。确认后再用下面的 `dispatch_mail`，然后**再跑一次**本脚本，让它把已归档的原件拿走 |
+| `left` | 说明为什么没动。不是 `.eml` / `.msg` 的点名。`.msg` 读不了的也点名。像新建项目的，告诉用户回到对话里建 |
+
+单封补处理（只在你已经读过、并改对意图之后）：
+
+```bash
+python3 &lt;skills-root&gt;/mail-inbox/scripts/dispatch_mail.py \
+  --project-root &quot;/path/to/project&quot; \
+  --eml &quot;/path/to/待处理邮件/msg.eml&quot;
+```
+
+排障只看分类：`dispatch_mail.py --classify-only --eml &quot;…&quot;`。`.msg` 也可以直接给这条。
+
+## 调用链
+
+```text
+待处理邮件/*.eml 或 *.msg
+  → .msg 先转成同夹里的 .eml
+  → process_drop_folder.py
+       ├─ 能确定的 fulfillment / 请款 / 变更 → 现有业务 Skill 归档
+       ├─ 回信、看不准 → 留下，对话里问
+       └─ 像新建项目 → 留下，不建项
+```
+
+## 评测
+
+```bash
+python3 &lt;skills-root&gt;/mail-inbox/scripts/run_all_evals.py
+```
+</pre>
+  </details>
+</article>
+
+<article class="sheet craft" id="vendor-card">
+  <a class="tab" href="#vendor-card">卡 履约卡片</a>
+  <header class="sheet-head">
+    <p class="kind">手艺</p>
+    <h2>履约卡片 <code>vendor-card</code></h2>
+    <p class="lead">把已经写好的卡片数据画成一页。画完顺手刷请款页。</p>
+    <p class="mode">可以单独叫</p>
+  </header>
+  <section>
+    <h3>怎么用</h3>
+    <p>你说重画某个采购包的履约卡片，就只画这一页。平时不用叫。建包或改了卡片数据，履约会喊它，喊完请款页也刷了。</p>
+  </section>
+  <section>
+    <h3>它干什么</h3>
+    <p>它读这个包的卡片数据，写出同包的履约条件卡片。写完自动去刷请款申请页。项目还没认过客户请款单模板，请款页就写成「尚未启用」，不用别的项目的样例表顶上。数据看着可疑，卡片仍然出来，顶栏必须提醒你。它不收邮件，不改状态表，不办请款入账，不记变更。</p>
+  </section>
+  <section>
+    <h3>什么时候用</h3>
+    <p>你要改履约卡片长什么样。平时不用点名：建包、改卡片数据之后，由履约那一站喊它。数字抽得对不对，回到履约那一站。请款页的版式，去请款申请页那一站。</p>
+  </section>
+  <section>
+    <h3>你会碰到的问题</h3>
+    <div class="qs"><div class='q'><p>卡片刷完，还要再刷一遍请款页吗？</p><p>不用。出卡片的时候已经刷过。再刷一遍就是做两遍。</p></div>
+<div class='q'><p>没有客户请款单模板？</p><p>请款页是未启用提醒。你会听到那句：请款单生成尚未启用。</p></div>
+<div class='q'><p>顶上的质量提醒会进待确认清单吗？</p><p>不会。它只留在卡片顶栏。</p></div></div>
+  </section>
+  <section>
+    <h3>做成了长这样</h3>
+    <ul class="works"><li>这个包里有履约条件卡片.html，打开就是刚写入的数据。</li>
+<li>请款申请.html 要么是填写页，要么是未启用页。两种都算刷完。</li></ul>
+  </section>
+  <details class="source">
+    <summary>附上原文 <span>.cursor/skills/vendor-card/SKILL.md</span></summary>
+    <pre>---
+name: vendor-card
+description: &gt;-
+  辅助 Skill：履约条件卡片渲染。读 card-data.json，写出同包「履约条件卡片.html」；
+  渲完后自动调用 payment-sheet 刷新「请款申请.html」（无客户请款单模板时写出未启用页，不拿样例表充数）。
+  不处理邮件、Tracker、请款入账、变更状态；不拥有请款页 / 出 Excel（归 payment-sheet）。
+disable-model-invocation: true
+---
+
+# 履约卡片（vendor-card · 辅助 Skill）
+
+**全局原则**：先理解再处理（见 `skill-orchestration`）——只渲染调用方已理解并写入的 `card-data`，不臆造业务数字。
+
+## 编排硬规则（摘要）
+
+跨 Skill / 进度 / 合同 PDF / 邮件分发 → 先读 `&lt;skills-root&gt;/skill-orchestration/ALWAYS.md`（细节见同目录 `README.md`）。
+单独使用功能 Skill 时禁止擅自串联履约/请款；脚本已串完的不要双跑；时间线对人只有 `项目档案/00_进度计划/关键节点时间线.html` 一份。
+`skills-root` = 本机 Skills 安装根（WorkBuddy 常见 `~/.workbuddy/skills/`）。命令写成 `python3 &lt;skills-root&gt;/&lt;技能名&gt;/scripts/…`。
+
+## 界面划分（产品约定）
+
+同包两页 HTML **共用** `card-data`，但是**两个辅助 Skill**：
+
+| 页面 | 文件 | 谁做 |
+|------|------|------|
+| 履约条件卡片 | `履约条件卡片.html` | **本 Skill** |
+| 请款申请页 | `请款申请.html` | **`payment-sheet`**（本 Skill 渲卡片后自动调用） |
+
+| 谁 | 职责 |
+|----|------|
+| **Skill 1** | 干净 `card-data` → 调本 Skill。数据抽得对不对归 Skill 1 |
+| **本 Skill** | 履约卡片 HTML。改 `assets/vendor-card.html` 后重跑，不手改生成出来的 html。模板校验不过则拒出卡；烂数据仍出卡，但必须在顶栏提示。付款节点可按 `schedule.json` 补全。渲完链式调 `payment-sheet` |
+| **payment-sheet** | 请款申请页 + 一键公司模板 Excel |
+| **Skill 2** | 请款业务：提醒、ledger、回写 Tracker |
+
+**调用方**：Skill 1、Skill 2、Skill 3。  
+**下游**：`payment-sheet`（刷请款页）。  
+**依赖**：共用库 `project-foundation`（`&lt;skills-root&gt;/project-foundation`）。
+
+## 权威文档
+
+- `references/card-template.md` — 履约卡片模板与字段规范
+- `assets/vendor-card.html` — 履约卡片 HTML 真源
+- 请款页 / Excel → `&lt;skills-root&gt;/payment-sheet/`
+
+## 标准命令
+
+```bash
+python3 &lt;skills-root&gt;/vendor-card/scripts/render_card.py \
+  --package-dir &quot;/path/to/{序号}_{采购包}_{供应商}/&quot; \
+  --patch &#x27;{&quot;supplier_name&quot;:&quot;…&quot;, …}&#x27;
+```
+
+空 patch 仅重渲染卡片并刷请款页：`--patch &#x27;{}&#x27;`
+
+直接跑即可。不要为了找到请款页脚本去拼 PYTHONPATH、也不要改 sys.path 绕过。
+
+**只**重刷请款页（不改卡片）：
+
+```bash
+python3 &lt;skills-root&gt;/payment-sheet/scripts/sync_claim_form.py \
+  --package-dir &quot;/path/to/{序号}_{采购包}_{供应商}/&quot;
+```
+
+## 输出
+
+| 字段 | 说明 |
+|------|------|
+| `card_path` | `履约条件卡片.html` |
+| `card_data_path` | `card-data.json` |
+| `claim_form_path` | `请款申请.html`（有模板则填写页；无模板则「未启用」提醒页） |
+| `payment_form_enabled` | 项目是否已认请款单模板 |
+| `payment_form_notice` | 未启用时的提醒原文 |
+| `needs_claim_sync` | 恒为 `false`（请款页已刷完或已写未启用页） |
+| `quality_ok` / `quality_warnings` | 质量软提醒（只在卡片顶栏） |
+| `did` | `vendor-card.render` + `payment-sheet.sync` 或 `payment-sheet.disabled` |
+
+质量提醒**不**写入 `pending.json`。
+
+## 调用方后续动作
+
+| 调用方 | 渲染后 |
+|--------|--------|
+| Skill 1 / 3 | 有 `claim_form_path` 即完成；**不要**再手跑 `payment-sheet` sync。若 `did` 含 `payment-sheet.disabled`，把「还没有请款单模板，请款单生成尚未启用」告诉用户 |
+| Skill 2 | 消费请款页；改 `card-data` 后须再调本 Skill（或只要刷页则只调 payment-sheet） |
+
+## 评测（判卷）
+
+规则真源：`evals/GRADING_RULES.md`（履约卡片格式/质量；请款页内容归 payment-sheet 精调）。
+
+```bash
+python3 &lt;skills-root&gt;/vendor-card/scripts/run_all_evals.py
+```
+</pre>
+  </details>
+</article>
+
+<article class="sheet craft" id="payment-sheet">
+  <a class="tab" href="#payment-sheet">单 请款申请页</a>
+  <header class="sheet-head">
+    <p class="kind">手艺</p>
+    <h2>请款申请页 <code>payment-sheet</code></h2>
+    <p class="lead">用客户原来那张请款单。认格子，再填。不重画一张。</p>
+    <p class="mode">可以单独叫</p>
+  </header>
+  <section>
+    <h3>怎么用</h3>
+    <p>你交来这个项目的客户请款单，或只要重刷、下载请款页，就只做这件事。出履约卡片时会被自动喊去刷页。已请金额仍归请款那一站。</p>
+  </section>
+  <section>
+    <h3>它干什么</h3>
+    <p>换项目、换业主时，拿客户现成的请款单来认：哪些格子要人填，哪些版式必须留着。认的时候跟你对一遍。之后每个采购包有一页请款申请，打开就能把本包信息填进那张原表，下载出来版式还是客户的。图、表头、合并格都留着。本次请多少由供应商填，它不按比例代算，也不把已请金额展示在网页上。</p>
+  </section>
+  <section>
+    <h3>什么时候用</h3>
+    <p>你交出客户请款单、要换模板、要下载请款 Excel、要改请款申请那一页。建项时如果同时给了 .xlsx，同一回合就认模板，那时还没有采购包，先不要刷页。入账仍归请款那一站。</p>
+  </section>
+  <section>
+    <h3>你会碰到的问题</h3>
+    <div class="qs"><div class='q'><p>客户给的是 .xls 或 Word？</p><p>停。目前只收 .xlsx。请款单生成仍未启用，不去转换、不去重画。</p></div>
+<div class='q'><p>还没认过模板，能先用技能里的样例吗？</p><p>不能。没有这个项目自己的客户请款单，就保持未启用。</p></div>
+<div class='q'><p>网页上为什么没有已请金额？</p><p>已请在采购包状态表，归请款那一站。这一页不展示。</p></div>
+<div class='q'><p>格子对不上别的项目的请款单？</p><p>只认这个项目的对照表。不按业主品牌去猜格子。</p></div></div>
+  </section>
+  <section>
+    <h3>做成了长这样</h3>
+    <ul class="works"><li>项目里存着这份客户模板和一份对照表。</li>
+<li>采购包里能打开请款申请.html，下载下来还是客户那张表的样子。</li>
+<li>合同额从状态表的不含税金额带出。本次金额空着等填。</li></ul>
+  </section>
+  <details class="source">
+    <summary>附上原文 <span>.cursor/skills/payment-sheet/SKILL.md</span></summary>
+    <pre>---
+name: payment-sheet
+description: &gt;-
+  辅助 Skill：请款申请页与客户请款单 Excel。换项目/换业主时，根据客户既有请款单模板
+  生成对应填写页（认模板 → 对照格子 → 刷请款申请.html）；页内一键下载版式一比一的 xlsx。
+  读 card-data 与台账合同不含税额。不估算本次请款金额、不入账、不改 Tracker、不渲染履约卡片。
+  被 vendor-card（渲卡片后自动刷页）调用。网页不展示已请。
+  务必在用户提到请款申请页、payment form、payment-sheet、客户请款单模板、生成填写表单、
+  换业主换模板、下载请款单 Excel、精调请款表单/请款申请 HTML 时使用。
+---
+
+# 请款申请页（payment-sheet · 辅助 Skill）
+
+**全局原则**：先理解再处理（见 `skill-orchestration`）——只消费上游已写入的 `card-data` 与台账请款章节，不臆造金额。
+
+**这张 Skill 干什么：** 用客户原来那张请款单。认模板时清空「要人填」的格子（样例项目名、金额等），下载时把本包信息写进这些格子。图、表头、换行、合并格全部留着。**不是重做一张表。**
+
+请款金额默认不含税；**若客户模板写的是含税，填写页按含税提示，下载也按含税写。** 本次请多少由供应商自己填；本 Skill **不按比例代算**。
+
+合同额从台账「金额不含税」带出。
+
+## 编排硬规则（摘要）
+
+跨 Skill / 进度 / 合同 PDF / 邮件分发 → 先读 `&lt;skills-root&gt;/skill-orchestration/ALWAYS.md`（细节见同目录 `README.md`）。
+单独使用功能 Skill 时禁止擅自串联履约/请款；脚本已串完的不要双跑；时间线对人只有 `项目档案/00_进度计划/关键节点时间线.html` 一份。
+`skills-root` = 本机 Skills 安装根（WorkBuddy 常见 `~/.workbuddy/skills/`）。命令写成 `python3 &lt;skills-root&gt;/&lt;技能名&gt;/scripts/…`。
+
+## 两步（不要跳）
+
+| 步 | 何时 | 做什么 |
+|----|------|--------|
+| **0 · 认模板** | 新项目、换业主、用户扔来客户标准请款单 | 体检 Excel → 起草对照表 → **用人话跟用户对一遍** → 写入项目 `.skill/payment-sheet/` |
+| **1 · 刷填写页** | 认完模板之后；或渲履约卡片之后 | `sync_claim_form.py` 写出包内 `请款申请.html`，下载即填客户那张表 |
+
+没有做过步骤 0 的项目，**请款单生成未启用**（填写页是空的提醒页）。不要拿技能里任何自带样例充数。只有用户把**本项目**客户请款单交来认过，才启用。
+
+## 往原表里填（必须遵守）
+
+| 要 | 不要 |
+|----|------|
+| 客户原件当底稿：清空要填的格子，再写入本包信息 | 照着样子**新做**一张 Excel |
+| 图片、表头、自动换行、合并格、列宽行高原样留下 | 整表重写（图会丢、长字会被切掉） |
+| 客户给 `.xlsx`：原样复制进项目再填 | 收 `.xls` / Word 并转换或重画 |
+
+**目前只收 `.xlsx`。** 客户给老格式 `.xls` 或 Word（`.doc` / `.docx`）：停下来提醒「请款单模板目前只收 Excel 工作簿（.xlsx）。」请款单生成仍未启用。不要另存，也不要让使用的人先装软件。
+
+步骤 0 细则：`references/template-profile.md`。
+
+## 定位
+
+| 做 | 不做 |
+|----|------|
+| 客户请款单 `.xlsx` → 项目对照表 + 填写页 | 渲染 `履约条件卡片.html`（归 `vendor-card`） |
+| `card-data` + 台账 → `请款申请.html` | 请款提醒 / 入账 / 回写 Tracker（归 Skill 2） |
+| 页内按钮 → 往**原来的**客户模板里填字（清空要填处 → 写入） | 从邮件抽付款条件（归 Skill 1）；用历史填表锁定 PO / 联系人 |
+| 写入包内 `.claim-assets/` | 写 Change Log；把填表底稿当财务入账；手改包内 `请款申请.html`（改 `assets/claim-form.html` 后重跑）；把出 Excel 的做法写进 Skill 2 或 vendor-card |
+
+## 已请口径（网页不展示，Excel 要带上）
+
+下载 Excel 时：既往请款优先用 Tracker「已请金额」合成一行。
+
+往哪一格写、要不要插既往行：**只看该项目** `.skill/payment-sheet/template-profile.json`。不要按业主品牌猜格子，不要套别的项目的对照表。
+
+## 与相邻 Skill
+
+| 谁 | 关系 |
+|----|------|
+| **Skill 0** | 对话建项时若用户给了 **`.xlsx` 请款单**：同一回合做步骤 0（只认模板，不 sync）。没给，或给了 `.xls` / Word：提醒未启用（后者加一句目前只收 `.xlsx`） |
+| **Skill 1** | 写干净 `card-data` → 调 `vendor-card`；卡片渲染会**自动**刷请款页（步骤 1，用已认模板） |
+| **vendor-card** | 渲完后调用本 Skill（`did` 含 `payment-sheet.sync`） |
+| **Skill 2** | 客户批复后回写台账；消费本 Skill 产出的页 / Excel |
+| **本 Skill** | 认模板、填写页、填客户 Excel |
+
+系统内刚跑过 `render_card` 且已有 `claim_form_path` → **不要**再手跑步骤 1。认模板（步骤 0）**不**在 `init_project` / `render_card` 的脚本链上：建项时用户给了文件，Agent 按表 B **同一回合**自己跑。
+
+## 权威文档
+
+- `references/template-profile.md` — **认模板**（换客户必读）
+- `assets/claim-form.html` — 填写页 HTML 真源
+- `assets/fill-xlsx.js` + `assets/fill-insert-xlsx.js` + `jszip.min.js` — 页内按 ZIP 填格子（只改值，不重画）
+- `references/claim-form.md` — 填写页行为与金额口径（格子以项目对照表为准）
+- `scripts/inspect_payment_template.py` / `adopt_payment_template.py` — 步骤 0（只收 `.xlsx`）
+- `scripts/sync_claim_form.py` — 步骤 1
+- `scripts/fill_payment_application.py` / `patch_xlsx.py` — CLI 填表（ZIP 补丁）
+
+## 标准命令
+
+认模板（步骤 0）：
+
+```bash
+python3 &lt;skills-root&gt;/payment-sheet/scripts/adopt_payment_template.py \
+  --xlsx &quot;/path/to/客户请款单.xlsx&quot; \
+  --project-root &quot;/path/to/项目根&quot; \
+  --title &quot;客户名 请款单&quot;
+```
+
+只刷请款页（步骤 1）：
+
+```bash
+python3 &lt;skills-root&gt;/payment-sheet/scripts/sync_claim_form.py \
+  --package-dir &quot;/path/to/{序号}_{采购包}_{供应商}/&quot;
+```
+
+CLI 出 Excel（只出文件，不入账）：
+
+```bash
+python3 &lt;skills-root&gt;/payment-sheet/scripts/generate_payment_application.py \
+  --response &quot;/path/to/claim_response.json&quot; \
+  --package-dir &quot;/path/to/01_xxx_Vendor&quot; \
+  --out-dir &quot;/path/to/output&quot;
+```
+
+## 输出
+
+| 产物 | 说明 |
+|------|------|
+| `{项目}/.skill/payment-sheet/template.xlsx` + `template-profile.json` | 该项目用的客户模板和对照表 |
+| `请款申请.html` | 同包可打开填表；主按钮下载客户请款单 Excel |
+| `.claim-assets/` | JSZip + 填表脚本 + 模板副本 |
+| CLI `.xlsx` | 填好的请款单（不是财务底稿） |
+</pre>
+  </details>
+</article>
+
+<article class="sheet craft" id="read-pdf">
+  <a class="tab" href="#read-pdf">读 读 PDF</a>
+  <header class="sheet-head">
+    <p class="kind">手艺</p>
+    <h2>读 PDF <code>read-pdf</code></h2>
+    <p class="lead">把报价单、合同、扫描件读成文字。读完就停。</p>
+    <p class="mode">可以单独叫</p>
+  </header>
+  <section>
+    <h3>怎么用</h3>
+    <p>你说帮我看这份 PDF，交出来的是正文，到此为止。合同要写进采购包时，由履约在同一回合喊它，你不用先点这份的名。</p>
+  </section>
+  <section>
+    <h3>它干什么</h3>
+    <p>先判断这份 PDF 是文字版还是扫描件，再选本地抽字或认字，交给你一份统一的正文。它不抽付款节点，不写状态表，不出卡片。合同要进采购包时，正文读完交给履约那一站去抽付款节点，你确认后再写入。</p>
+  </section>
+  <section>
+    <h3>什么时候用</h3>
+    <p>你说帮我看这份 PDF、读一下报价单、合同、扫描件认字。你只想看内容，就停在正文，不要自动去建包或改账。合并、拆分、旋转、加水印不是这一份。</p>
+  </section>
+  <section>
+    <h3>你会碰到的问题</h3>
+    <div class="qs"><div class='q'><p>读完会自己把付款节点写进卡片吗？</p><p>不会。节点是履约那一站的事，而且要你确认。</p></div>
+<div class='q'><p>扫描件读不清？</p><p>标明局限，不编一段看起来完整的正文。</p></div>
+<div class='q'><p>页数很多会不会只读到一半？</p><p>页数够多、或文件够大时，会走完整认字，避免只吐出前半截。</p></div></div>
+  </section>
+  <section>
+    <h3>做成了长这样</h3>
+    <ul class="works"><li>你拿到正文，能看出它是本地抽出的还是认字得到的。</li>
+<li>状态表和履约卡片没有因为「只是读一下」被改掉。</li></ul>
+  </section>
+  <details class="source">
+    <summary>附上原文 <span>.cursor/skills/read-pdf/SKILL.md</span></summary>
+    <pre>---
+name: read-pdf
+description: &gt;-
+  读 PDF 正文（报价单、合同、扫描件、图纸文字）→ 统一 JSON/Markdown。
+  先判断文字版还是扫描件，再走本地抽字或 SoMark。
+  用户说「帮我看这份 PDF」「读一下这个 PDF」「报价单 PDF」「合同 PDF」
+  「扫描件 OCR / 认字」时务必使用本 Skill；不要用全局通用 pdf 伴侣来读文字。
+  只读内容，不抽付款节点、不写 Tracker、不渲染履约卡片。
+  可单独使用；系统内何时把正文交给履约 Skill 见 skill-orchestration。
+---
+
+# PDF 读取（read-pdf）
+
+**全局原则**：先理解再处理（见 `skill-orchestration`）——先分类再选读法；读不清就标明局限，不编造正文。
+
+## 编排硬规则（摘要）
+
+跨 Skill / 进度 / 合同 PDF / 邮件分发 → 先读 `&lt;skills-root&gt;/skill-orchestration/ALWAYS.md`（细节见同目录 `README.md`）。
+单独使用功能 Skill 时禁止擅自串联履约/请款；脚本已串完的不要双跑；时间线对人只有 `项目档案/00_进度计划/关键节点时间线.html` 一份。
+`skills-root` = 本机 Skills 安装根（WorkBuddy 常见 `~/.workbuddy/skills/`）。命令写成 `python3 &lt;skills-root&gt;/&lt;技能名&gt;/scripts/…`。
+
+## 定位
+
+- **本 Skill**：只管「把 PDF 读成文字」→ 分类 → 选工具 → 统一输出
+- **可单独使用**：交付 JSON/Markdown 即止
+- **系统内协作**：合同/报价 PDF 先用本 Skill 读出正文，付款节点见下方「输出字段」
+- **不做**：合并、拆分、旋转、填表、加水印（那是全局 `pdf` 伴侣的事；本项目读文字不要去用它）
+
+## 工作流
+
+```
+PDF 路径
+  → classify_pdf.py          # 探测文本层、页数、大小、是否扫描件
+  → read_pdf.py              # 按路由规则选工具
+       ├─ 文本型 → 本地 pypdf/pdfplumber
+       ├─ 扫描/复杂 → SoMark CLI
+       └─ 页数 ≥30 或 扫描件 ≥20 页或 &gt;30MB → SoMark --async --wait（防截断）
+  → 统一 JSON（+ 可选把 markdown 交给用户）
+```
+
+路由细则见 [references/routing-rules.md](references/routing-rules.md)。
+
+## 前置
+
+```bash
+pip install -r &lt;skills-root&gt;/read-pdf/scripts/requirements.txt
+pip install somark   # 或 npm install -g somark-js
+```
+
+**SoMark API Key（扫描件必配）** — 详见 [references/somark-setup.md](references/somark-setup.md)：
+
+```bash
+echo &#x27;sk-your-api-key&#x27; &gt; &lt;skills-root&gt;/read-pdf/.somark.secret
+chmod 600 &lt;skills-root&gt;/read-pdf/.somark.secret
+```
+
+解析顺序：`SOMARK_API_KEY` 环境变量 → 项目根 `.somark.secret` → Skill 内 `.somark.secret` → `~/.pmskills/somark.secret`。
+
+换平台时：**拷贝 Skill 目录并带上 `.somark.secret`**，或写 `~/.pmskills/somark.secret`。密钥按上面的顺序找，不走 MCP。
+
+## 命令
+
+### 1. 分类（可选单独跑）
+
+```bash
+python3 &lt;skills-root&gt;/read-pdf/scripts/classify_pdf.py --pdf &quot;/path/to/file.pdf&quot;
+```
+
+### 2. 读取（主入口 · 报价单 / 合同 / 任意 PDF 都用这一条）
+
+```bash
+python3 &lt;skills-root&gt;/read-pdf/scripts/read_pdf.py \
+  --pdf &quot;/path/to/file.pdf&quot; \
+  --out &quot;/path/to/output.json&quot;
+```
+
+## 输出字段（统一）
+
+| 字段 | 说明 |
+|------|------|
+| `source` | `local` \| `somark` |
+| `classification` | `text` \| `scan` \| `large` |
+| `text` / `markdown` | 正文 |
+| `page_count` | 页数 |
+| `is_scan_likely` | 是否疑似扫描件 |
+| `somark_async` | SoMark 是否用了 `--async --wait` |
+
+这份 JSON **没有** `payment_nodes`。付款节点由 Skill 1 的 `extract_contract_pdf.py` 从这份 JSON 抽取，再确认后写入卡片。本 Skill 不写 Tracker、不渲染履约卡片。
+
+## SoMark 异步（防截断）
+
+同步 `somark parse` 对长文档可能只返回部分 Markdown。`read_pdf.py` 在下列情况**自动**加 `--async --wait`：
+
+| 条件 | 阈值 |
+|------|------|
+| 文件分类 `large` | &gt; 30 MB |
+| 任意 PDF | 页数 ≥ **30** |
+| 扫描件 | 页数 ≥ **20** |
+
+若输出 `text`/`markdown` 过短且正文引用「附件 B」但未见附件章节，应检查 `somark_async` 是否为 `true`；否则重跑或手动 async。
+
+## 失败与回退
+
+| 情况 | 动作 |
+|------|------|
+| SoMark 未配置 Key | 按 `references/somark-setup.md` 写入 `.somark.secret`；扫描件可回退「优先页识图 + 手填」 |
+| SoMark 连接失败 | 同上 |
+| 本地文本为空 | 自动尝试 SoMark（若 Key 已配） |
+| 单文件 &gt;200MB | 拒绝并提示拆分 |
+
+## 如何被调用
+
+需要读 PDF 时**先读取并遵循本 Skill**，示例：
+
+```bash
+python3 &lt;skills-root&gt;/read-pdf/scripts/read_pdf.py \
+  --pdf &quot;&lt;PDF路径&gt;&quot; \
+  --out &quot;&lt;临时目录&gt;/read.json&quot;
+```
+
+用输出中的 `text` / `markdown` 继续后续步骤。**禁止**绕过本 Skill 直接全本渲图或自行装 OCR 当主路径。
+
+系统内合同步骤 4a（读完正文再抽付款节点、确认、写卡片）见 `skill-orchestration`，不在本文件展开。
+</pre>
+  </details>
+</article>
+
+<article class="sheet craft" id="mpp-to-excel">
+  <a class="tab" href="#mpp-to-excel">表 进度计划转表</a>
+  <header class="sheet-head">
+    <p class="kind">手艺</p>
+    <h2>进度计划转表 <code>mpp-to-excel</code></h2>
+    <p class="lead">先认出这是哪种进度，再转成机器能读的表。不写到货日。</p>
+    <p class="mode">可以单独叫</p>
+  </header>
+  <section>
+    <h3>怎么用</h3>
+    <p>你说把这份进度转成 Excel 或机读表，转完就停。要到货、验收这些时点，再另说关键节点。</p>
+  </section>
+  <section>
+    <h3>它干什么</h3>
+    <p>Project 文件、Project 另存的 XML、或一张粗表，转成机读的进度表。需要给人看时，再出一张左边是任务、右边是甘特的 Excel。它不推断关键节点，不写付款区间。你只要这张表，交出来就结束。</p>
+  </section>
+  <section>
+    <h3>什么时候用</h3>
+    <p>你说把 MPP 转成 Excel、把甘特搬进表、认一下这份进度是什么格式。要到货、安装、验收这些完成时点，转完再交给关键节点那一份。系统里走完整条进度链时，也是先经过这里。</p>
+  </section>
+  <section>
+    <h3>你会碰到的问题</h3>
+    <div class="qs"><div class='q'><p>来的一定是 Project 文件吗？</p><p>不一定。先认格式。已经是任务表的，直接转。</p></div>
+<div class='q'><p>那张给人看的甘特 Excel 能再当源转一次吗？</p><p>不能。用旁边的机读表，或回到原来的 Project 文件。</p></div>
+<div class='q'><p>转完是不是就有各包的验收日了？</p><p>没有。完成时点是下一份技能的事。</p></div></div>
+  </section>
+  <section>
+    <h3>做成了长这样</h3>
+    <ul class="works"><li>同目录有一份机读进度表。你要看的话，还有甘特那张 Excel。</li>
+<li>任务行数和起止日期能报出来。没有人猜出来的到货日。</li></ul>
+  </section>
+  <details class="source">
+    <summary>附上原文 <span>.cursor/skills/mpp-to-excel/SKILL.md</span></summary>
+    <pre>---
+name: mpp-to-excel
+description: &gt;-
+  进度计划格式识别与转换：把 .mpp / Project XML / 粗表 xlsx/csv 转成机读
+  *_schedule.csv（及可选结构化 xlsx），并可选产出「左侧任务表 + 右侧甘特」的
+  Project 风格 Excel（*_project_view.xlsx）。不是「只处理 MPP」。
+  务必在用户提到进度计划转换、认 schedule 格式、MPP、Microsoft Project、
+  Project 甘特搬到 Excel、mpp/xlsx 转 csv、Project 样式 Excel、甘特色块表时使用。
+---
+
+# Schedule → 机读 CSV（+ 可选 Project 风格 Excel）
+
+**先认输入格式，再转换。** 本 Skill 是进度的「规范化入口」，不是默认「来的一定是 MPP」。
+
+先确认输入是 MPP / XML / 粗表再转换；结构不清则说明限制，不瞎填日期列。
+
+## 编排硬规则（摘要）
+
+跨 Skill / 进度 / 合同 PDF / 邮件分发 → 先读 `&lt;skills-root&gt;/skill-orchestration/ALWAYS.md`（细节见同目录 `README.md`）。
+单独使用功能 Skill 时禁止擅自串联履约/请款；脚本已串完的不要双跑；时间线对人只有 `项目档案/00_进度计划/关键节点时间线.html` 一份。
+`skills-root` = 本机 Skills 安装根（WorkBuddy 常见 `~/.workbuddy/skills/`）。命令写成 `python3 &lt;skills-root&gt;/&lt;技能名&gt;/scripts/…`。
+
+## 权威文档
+
+- `references/mpp-input.md` — 输入格式、依赖（mppjs / Java 备选）、**跨系统（Win/Linux/Mac）**、降级路径
+- `references/project-view-layout.md` — 左侧列 + 右侧甘特（月带/周标）版式
+- `references/structured-export.md` — 机器可读 CSV/xlsx 契约
+
+## 能力边界
+
+| 做 | 不做 |
+|----|------|
+| 读 `.mpp`（推荐 Node+mppjs；或 Java+mpxj）、Project XML、xlsx/csv | 不推断关键节点、不写付款区间 |
+| 输出 **Project 视图 xlsx**（左任务表 + 右甘特） | 不替代 MS Project 编辑/资源平衡 |
+| 输出 **结构化 CSV**（及可选结构化 xlsx） | 不做依赖箭线 / 进度条叠加 / HTML 报告 |
+
+## 输入（按识别结果处理）
+
+| 认出来的格式 | 怎么做 |
+|------|------|
+| `.mpp` | 主路径之一；首次跑 `scripts/setup_mppjs.py` |
+| `.xml` | MS Project「另存为 XML」 |
+| 扁平 `.xlsx` / `.csv`（第 1 行是任务表头） | 直接转换 → 机读 CSV + 可选人看版甘特 |
+| **人看版** `*_project_view.xlsx` | **拒绝当输入**（假源）。改用同目录 `*_schedule.csv` / `*_schedule_structured.xlsx`，或原始 `.mpp` / 任务表 |
+
+有项目目录时可归档到 `项目档案/00_进度计划/`；也可写到 `--out-dir` 任意路径。
+
+## 输出（默认写到同一目录）
+
+| 文件 | 用途 |
+|------|------|
+| `{stem}_project_view.xlsx` | 给人看：左 Project 列 + 右甘特（月带）+「图例」页 |
+| `{stem}_schedule.csv` | 机读扁平表（表头见 `structured-export.md`） |
+| `{stem}_schedule_structured.xlsx` | 可选；同数据的扁平表（无甘特） |
+
+## 工作流（必须遵守）
+
+1. 确认源文件（`.mpp` / `.xml` / `.xlsx` / `.csv`）与输出目录
+2. 阅读 `references/mpp-input.md`（若读 `.mpp`）与 `project-view-layout.md`
+3. 运行转换脚本（见下）
+4. 向用户汇报：任务行数、甘特起止日、输出路径
+5. **完成**。人看版改日期不会更新甘特；需更新时重新跑本脚本。
+
+### 标准命令
+
+```bash
+python3 &lt;skills-root&gt;/mpp-to-excel/scripts/convert_schedule.py \
+  --source &quot;/path/to/project.mpp&quot; \
+  --out-dir &quot;/path/to/out&quot;
+```
+
+常用可选参数：
+
+```bash
+  --gantt-unit week          # day | week（默认 week；跨度&gt;4个月强制 week）
+  --no-structured-xlsx       # 不写 *_schedule_structured.xlsx
+  --project-name &quot;某某项目&quot;   # 写入表头元数据
+```
+
+无 `--out-dir` 时：写到源文件同目录。读 `.mpp`：在**当前电脑**先跑一次 `setup_mppjs.py`（换 Win/Linux 也要本机重跑，勿拷 Mac 的 vendor）。详见 `mpp-input.md`。
+
+## 样例
+
+- `samples/mini/` — 小型 CSV 源 + 预期说明
+- SARL 回归：见 `samples/mini/README.md`
+</pre>
+  </details>
+</article>
+
+<article class="sheet craft" id="critical-nodes">
+  <a class="tab" href="#critical-nodes">点 关键节点</a>
+  <header class="sheet-head">
+    <p class="kind">手艺</p>
+    <h2>关键节点 <code>critical-nodes</code></h2>
+    <p class="lead">读懂进度，推出每个包何时完成、何时能请款。对人只说旬。</p>
+    <p class="mode">可以单独叫</p>
+  </header>
+  <section>
+    <h3>怎么用</h3>
+    <p>你说看关键节点，或重推某个包的完成时点。只看节点时，不改卡片、不改请款。刚建完一个采购包的那一回合，履约会喊它，只补这个新包。</p>
+  </section>
+  <section>
+    <h3>它干什么</h3>
+    <p>它读进度表和采购包清单，判断到货、厂验、安装、验收这些完成时点，写进项目的进度数据。请款对齐用完成日。跟你说的时候用「某月上旬 / 中旬 / 下旬」。吃不准就标待确认，不装懂。脚本负责校验和写文件。理解进度这件事要人（或 AI）读过表再定，不能拿关键词对上就算数。</p>
+  </section>
+  <section>
+    <h3>什么时候用</h3>
+    <p>你要关键节点、请款完成时点、倒排到货或验收。刚建好一个采购包，同一回合必须只给这个新包补节点。你只想看节点、不谈建包请款，就停在时间线和进度数据，不去改卡片。</p>
+  </section>
+  <section>
+    <h3>你会碰到的问题</h3>
+    <div class="qs"><div class='q'><p>对人看的时间线有几份？</p><p>一份。在项目档案的进度计划文件夹里。不要在每个采购包里再放一张。</p></div>
+<div class='q'><p>建包脚本不是已经同步时间线了吗？</p><p>那只是重画。节点没有自动补上。补的时候总包那几行要留着。</p></div>
+<div class='q'><p>日期吃不准写到哪？</p><p>写在进度数据自己的待确认里，不写进项目那份待确认清单。</p></div>
+<div class='q'><p>口头报一个具体日期？</p><p>对人默认报旬。机器里仍存某一天，对齐请款时用完成日。</p></div></div>
+  </section>
+  <section>
+    <h3>做成了长这样</h3>
+    <ul class="works"><li>你打开那一份时间线：总包还在，该有的采购包各占一行。</li>
+<li>每个节点能说出依据。推断出来的和计划里写明的，分得开。</li>
+<li>吃不准的列在待确认里，没有被写成定稿。</li></ul>
+  </section>
+  <details class="source">
+    <summary>附上原文 <span>.cursor/skills/critical-nodes/SKILL.md</span></summary>
+    <pre>---
+name: critical-nodes
+description: &gt;-
+  进度计划关键节点分析（Agent 主导）。读懂粗粒度进度（Excel/CSV；.mpp / Project XML
+  须先经 mpp-to-excel → *_schedule.csv），按采购包推理到货/厂验/安装/验收等
+  完成时点，写入 .skill/schedule.json 的 critical_nodes；请款对齐用 window_end，
+  对人默认报「月+上中下旬」。务必在用户提到进度计划、甘特、Schedule 基座、关键节点、
+  到货/厂验/安装/验收倒排、请款完成时点、critical_nodes、请款时间线时使用。
+  可单独使用；系统内与履约/建包同步见 skill-orchestration。
+---
+
+# 进度计划关键节点分析（Agent 主导）
+
+**全局原则**：先理解再处理（见 `skill-orchestration`）。  
+本 Skill 的主路径是 **Agent 读懂进度表 → 推理节点 → 落盘**；脚本只做校验、写文件、可选时间线。
+
+## 编排硬规则（摘要）
+
+跨 Skill / 进度 / 合同 PDF / 邮件分发 → 先读 `&lt;skills-root&gt;/skill-orchestration/ALWAYS.md`（细节见同目录 `README.md`）。
+单独使用功能 Skill 时禁止擅自串联履约/请款；脚本已串完的不要双跑；时间线对人只有 `项目档案/00_进度计划/关键节点时间线.html` 一份。
+`skills-root` = 本机 Skills 安装根（WorkBuddy 常见 `~/.workbuddy/skills/`）。命令写成 `python3 &lt;skills-root&gt;/&lt;技能名&gt;/scripts/…`。
+
+## 权威文档
+
+- `references/node-taxonomy.md` — 节点码表与包类型模板（Agent 推理时对齐 `node_code`）
+- `references/matching-rules.md` — **Agent 推理规则**（归属、explicit/inferred、倒排思路、冲突）；关键词表仅作弱提示
+- `references/schedule-io.md` — **输出契约**（JSON / 摘要）
+- `references/presentation.md` — 完成时点 / 旬粒度 / **时间线视觉与交互**（改 HTML 必读）
+- `&lt;skills-root&gt;/mpp-to-excel/SKILL.md` — 收到 `.mpp` / Project XML 时必先调用
+- 系统内多 Skill 协作 → `&lt;skills-root&gt;/skill-orchestration/README.md`
+
+## 谁干什么
+
+| 角色 | 职责 |
+|------|------|
+| **Agent** | 读源表与采购包清单；判断每行语义与包归属；按模板补全缺失关键节点；写清 `basis` / `confidence`；吃不准 → `pending` / `needs_confirm` |
+| **脚本** | 校验字段与日期；**整盘或按包 merge** 写入 `.skill/schedule.json`；可选 Markdown 与**项目级**时间线 HTML；建包后脚本同步**只重渲**那一份 HTML |
+
+可选脚本 `analyze_schedule.py`：仅在要**粗草稿**或无 Agent 时使用；产出须经 Agent 审过再当定稿。**禁止**用它整盘覆盖已有总包节点。
+
+## 已定产品原则（必须遵守）
+
+1. **主交付**：结构化数据（`.skill/schedule.json`）。需要可视化时用时间线 HTML，**视觉必须遵守** `presentation.md` §4（禁止糙默认模板）。
+2. **完成时点语义**：关键节点回答「何时完成（可请款）」。机器可留 `window_start`/`window_end`，**对齐与口头汇报一律以 `window_end` 为准**。
+3. **对人默认旬粒度**：`YYYY年M月上/中/下旬`；JSON 仍存 ISO 日。
+4. **时间线只有一份给人看**：`项目档案/00_进度计划/关键节点时间线.html`（另写 `.skill/critical_nodes_timeline.html` 同内容）。**禁止**再写采购包目录下的时间线 HTML。
+5. **进度入口**：先认附件格式再转换；`.mpp`/XML 经 `mpp-to-excel` → CSV；已是机读 csv/xlsx 可直接进本 Skill。人看版 `*_project_view.xlsx` 按下面输入表处理。
+6. **低置信须确认**：吃不准就 `pending` / `needs_confirm`，不静默当定稿。
+7. **不准用字典冒充理解**：任务名各异；用上下文推理，关键词表最多当联想，不能当唯一判决。
+8. **总包 ≠ 抽象项目级**：公共节点 `package_name=总包`（新写入禁止 `_project`；旧数据可读）。各采购包只挂请款相关节点。包级「验收」默认对齐总包/客户验收前后。
+
+## 能力边界
+
+- **做**：理解进度表 → 归属采购包 → 匹配/推断关键节点 → 结构化契约 + 可选摘要/时间线（时间线视觉见 `presentation.md`）
+- **不做**：另做履约看板产品；不写合同付款比例；不渲染履约卡片
+- **定位**：可单独使用；系统内何时同步卡片/建包见编排 Rule（说明书）
+
+## 输入（先认格式，再进本 Skill）
+
+**不是「只能读 CSV」，也不是「默认一定是 MPP」。**  
+正确顺序：**先判断附件是哪种进度** → 需要时转成机读表 → 再推理关键节点。
+
+| 认出来的格式 | 怎么处理 |
+|------|------|
+| 已是机读任务表（`.csv` / 扁平 `.xlsx`，第 1 行是「任务名称/开始/结束…」） | **直接**给本 Skill 读 |
+| `.mpp` / Project XML | 先跑 `mpp-to-excel` → 得到 `*_schedule.csv`，再用 CSV |
+| 普通粗表 Excel（有任务名+日期列，但不是本仓库产出的甘特壳） | 可先走 `mpp-to-excel` 规范化成 CSV，或 Agent 直接读 xlsx |
+| **人看版** `*_project_view.xlsx`（第 1 行像「项目:…」，右侧是甘特色块） | **不是源表**。优先找同目录 `*_schedule.csv`；没有则回到原始 `.mpp`/任务表，**禁止**把 project_view 当源硬转 |
+
+最低列（机读表）：任务/里程碑名称、开始、结束；可选采购包/专业。  
+表头约定见 `&lt;skills-root&gt;/project-foundation/references/schedule-csv-schema.md`。
+
+采购包清单：Tracker CSV，或对话/JSON 中的包名+类型。
+
+## 输出
+
+唯一真源：`{project_root}/.skill/schedule.json`（`milestones` + `critical_nodes` + `pending`）。  
+本 Skill 的 pending **只写这份**；禁止写入项目 `.skill/pending.json`（脚本会硬拦）。
+
+可选：`.skill/critical_nodes.md`；时间线见上「只有一份」。
+
+字段语义见 `references/schedule-io.md`。`source`：`explicit` | `inferred` | `aligned` | `manual`。
+
+## 工作流（Agent 主路径 · 必须遵守）
+
+1. 确认项目根；收集进度附件与采购包列表（含 `package_type`）
+2. **先认进度格式**（见上表）：该转 CSV 的先转，确认手里是机读任务表
+3. 若源是 `.mpp` / Project XML（或需规范化的粗表）：先执行 `mpp-to-excel`，再用 `*_schedule.csv`
+4. **阅读**进度表全文（或足够上下文）：搞清总包锚点、各包粗条/细节点、中英混写含义——**先理解**
+5. 阅读 `node-taxonomy.md`、`matching-rules.md`、`presentation.md`（若尚未加载）
+6. **推理**并整理 `critical_nodes` + `pending`（按包类型模板；完成时点用 `window_end`；依据写进 `basis`；公共节点挂「总包」）
+7. **落盘**：调用 `write_critical_nodes.py`（校验 + 写入；可选 `--write-md` / `--write-timeline`）
+8. 汇报：节点数、`inferred` 数、`pending`；对人日期用旬；强调**完成时点**
+9. 汇报完即停。系统内后续见编排说明书
+
+### 标准命令（整盘落盘）
+
+```bash
+python3 &lt;skills-root&gt;/critical-nodes/scripts/write_critical_nodes.py \
+  --project-root &quot;/path/to/project&quot; \
+  --nodes-json &quot;/path/to/critical_nodes_draft.json&quot; \
+  --source &quot;项目档案/00_进度计划/project_schedule.csv&quot; \
+  --write-md \
+  --write-timeline
+```
+
+### 系统内：刚建了采购包 XXX（只 merge 这个包）
+
+接到「刚建了包 XXX」时（编排层会点到本 Skill）：
+
+1. **读**进度表 + 该包类型 / 邮件交期等上下文  
+2. **只推这个包**的关键节点（不要重算整盘、不要动总包行，除非用户明确要改总包）  
+3. **merge 写入**（保留已有总包与其它包）：
+
+```bash
+python3 &lt;skills-root&gt;/critical-nodes/scripts/write_critical_nodes.py \
+  --project-root &quot;/path/to/project&quot; \
+  --nodes-json &quot;/path/to/only_XXX_nodes.json&quot; \
+  --merge-package &quot;XXX&quot; \
+  --write-timeline
+```
+
+4. 重渲后的 HTML 仍是**项目那一份**：总包行还在，下面多一行 XXX
+
+人话：PM 打开  
+`项目档案/00_进度计划/关键节点时间线.html`  
+——上面仍是总包节点，新建的采购包会多出一行。
+
+### PM 在时间线上改完之后（本地 HTML）
+
+1. 双击打开 `项目档案/00_进度计划/关键节点时间线.html`  
+2. 点「编辑」→ 可连续改多个包（标「有未保存的修改」即可，不必每改一次就存）  
+3. 全部改完点一次「保存全部修改」→ 覆盖该 HTML + 把 `schedule.json` 放进 `.skill/`  
+4. 下次仍打开**同一个** HTML 文件
+
+### 建包后脚本只重渲（不发明节点）
+
+`sync_schedule_timeline.py`：已有 `critical_nodes` 时**只重渲**项目时间线（+ `.skill` 副本），不重跑字典、不写包目录。
+
+```bash
+python3 &lt;skills-root&gt;/critical-nodes/scripts/sync_schedule_timeline.py \
+  --project-root &quot;/path/to/project&quot; \
+  --package-name &quot;BMS&quot;
+```
+
+（`--package-dir` 若传入会被忽略，仅为兼容旧调用。）
+
+无节点时：应走上面的 Agent merge；仅显式 `--draft-analyze` 才出待审草稿。
+
+### 可选：自动草稿（非主路径）
+
+```bash
+python3 &lt;skills-root&gt;/critical-nodes/scripts/analyze_schedule.py \
+  --project-root &quot;/path/to/project&quot; \
+  --source &quot;…/project_schedule.csv&quot; \
+  --write-md
+```
+
+输出仅作草稿；Agent 必须审改后再经 `write_critical_nodes.py` 定稿（建包追加用 `--merge-package`）。
+
+## 样例
+
+- `samples/explicit/` — 计划已写明到货/安装（供 Agent 练习与草稿对照）
+- `samples/coarse/` — 仅有专业粗条，需推理
+- `evals/evals.json` — 评测提示（验收以 Agent 理解 + 契约为准）
+</pre>
+  </details>
+</article>
+
+<article class="sheet readonly" id="cashflow">
+  <a class="tab" href="#cashflow">钱 现金流预测</a>
+  <header class="sheet-head">
+    <p class="kind">只读</p>
+    <h2>现金流预测 <code>cashflow</code></h2>
+    <p class="lead">按月看供应商侧还要出去多少。不改任何一本账。</p>
+    <p class="mode">可以单独叫</p>
+  </header>
+  <section>
+    <h3>怎么用</h3>
+    <p>你说看现金流、这个月要付多少，它只出预测表。建包或请款办完，它不会自己跟着算，除非你明确要看。</p>
+  </section>
+  <section>
+    <h3>它干什么</h3>
+    <p>它把各包的付款条件、完成日、已经请过的、变更里已确认的金额拼在一起，按月算出以后要付的钱。变更的增量加在最后一笔。完成日再加 30 天，算钱离开账户的那个月。不算收入。缺日期或缺金额就标出来问你。</p>
+  </section>
+  <section>
+    <h3>什么时候用</h3>
+    <p>你问现金流、资金计划、按月要花多少。建包或请款刚办完，不要自动抢着重算，除非你明确说要看预测。</p>
+  </section>
+  <section>
+    <h3>你会碰到的问题</h3>
+    <div class="qs"><div class='q'><p>它会把预测写回请款或变更吗？</p><p>不会。只读状态表、卡片、进度和变更台账。</p></div>
+<div class='q'><p>变更加在每一笔上吗？</p><p>不加。只加在最后一笔。已取消的变更不算。</p></div>
+<div class='q'><p>为什么不是完成当月就出账？</p><p>默认滞后 30 天。你有指定天数或手工改期，按那个来。</p></div></div>
+  </section>
+  <section>
+    <h3>做成了长这样</h3>
+    <ul class="works"><li>项目根有一张现金流预测表，能按包、按月看。</li>
+<li>缺的日期和金额被标出来，没有被编成一个整数。</li>
+<li>采购包状态表、卡片、变更台账和跑之前一样。</li></ul>
+  </section>
+  <details class="source">
+    <summary>附上原文 <span>.cursor/skills/cashflow/SKILL.md</span></summary>
+    <pre>---
+name: cashflow
+description: &gt;-
+  现金流预测（cashflow）。只读聚合 Tracker、card-data、
+  schedule 关键节点与已确认变更，推算供应商侧未来出账（按月）；变更增量默认挂尾款；
+  出账滞后默认 30 天。不做收入侧、不写请款/履约/变更数据。务必在用户提到现金流、
+  资金计划、出账预测、按月要花多少、现金流预测、cashflow forecast 时使用。
+---
+
+# 现金流预测
+
+一句话：**只读**各采购包合同付款条件 + 进度完成日 + 已付账 + 已确认变更，拼出**按月供应商出账预测**。边界见下面「状态口径」。
+
+**全局原则**：先理解再处理（见 `skill-orchestration`）——日期与金额缺一项就进 `pending`，禁止手猜合同额或进度。
+
+## 编排硬规则（摘要）
+
+跨 Skill / 进度 / 合同 PDF / 邮件分发 → 先读 `&lt;skills-root&gt;/skill-orchestration/ALWAYS.md`（细节见同目录 `README.md`）。
+单独使用功能 Skill 时禁止擅自串联履约/请款；脚本已串完的不要双跑；时间线对人只有 `项目档案/00_进度计划/关键节点时间线.html` 一份。
+`skills-root` = 本机 Skills 安装根（WorkBuddy 常见 `~/.workbuddy/skills/`）。命令写成 `python3 &lt;skills-root&gt;/&lt;技能名&gt;/scripts/…`。
+
+## 状态口径（对人）
+
+| 原则 | 做法 |
+|------|------|
+| **只看出账** | 供应商付款；不算苹果/JLL 收入；不对接银行/ERP |
+| **变更挂尾款** | Change Log「最终确认金额」合计只加在**最后一笔**付款节点（预测用；不读「是否请款」；跳过已取消） |
+| **已确认变更列随变更走** | Excel「已确认变更」每次重算：直接读 Skill 3 的 Change Log。变更台账**不加**请款状态 |
+| **出账滞后 30 天** | 完成锚点日 + 30 天 = 预计钱离开账户的月份 |
+| **只读上游** | 不改 Tracker、card-data、Change Log |
+
+## 界面划分
+
+| 产物 | 归谁 |
+|------|------|
+| `{项目名}_Cash Flow Forecast.xlsx`、`.skill/cashflow_forecast.json` | **本 Skill** |
+| 付款条件、合同金额 | Skill 1 + Tracker |
+| 已付账 | Skill 2 → Tracker「下一付款节点」之前的节点 +「已请金额」 |
+| 完成时点 | critical-nodes → `window_end` |
+| 变更金额 | Skill 3 Change Log（有最终确认金额、非已取消） |
+
+## 权威参考
+
+| 文件 | 何时读 |
+|------|--------|
+| `references/xlsx-layout.md` | Excel 行列怎么排（给人看的主产物） |
+| `references/forecast-schema.md` | JSON 字段、日期/金额规则 |
+| `references/overrides.md` | 人工覆盖日期与 lag |
+| `scripts/build_forecast.py` | 生成预测真源 |
+| `scripts/check_sources.py` | 一键核对台账是否有更新（可重算） |
+| `scripts/write_forecast_xlsx.py` | 写出 Excel |
+| `samples/demo_project/` | 本 Skill 自带样例；试跑报告写在这里 |
+
+上游（只读）：
+
+- Skill 1：Tracker、`card-data.payment_nodes`
+- Skill 2：Tracker「已请金额」+「下一付款节点」（客户批复后才算已请；不读 payment_ledger）
+- critical-nodes：`.skill/schedule.json` → `critical_nodes[].window_end`
+- Skill 3：`.skill/change_log.csv`（有最终确认金额、非已取消）
+
+## 主路径
+
+```bash
+python3 &lt;skills-root&gt;/cashflow/scripts/build_forecast.py \
+  --project-root &quot;/path/to/project&quot; \
+  --horizon-months 18 \
+  --payment-lag-days 30 \
+  --write
+```
+
+`--write` 写出：
+
+- `{项目名}_Cash Flow Forecast.xlsx`（项目根，主产物；含「检查台账更新」按钮）
+- `Check Cash Flow Sources.command`（项目根，按钮会调它）
+- `.skill/cashflow_forecast.json`
+
+### 运行参数
+
+| 参数 | 默认 | 说明 |
+|------|------|------|
+| `--tail-months` | **1** | 项目结束后再留几个月 |
+| `--payment-lag-days` | **30** | 完成锚点后多少天计入出账月 |
+| `--tax-basis` | `excl_tax` | 主口径不含税 |
+| `--as-of` | 今天 | 快照日 `YYYY-MM-DD` |
+
+人工覆盖：`.skill/cashflow_overrides.json`（见 `references/overrides.md`）。
+
+## 逻辑摘要
+
+```text
+每包 × 每个付款节点
+  → 金额：Tracker 不含税 × 节点比例；最后一笔 + 已确认变更
+  → 日期：override → milestone → window_end → schedule_window → 条件推断（PO+N天）
+  → 应请月 = 计划锚点 + payment_lag_days；已请完节点用进度窗口日当已发生
+```
+
+细则：`references/forecast-schema.md`。
+
+## 与 Skill 1 / 2 / 3 的挂钩
+
+| 对方 | 关系 |
+|------|------|
+| Skill 1 | 读 Tracker、付款节点 |
+| Skill 2 | 读 Tracker 已请 / 下一节点 |
+| Skill 3 | 读 Change Log |
+| critical-nodes | 读 `window_end` |
+| skill-orchestration | 用户要求时才重算 |
+
+**触发**：用户要看现金流；或上游数据更新后用户要求刷新。不要在建包/请款同一回合自动抢跑（除非用户明确要预测）。
+
+## 冒烟
+
+```bash
+python3 &lt;skills-root&gt;/cashflow/scripts/smoke_skill4.py
+```
+
+样例项目：`samples/demo_project`（只属于本 Skill；报告写在该目录，不写进 Skill 1 / 2）。
+
+## Agent 清单
+
+- [ ] 变更是否只计入**尾款**节点（Change Log 已确认金额）？
+- [ ] `payment_lag_days` 是否 30（除非 overrides 或用户指定）？
+- [ ] 缺日期/缺金额是否进 `pending` 而非静默猜数？
+- [ ] 输出是否含 Excel（`--write`）？
+- [ ] 用户要核对台账时是否跑了 `check_sources.py`（有更新再 `--rebuild`）？
+</pre>
+  </details>
+</article>
+
+  <footer>
+    <p>每一份先写怎么用：工位是邮件分到就办，手艺和只读可以单独叫。立项不吃待处理邮件。下面再写它干什么、什么时候用、你会碰到的问题、做成了长这样。原文 SKILL.md 附在每份最底下。给 AI 执行时，以展开的原文为准。</p>
+  </footer>
+</main>
+<script>
+  const btn = document.getElementById('toggle-src');
+  btn.addEventListener('click', () => {
+    const nodes = [...document.querySelectorAll('details.source')];
+    const open = nodes.some(d => !d.open);
+    nodes.forEach(d => { d.open = open; });
+    btn.textContent = open ? '收起全部原文' : '展开全部原文';
+  });
+</script>
+</body>
+</html>

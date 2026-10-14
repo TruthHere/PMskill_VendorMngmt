@@ -1,0 +1,285 @@
+# 请款单模板体检
+
+文件：`/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/payment-flow/samples/demo_project/.skill/payment-sheet/template.xlsx`
+
+## 表 `Invoice`（visible）
+
+公式：
+- `I29` = `C9`
+- `I31` = `I29+I30`
+- `Q39` = `SUM(Q36:Q37)`
+- `Q45` = `Q39-Q41`
+
+有字的格子（节选）：
+- `B1` PAYMENT NO: 1
+- `B2` Project:
+- `C2` Apple SARL Phase 5 Build Out Project
+- `B3` Division:
+- `C3` 212-4
+- `B4` Vendor:
+- `C4` 供应商名称
+- `B5` Work Package:
+- `C5` 服务内容
+- `B6` Vendor Reference Number:
+- `C6` 供应商编号（PO单里有）
+- `B7` PO Number :
+- `C7` PO号
+- `B8` PO Value:
+- `C8` PO金额
+- `D8` (CNY exclude xx% VAT)
+- `B9` Contract Value:
+- `C9` PO金额
+- `D9` (CNY exclude xx% VAT)
+- `B11` Vendor:
+- `C11` 供应商名称
+- `K11` Office Address:
+- `B12` Contact Point:
+- `C12` 联系人姓名
+- `K12` 公司地址
+- `B13` Contact Number:
+- `C13` 联系人手机号
+- `B14` Office:
+- `C14` 公司电话（如有）
+- `B18` Division:
+- `Q18` Payment Claim No.
+- `B19` 212
+- `C19` Apple R&D (Beijing) Limited
+- `Q19` 1
+- `B22` 所有请款节点，金额及条件
+- `P22` Period
+- `P23` 1
+- `B29` Contract Value
+- `H29` RMB
+- `B30` Add: Variations to-date
+- `H30` RMB
+- `I30` 0
+- `B31` Adjusted Contract Value
+- `H31` RMB
+- `B37` 本次请款节点
+- `Q37` 本次请款金额
+- `B39` Total Invoice Value
+- `B41` LESS payment previously certified
+- `Q41` 0
+- `B45` TOTAL CLAIM
+- `B49` PAYMENT APPROVALS
+- `E50` Date
+- `B56` Signature
+- `E56` Date
+- `L56` Project Manager
+- `B62` Notes:
+- `B63` Please note the following assumptions
+- `B64` (a) This invoice without VAT
+- `B65` (b) Please see attached email for approval.
+
+疑似要填的空格（旁边有标签）：
+- `C1` ← left「PAYMENT NO: 1」
+- `D2` ← left「Apple SARL Phase 5 Build Out Project」
+- `D3` ← left「212-4」
+- `D4` ← left「供应商名称」
+- `D5` ← left「服务内容」
+- `D6` ← left「供应商编号（PO单里有）」
+- `D7` ← left「PO号」
+- `E8` ← left「(CNY exclude xx% VAT)」
+- `E9` ← left「(CNY exclude xx% VAT)」
+- `B10` ← above「Contract Value:」
+- `C10` ← above「PO金额」
+- `D10` ← above「(CNY exclude xx% VAT)」
+- `D11` ← left「供应商名称」
+- `L11` ← left「Office Address:」
+- `D12` ← left「联系人姓名」
+- `L12` ← left「公司地址」
+- `D13` ← left「联系人手机号」
+- `K13` ← above「公司地址」
+- `D14` ← left「公司电话（如有）」
+- `B15` ← above「Office:」
+- `C15` ← above「公司电话（如有）」
+- `C18` ← left「Division:」
+- `R18` ← left「Payment Claim No.」
+- `D19` ← left「Apple R&D (Beijing) Limited」
+- `R19` ← left「1」
+- `B20` ← above「212」
+- `C20` ← above「Apple R&D (Beijing) Limited」
+- `Q20` ← above「1」
+- `C22` ← left「所有请款节点，金额及条件」
+- `Q22` ← left「Period」
+- `B23` ← above「所有请款节点，金额及条件」
+- `Q23` ← left「1」
+- `P24` ← above「1」
+- `C29` ← left「Contract Value」
+- `C30` ← left「Add: Variations to-date」
+- `J30` ← left「0」
+- `C31` ← left「Adjusted Contract Value」
+- `B32` ← above「Adjusted Contract Value」
+- `H32` ← above「RMB」
+- `C37` ← left「本次请款节点」
+- `R37` ← left「本次请款金额」
+- `B38` ← above「本次请款节点」
+- `Q38` ← above「本次请款金额」
+- `C39` ← left「Total Invoice Value」
+- `B40` ← above「Total Invoice Value」
+- `C41` ← left「LESS payment previously certified」
+- `R41` ← left「0」
+- `B42` ← above「LESS payment previously certified」
+- `Q42` ← above「0」
+- `C45` ← left「TOTAL CLAIM」
+- `B46` ← above「TOTAL CLAIM」
+- `C49` ← left「PAYMENT APPROVALS」
+- `B50` ← above「PAYMENT APPROVALS」
+- `F50` ← left「Date」
+- `E51` ← above「Date」
+- `C56` ← left「Signature」
+- `F56` ← left「Date」
+- `M56` ← left「Project Manager」
+- `B57` ← above「Signature」
+- `E57` ← above「Date」
+
+## 表 `Advance Payment Schedule`（hidden）
+
+公式：
+- `K15` = `+SUM(I20:I44)`
+- `L27` = `-2936800000`
+- `L29` = `L25-L27`
+- `K53` = `K12-K15`
+- `K56` = `K53-K55`
+
+有字的格子（节选）：
+- `K10` AMOUNT
+- `A12` 1)
+- `B12` ADVANCE PAYMENT AS PER ADVACE PAYMENT CERTIFICATE NO. 1 - Feb 2014 (TBC)
+- `K12` 12000000000
+- `A15` 3)
+- `B15` LESS : ADVANCE PAYMENT PAYBACK TO DATE
+- `C17` Payback
+- `E17` Included in
+- `G17` Certificate
+- `I17` Payback Amount
+- `C18` Payment No
+- `E18` Certificate No
+- `G18` Date
+- `C20` No 1
+- `E20` No 2
+- `G20` 41730
+- `C21` No 2
+- `E21` No 3
+- `G21` 41760
+- `C22` No 3
+- `E22` No 4
+- `G22` 41791
+- `I22` 1701600000
+- `C23` No 4
+- `E23` No 5
+- `G23` 41821
+- `I23` 2297100000
+- `C24` No 5
+- `E24` No 6
+- `G24` 41852
+- `I24` 639700000
+- `C25` No 6
+- `E25` No 7
+- `G25` 41896
+- `I25` 598000000
+- `L25` -3534800000
+- `C26` No 7
+- `E26` No 8
+- `C27` No 8
+- `E27` No 9
+- `C28` No 9
+- `E28` No 10
+- `C29` No 10
+- `E29` No 11 + 12
+- `C30` No 11
+- `E30` No 13
+- `C31` No 12
+- `E31` No 14
+- `C32` No 13
+- `E32` No 15
+- `C33` No 14
+- `E33` No 16
+- `C34` No 15
+- `E34` No 17
+- `C35` No 16
+- `E35` No 18
+- `C36` No 17
+- `E36` No 19
+- `C37` No 18
+- `E37` No 20
+- `C38` No 19
+- `E38` No 21
+- `C39` No 20
+- `E39` No 22
+- `C40` No 21
+- `E40` No 23
+- `C41` No 22
+- `E41` No 24
+- `C42` No 23
+- `E42` No 25
+- `C43` No 24
+- `I43` 0
+- `C44` No 25
+- `I53` ADVANCE PAYMENT BALANCE
+- `J53` R
+- `K55` 8465200000
+
+疑似要填的空格（旁边有标签）：
+- `K11` ← above「AMOUNT」
+- `C12` ← left「ADVANCE PAYMENT AS PER ADVACE PAYMENT CERTIFICATE NO. 1 - Feb 2014 (TBC)」
+- `A13` ← above「1)」
+- `B13` ← above「ADVANCE PAYMENT AS PER ADVACE PAYMENT CERTIFICATE NO. 1 - Feb 2014 (TBC)」
+- `K13` ← above「12000000000」
+- `C15` ← left「LESS : ADVANCE PAYMENT PAYBACK TO DATE」
+- `A16` ← above「3)」
+- `B16` ← above「LESS : ADVANCE PAYMENT PAYBACK TO DATE」
+- `D17` ← left「Payback」
+- `F17` ← left「Included in」
+- `H17` ← left「Certificate」
+- `J17` ← left「Payback Amount」
+- `D18` ← left「Payment No」
+- `F18` ← left「Certificate No」
+- `H18` ← left「Date」
+- `I18` ← above「Payback Amount」
+- `C19` ← above「Payment No」
+- `E19` ← above「Certificate No」
+- `G19` ← above「Date」
+- `D20` ← left「No 1」
+- `F20` ← left「No 2」
+- `H20` ← left「41730」
+- `D21` ← left「No 2」
+- `F21` ← left「No 3」
+- `H21` ← left「41760」
+- `D22` ← left「No 3」
+- `F22` ← left「No 4」
+- `H22` ← left「41791」
+- `J22` ← left「1701600000」
+- `D23` ← left「No 4」
+- `F23` ← left「No 5」
+- `H23` ← left「41821」
+- `J23` ← left「2297100000」
+- `D24` ← left「No 5」
+- `F24` ← left「No 6」
+- `H24` ← left「41852」
+- `J24` ← left「639700000」
+- `D25` ← left「No 6」
+- `F25` ← left「No 7」
+- `H25` ← left「41896」
+- `J25` ← left「598000000」
+- `D26` ← left「No 7」
+- `F26` ← left「No 8」
+- `G26` ← above「41896」
+- `I26` ← above「598000000」
+- `D27` ← left「No 8」
+- `F27` ← left「No 9」
+- `D28` ← left「No 9」
+- `F28` ← left「No 10」
+- `D29` ← left「No 10」
+- `F29` ← left「No 11 + 12」
+- `D30` ← left「No 11」
+- `F30` ← left「No 13」
+- `D31` ← left「No 12」
+- `F31` ← left「No 14」
+- `D32` ← left「No 13」
+- `F32` ← left「No 15」
+- `D33` ← left「No 14」
+- `F33` ← left「No 16」
+- `D34` ← left「No 15」
+
+下一步：按这些格子起草 `template-profile.json`，用白话给用户对一遍「网页填什么 → Excel 哪一格」。

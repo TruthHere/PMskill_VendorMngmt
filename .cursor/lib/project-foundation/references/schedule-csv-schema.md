@@ -1,7 +1,7 @@
 # 项目进度计划 CSV 规范
 
 MVP 支持用 **CSV 项目进度文件** 替代手填 `.skill/schedule.json`。  
-**fulfillment-card** `render_card.py` 渲染付款节点时会自动读取 CSV（或已导入的缓存 JSON）。
+**vendor-card** `render_card.py` 渲染付款节点时会自动读取 CSV（或已导入的缓存 JSON）。
 
 ## 放置位置
 

@@ -1,8 +1,0 @@
-语境：mail-inbox 已将下列邮件分类为 project_init，请按 Skill 0 邮局入口处理（不要走对话建项静默 init）。
-
-目标目录 /Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/project-init-workspace/iteration-1/mail-handler-pending-not-silent-create/with_skill/outputs/GhostRoot 目前是空目录，没有 .skill/project.json。
-邮件文件：/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/project-init-workspace/iteration-1/mail-handler-pending-not-silent-create/with_skill/outputs/init.eml
-主题：[项目初始化] Ghost Proj - GHOST
-正文含项目名称/编号/本地根文件夹路径（指向该空目录）。
-
-请调用 handle_init_email（或等价 dispatch），并根据返回结果说明下一步应如何用对话入口补建。

@@ -1,0 +1,32 @@
+{
+  "count": 3,
+  "files": [
+    {
+      "source": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/po-flow/tests/redact/raw/SARL Ph1 Refresh - Procurement - RFP for BMS (BOSCH).eml",
+      "output": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/po-flow/tests/redact/output/Sample Owner Project Ph1 Refresh - Procurement - RFP for BMS (BOSCH).eml",
+      "subject": "[TEST-A1234] Sample Owner Project Ph1 Refresh - Procurement - RFP for BMS (BOSCH)",
+      "from": "pm@pmco.example.com",
+      "to": "TestProject_AI@163.com",
+      "bytes_in": 205082,
+      "bytes_out": 201676
+    },
+    {
+      "source": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/po-flow/tests/redact/raw/SARL Ph5 - Procurement - RFP for EPMS (Schneider).eml",
+      "output": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/po-flow/tests/redact/output/Sample Owner Project Ph5 - Procurement - RFP for EPMS (Schneider).eml",
+      "subject": "[TEST-A1234] Sample Owner Project Ph5 - Procurement - RFP for EPMS (Schneider)",
+      "from": "pm@pmco.example.com",
+      "to": "TestProject_AI@163.com",
+      "bytes_in": 500929,
+      "bytes_out": 493584
+    },
+    {
+      "source": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/po-flow/tests/redact/raw/[Raise PO] F.23604 SARL Ph5_Initial Cleaning_CBRE.eml",
+      "output": "/Users/truth_here/Documents/AI Projects/PMskills/.cursor/skills/po-flow/tests/redact/output/[Raise PO] PO-TEST-001 Sample Owner Project Ph5_Initial Cleaning_CBRE.eml",
+      "subject": "[TEST-A1234] [Raise PO] PO-TEST-001 Sample Owner Project Ph5_Initial Cleaning_CBRE",
+      "from": "pm@pmco.example.com",
+      "to": "TestProject_AI@163.com",
+      "bytes_in": 902509,
+      "bytes_out": 69248
+    }
+  ]
+}

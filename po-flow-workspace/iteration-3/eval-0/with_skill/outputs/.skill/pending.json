@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "step": "project_init",
+      "fields": {
+        "package_name": "",
+        "subject": "[项目初始化] Sample Project - SAMPLE"
+      },
+      "subject": "[项目初始化] Sample Project - SAMPLE",
+      "eml_path": "/Users/truth_here/Documents/AI Projects/PMskills/po-flow-workspace/iteration-3/eval-0/with_skill/outputs/_mail/init.eml",
+      "reason": "routed_to_skill0",
+      "note": "项目初始化已迁出 Skill 1。请经 mail-inbox 分发到 Skill 0 `new-project/scripts/handle_init_email.py`，或手动运行 run_init.py。",
+      "pending_id": "p-1T1742210800",
+      "status": "open",
+      "created_at": "2026-08-01T17:42:21+08:00"
+    }
+  ]
+}

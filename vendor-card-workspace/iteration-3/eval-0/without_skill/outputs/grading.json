@@ -1,0 +1,137 @@
+{
+  "expectations": [
+    {
+      "text": "card HTML exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/vendor-card-workspace/iteration-3/eval-0/without_skill/outputs/履约条件卡片.html",
+      "tier": "format"
+    },
+    {
+      "text": "card-data.json exists",
+      "passed": true,
+      "evidence": "/Users/truth_here/Documents/AI Projects/PMskills/vendor-card-workspace/iteration-3/eval-0/without_skill/outputs/card-data.json",
+      "tier": "format"
+    },
+    {
+      "text": "card-title is supplier_name",
+      "passed": false,
+      "evidence": "supplier=BOSCH Building Technologies",
+      "tier": "format"
+    },
+    {
+      "text": "package-name appears in subtitle",
+      "passed": false,
+      "evidence": "package=BMS",
+      "tier": "format"
+    },
+    {
+      "text": "payment nodes render as payment-table",
+      "passed": false,
+      "evidence": "missing",
+      "tier": "format"
+    },
+    {
+      "text": "card has no change section",
+      "passed": true,
+      "evidence": "clean",
+      "tier": "format"
+    },
+    {
+      "text": "data_sources live in footer-meta",
+      "passed": false,
+      "evidence": "missing",
+      "tier": "format"
+    },
+    {
+      "text": "claim link points to 请款申请.html",
+      "passed": false,
+      "evidence": "missing",
+      "tier": "format"
+    },
+    {
+      "text": "no unresolved template placeholders",
+      "passed": true,
+      "evidence": "clean",
+      "tier": "format"
+    },
+    {
+      "text": "validate_rendered_card passes",
+      "passed": false,
+      "evidence": "card-title must be supplier_name (not package_name); package_name must appear in subtitle package-name span; legacy header: package_name used as card-title",
+      "tier": "format"
+    },
+    {
+      "text": "non-GC hides 约束条款 section",
+      "passed": true,
+      "evidence": "is_gc=False has_section=False",
+      "tier": "format"
+    },
+    {
+      "text": "payment_attachments appear in table",
+      "passed": false,
+      "evidence": "nodes_with_attachments=3",
+      "tier": "format"
+    },
+    {
+      "text": "supplier_name is non-empty",
+      "passed": true,
+      "evidence": "BOSCH Building Technologies",
+      "tier": "quality"
+    },
+    {
+      "text": "payment node names are bilingual",
+      "passed": true,
+      "evidence": "预付款 / Advance, 到货验收 / Delivery & Acceptance, 尾款 / Final Retention",
+      "tier": "quality"
+    },
+    {
+      "text": "payment pct sum is about 100%",
+      "passed": true,
+      "evidence": "sum=100.0",
+      "tier": "quality"
+    },
+    {
+      "text": "total_amount marks 含税 or 不含税",
+      "passed": true,
+      "evidence": "¥1,280,000 CNY 含税",
+      "tier": "quality"
+    },
+    {
+      "text": "each payment node has attachments after enrich",
+      "passed": true,
+      "evidence": "ok",
+      "tier": "quality"
+    },
+    {
+      "text": "schedule_window column when windows present",
+      "passed": false,
+      "evidence": "has_windows=True",
+      "tier": "quality"
+    },
+    {
+      "text": "quality_ok is true",
+      "passed": false,
+      "evidence": "quality_ok=None n=0",
+      "tier": "quality"
+    },
+    {
+      "text": "no quality warnings when data is good",
+      "passed": false,
+      "evidence": "warnings=0 banner=False",
+      "tier": "quality"
+    }
+  ],
+  "passed": 10,
+  "total": 20,
+  "pass_rate": 0.5,
+  "format": {
+    "passed": 5,
+    "total": 12,
+    "pass_rate": 0.4167
+  },
+  "quality": {
+    "passed": 5,
+    "total": 8,
+    "pass_rate": 0.625
+  }
+}

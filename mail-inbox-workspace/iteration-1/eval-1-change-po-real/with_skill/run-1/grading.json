@@ -6,9 +6,9 @@
       "evidence": "got 'change.change_po'"
     },
     {
-      "text": "route_to is change-archive",
+      "text": "route_to is change-flow",
       "passed": true,
-      "evidence": "got 'change-archive'"
+      "evidence": "got 'change-flow'"
     },
     {
       "text": "change_no is COT003",

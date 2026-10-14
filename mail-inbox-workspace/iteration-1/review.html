@@ -15,7 +15,7 @@ section { border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.2rem; m
 </style>
 </head>
 <body>
-<h1>contract-fulfillment-struct</h1>
+<h1>po-flow</h1>
 <p>Eval workspace：<code>/Users/truth_here/Documents/AI Projects/PMskills/mail-inbox-workspace/iteration-1</code></p>
 <div class="summary">
   <strong>Benchmark</strong><br/>
@@ -24,59 +24,59 @@ section { border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem 1.2rem; m
   delta：54.1 pp
 </div>
 <section><h2>raise-po-faq-trap</h2><pre class="prompt">主题 [Raise PO] Initial Cleaning；正文含苹果采购 FAQ「If this PR is a change order, please provide the original PO #」。应判 fulfillment.raise_po，不得进 change.change_po。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (4/4)</p><ul><li class="pass"><strong>✓</strong> intent is fulfillment.raise_po<span class="evidence">got &#x27;fulfillment.raise_po&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is contract-fulfillment-struct<span class="evidence">got &#x27;contract-fulfillment-struct&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is po-flow<span class="evidence">got &#x27;po-flow&#x27;</span></li>
 <li class="pass"><strong>✓</strong> not change.change_po<span class="evidence">got &#x27;fulfillment.raise_po&#x27;</span></li>
 <li class="pass"><strong>✓</strong> not change.*<span class="evidence">got &#x27;fulfillment.raise_po&#x27;</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：0% (0/4)</p><ul><li class="fail"><strong>✗</strong> intent is fulfillment.raise_po<span class="evidence">got &#x27;change.change_po&#x27;</span></li>
-<li class="fail"><strong>✗</strong> route_to is contract-fulfillment-struct<span class="evidence">got &#x27;change-archive&#x27;</span></li>
+<li class="fail"><strong>✗</strong> route_to is po-flow<span class="evidence">got &#x27;change-flow&#x27;</span></li>
 <li class="fail"><strong>✗</strong> not change.change_po<span class="evidence">got &#x27;change.change_po&#x27;</span></li>
 <li class="fail"><strong>✗</strong> not change.*<span class="evidence">got &#x27;change.change_po&#x27;</span></li></ul></div></section><section><h2>change-po-real</h2><pre class="prompt">主题含 (change PO)，正文 raise Change PO + COT-003。应判 change.change_po → Skill 3。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (3/3)</p><ul><li class="pass"><strong>✓</strong> intent is change.change_po<span class="evidence">got &#x27;change.change_po&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is change-archive<span class="evidence">got &#x27;change-archive&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is change-flow<span class="evidence">got &#x27;change-flow&#x27;</span></li>
 <li class="pass"><strong>✓</strong> change_no is COT003<span class="evidence">got &#x27;COT003&#x27;</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：67% (2/3)</p><ul><li class="pass"><strong>✓</strong> intent is change.change_po<span class="evidence">got &#x27;change.change_po&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is change-archive<span class="evidence">got &#x27;change-archive&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is change-flow<span class="evidence">got &#x27;change-flow&#x27;</span></li>
 <li class="fail"><strong>✗</strong> change_no is COT003<span class="evidence">got &#x27;&#x27;</span></li></ul></div></section><section><h2>fulfillment-tech-not-change</h2><pre class="prompt">履约技术确认（无 COT/COD）：主题「BMS · 技术确认」。应判 fulfillment.tech_confirm，不得进 Skill 3。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (3/3)</p><ul><li class="pass"><strong>✓</strong> intent is fulfillment.tech_confirm<span class="evidence">got &#x27;fulfillment.tech_confirm&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is contract-fulfillment-struct<span class="evidence">got &#x27;contract-fulfillment-struct&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is po-flow<span class="evidence">got &#x27;po-flow&#x27;</span></li>
 <li class="pass"><strong>✓</strong> not change.*<span class="evidence">got &#x27;fulfillment.tech_confirm&#x27;</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：0% (0/3)</p><ul><li class="fail"><strong>✗</strong> intent is fulfillment.tech_confirm<span class="evidence">got &#x27;change.tech_confirm&#x27;</span></li>
-<li class="fail"><strong>✗</strong> route_to is contract-fulfillment-struct<span class="evidence">got &#x27;change-archive&#x27;</span></li>
+<li class="fail"><strong>✗</strong> route_to is po-flow<span class="evidence">got &#x27;change-flow&#x27;</span></li>
 <li class="fail"><strong>✗</strong> not change.*<span class="evidence">got &#x27;change.tech_confirm&#x27;</span></li></ul></div></section><section><h2>change-tech-with-anchor</h2><pre class="prompt">变更技术提交：主题含 COT-003 + 技术文件。应判 change.tech_submit。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (3/3)</p><ul><li class="pass"><strong>✓</strong> intent is change.tech_submit<span class="evidence">got &#x27;change.tech_submit&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is change-archive<span class="evidence">got &#x27;change-archive&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is change-flow<span class="evidence">got &#x27;change-flow&#x27;</span></li>
 <li class="pass"><strong>✓</strong> change_no is COT003<span class="evidence">got &#x27;COT003&#x27;</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：33% (1/3)</p><ul><li class="fail"><strong>✗</strong> intent is change.tech_submit<span class="evidence">got &#x27;change.tech_confirm&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is change-archive<span class="evidence">got &#x27;change-archive&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is change-flow<span class="evidence">got &#x27;change-flow&#x27;</span></li>
 <li class="fail"><strong>✗</strong> change_no is COT003<span class="evidence">got &#x27;&#x27;</span></li></ul></div></section><section><h2>rfp-mentions-cod-process</h2><pre class="prompt">RFP 正文随口提 future COD process，无 COD 序号。应仍判 fulfillment.rfp。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (6/6)</p><ul><li class="pass"><strong>✓</strong> intent is fulfillment.rfp<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is contract-fulfillment-struct<span class="evidence">got &#x27;contract-fulfillment-struct&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is po-flow<span class="evidence">got &#x27;po-flow&#x27;</span></li>
 <li class="pass"><strong>✓</strong> package_name is Door Package<span class="evidence">got &#x27;Door Package&#x27;</span></li>
 <li class="pass"><strong>✓</strong> not change.*<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li>
 <li class="pass"><strong>✓</strong> not change.cod<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li>
 <li class="pass"><strong>✓</strong> not payment_claim<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：33% (2/6)</p><ul><li class="fail"><strong>✗</strong> intent is fulfillment.rfp<span class="evidence">got &#x27;change.cod&#x27;</span></li>
-<li class="fail"><strong>✗</strong> route_to is contract-fulfillment-struct<span class="evidence">got &#x27;change-archive&#x27;</span></li>
+<li class="fail"><strong>✗</strong> route_to is po-flow<span class="evidence">got &#x27;change-flow&#x27;</span></li>
 <li class="pass"><strong>✓</strong> package_name is Door Package<span class="evidence">got &#x27;&#x27;</span></li>
 <li class="fail"><strong>✗</strong> not change.*<span class="evidence">got &#x27;change.cod&#x27;</span></li>
 <li class="fail"><strong>✗</strong> not change.cod<span class="evidence">got &#x27;change.cod&#x27;</span></li>
 <li class="pass"><strong>✓</strong> not payment_claim<span class="evidence">got &#x27;change.cod&#x27;</span></li></ul></div></section><section><h2>cod-real</h2><pre class="prompt">真 COD：主题 SARL Ph5 - COD076。应判 change.cod。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (3/3)</p><ul><li class="pass"><strong>✓</strong> intent is change.cod<span class="evidence">got &#x27;change.cod&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is change-archive<span class="evidence">got &#x27;change-archive&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is change-flow<span class="evidence">got &#x27;change-flow&#x27;</span></li>
 <li class="pass"><strong>✓</strong> change_no is COD076<span class="evidence">got &#x27;COD076&#x27;</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：0% (0/3)</p><ul><li class="fail"><strong>✗</strong> intent is change.cod<span class="evidence">got &#x27;unknown&#x27;</span></li>
-<li class="fail"><strong>✗</strong> route_to is change-archive<span class="evidence">got None</span></li>
+<li class="fail"><strong>✗</strong> route_to is change-flow<span class="evidence">got None</span></li>
 <li class="fail"><strong>✗</strong> change_no is COD076<span class="evidence">got &#x27;&#x27;</span></li></ul></div></section><section><h2>payment-claim</h2><pre class="prompt">Payment Application No. 3 for BMS → payment_claim.inbound → Skill 2。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (3/3)</p><ul><li class="pass"><strong>✓</strong> intent is payment_claim.inbound<span class="evidence">got &#x27;payment_claim.inbound&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is payment-request<span class="evidence">got &#x27;payment-request&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is payment-flow<span class="evidence">got &#x27;payment-flow&#x27;</span></li>
 <li class="pass"><strong>✓</strong> package_name is BMS<span class="evidence">got &#x27;BMS&#x27;</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：100% (3/3)</p><ul><li class="pass"><strong>✓</strong> intent is payment_claim.inbound<span class="evidence">got &#x27;payment_claim.inbound&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is payment-request<span class="evidence">got &#x27;payment-request&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is payment-flow<span class="evidence">got &#x27;payment-flow&#x27;</span></li>
 <li class="pass"><strong>✓</strong> package_name is BMS<span class="evidence">got &#x27;&#x27;</span></li></ul></div></section><section><h2>bare-invoice-not-claim</h2><pre class="prompt">裸 Invoice 附件闲聊，无请款语境 → unknown（不得高置信进 Skill 2）。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (3/3)</p><ul><li class="pass"><strong>✓</strong> intent is unknown<span class="evidence">got &#x27;unknown&#x27;</span></li>
 <li class="pass"><strong>✓</strong> route_to is None<span class="evidence">got None</span></li>
 <li class="pass"><strong>✓</strong> not payment_claim<span class="evidence">got &#x27;unknown&#x27;</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：0% (0/3)</p><ul><li class="fail"><strong>✗</strong> intent is unknown<span class="evidence">got &#x27;payment_claim.inbound&#x27;</span></li>
-<li class="fail"><strong>✗</strong> route_to is None<span class="evidence">got &#x27;payment-request&#x27;</span></li>
+<li class="fail"><strong>✗</strong> route_to is None<span class="evidence">got &#x27;payment-flow&#x27;</span></li>
 <li class="fail"><strong>✗</strong> not payment_claim<span class="evidence">got &#x27;payment_claim.inbound&#x27;</span></li></ul></div></section><section><h2>rfp-with-payment-terms-enrichment</h2><pre class="prompt">RFP 夹带付款条件：主意图仍 fulfillment.rfp，enrichment.payment_terms=true。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (7/7)</p><ul><li class="pass"><strong>✓</strong> intent is fulfillment.rfp<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is contract-fulfillment-struct<span class="evidence">got &#x27;contract-fulfillment-struct&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is po-flow<span class="evidence">got &#x27;po-flow&#x27;</span></li>
 <li class="pass"><strong>✓</strong> package_name is BMS<span class="evidence">got &#x27;BMS&#x27;</span></li>
 <li class="pass"><strong>✓</strong> enrichment.payment_terms is true<span class="evidence">got True</span></li>
 <li class="pass"><strong>✓</strong> not change.*<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li>
 <li class="pass"><strong>✓</strong> not change.cod<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li>
 <li class="pass"><strong>✓</strong> not payment_claim<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：100% (7/7)</p><ul><li class="pass"><strong>✓</strong> intent is fulfillment.rfp<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is contract-fulfillment-struct<span class="evidence">got &#x27;contract-fulfillment-struct&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is po-flow<span class="evidence">got &#x27;po-flow&#x27;</span></li>
 <li class="pass"><strong>✓</strong> package_name is BMS<span class="evidence">got &#x27;&#x27;</span></li>
 <li class="pass"><strong>✓</strong> enrichment.payment_terms is true<span class="evidence">got True</span></li>
 <li class="pass"><strong>✓</strong> not change.*<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li>
 <li class="pass"><strong>✓</strong> not change.cod<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li>
-<li class="pass"><strong>✓</strong> not payment_claim<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li></ul></div></section><section><h2>project-init</h2><pre class="prompt">主题 [项目初始化] → project_init → Skill 0。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (2/2)</p><ul><li class="pass"><strong>✓</strong> intent is project_init<span class="evidence">got &#x27;project_init&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is project-init<span class="evidence">got &#x27;project-init&#x27;</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：100% (2/2)</p><ul><li class="pass"><strong>✓</strong> intent is project_init<span class="evidence">got &#x27;project_init&#x27;</span></li>
-<li class="pass"><strong>✓</strong> route_to is project-init<span class="evidence">got &#x27;project-init&#x27;</span></li></ul></div></section>
+<li class="pass"><strong>✓</strong> not payment_claim<span class="evidence">got &#x27;fulfillment.rfp&#x27;</span></li></ul></div></section><section><h2>new-project</h2><pre class="prompt">主题 [项目初始化] → project_init → Skill 0。</pre><div class="config"><h4>with_skill</h4><p>通过率：100% (2/2)</p><ul><li class="pass"><strong>✓</strong> intent is project_init<span class="evidence">got &#x27;project_init&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is new-project<span class="evidence">got &#x27;new-project&#x27;</span></li></ul></div><div class="config"><h4>without_skill</h4><p>通过率：100% (2/2)</p><ul><li class="pass"><strong>✓</strong> intent is project_init<span class="evidence">got &#x27;project_init&#x27;</span></li>
+<li class="pass"><strong>✓</strong> route_to is new-project<span class="evidence">got &#x27;new-project&#x27;</span></li></ul></div></section>
 </body>
 </html>

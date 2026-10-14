@@ -1,16 +1,17 @@
 # Tracker Schema（MVP · CSV）
 
-MVP 使用项目根目录下的 **`{项目名称}_procurement_packages_status_tracker.csv`**（UTF-8 BOM），用 Excel / Numbers 可直接打开。编辑前请先关闭 Excel，避免文件锁。
+MVP 使用 **`.skill/status_tracker.csv`**（机读真源）+ 项目根 **`{项目名称}_Status Tracker.xlsx`**（给人看）。编辑前请先关闭 Excel，避免文件锁。
+
 
 文件第一行为 `# 最后更新,{ISO 时间}`；`项目背景.md` 与 `.skill/project.json` 中的 `tracker_last_updated` 同步。
 
 ## tracker.csv 表头
 
 ```
-序号,采购包名称,供应商名称,供应商简称,对接人邮箱,采购包类型,金额不含税,金额含税,金额备注,交期摘要,已请金额,待请款金额,下一付款节点,请款进度,RFP 发出,技术方案已确认,商务报价已确认,PO 已发起,已结算,卡片路径,文件夹路径
+序号,采购包名称,供应商名称,供应商简称,对接人邮箱,采购包类型,金额不含税,金额含税,金额备注,交期摘要,已请金额,待请款金额,下一付款节点,请款进度,RFP 发出,技术方案已确认,商务报价已确认,PO 已发起,已结算
 ```
 
-同目录自动生成 **`*.xlsx`**（合并「状态」表头、配色、筛选、冻结窗格），**PM 日常请打开 xlsx**；csv 供脚本读写。
+项目根自动生成 **`{项目名}_Status Tracker.xlsx`**（合并「请款」「状态」表头、请款区暖黄、筛选、冻结窗格），**PM 日常请打开 xlsx**；csv 供脚本读写。不写卡片/文件夹路径列。
 
 ### CSV 双行表头
 
@@ -18,7 +19,7 @@ CSV 无法合并单元格，用**分组行 + 列名行**表达「请款」「状
 
 ```csv
 # 最后更新,2026-07-19T…
-,,,,,,,,,,请款,,,,状态,,,,,
+,,,,,,,,,,请款,,,,状态,,,,
 序号,采购包名称,…,已请金额,待请款金额,下一付款节点,请款进度,RFP 发出,…
 01,BMS,…
 ```
@@ -41,21 +42,21 @@ CSV 无法合并单元格，用**分组行 + 列名行**表达「请款」「状
 | **待请款金额** | `remaining_claim_amount_excl_tax` | 请款章节；不含税合同额 − 已请金额 |
 | 下一付款节点 | `next_payment_node` | 请款章节；下一笔待请的节点名 |
 | **请款进度** | `payment_progress` | 请款章节；当前在办这一笔的状态人话（如 `已发QS核对 · 到货 / Delivery`）。无在办写 **`无在办`**。只显示当前状态，不记各步时间 |
-
-请款四列合称「请款章节」：**请款状态的唯一真相**（不另开 payment_ledger）。进度每推一步都回写；已请/待请只在客户批复后变。旧表没有「请款进度」时读入为空，下次 Skill 2 回写会补上。`03_请款记录/` 只存邮件/Excel/附件档案。
 | **RFP 发出** | `ts_rfp_issued` | 里程碑完成日期 `YYYY-MM-DD` |
 | **技术方案已确认** | `ts_tech_confirmed` | 同上 |
 | **商务报价已确认** | `ts_quote_confirmed` | 同上 |
 | **PO 已发起** | `ts_po_issued` | 同上 |
 | **已结算** | `ts_settled` | 同上 |
-| 卡片路径 | `card_path` | 履约条件卡片.html |
-| 文件夹路径 | `folder_path` | 采购包根目录 |
+
+请款四列合称「请款章节」：**请款状态的唯一真相**（不另开 payment_ledger）。进度每推一步都回写；已请/待请只在客户批复后变。旧表没有「请款进度」时读入为空，下次 Skill 2 回写会补上。`03_请款记录/` 只存邮件/Excel/附件档案。
 
 以上五列里程碑 **collectively 表示「状态」**：有完成时间戳即已到达该节点，空白即未完成。**不再单独维护「状态」下拉列**。
 
+**不写给人看的路径列。** 旧表若仍有「卡片路径 / 文件夹路径」，读入时仍识别；保存时去掉。脚本按「序号 + 采购包名称 + 供应商简称」在项目根找包文件夹。
+
 在 Excel 中可将这五列合并单元格，上方加一行分组标题「状态」。
 
-旧列 `总金额` 读入时映射到 `金额不含税`；旧列 `状态`、`时间_*` 读入时自动迁移到新里程碑列；保存只写新表头。
+旧列 `总金额` 读入时映射到 `金额不含税`；旧列 `状态`、`时间_*` 读入时自动迁移到新里程碑列；旧列 `卡片路径` / `文件夹路径` 读入后不再写出；保存只写新表头。
 
 ## 金额与税率
 
@@ -101,7 +102,7 @@ RFP 发出 → 技术方案已确认 → 商务报价已确认 → PO 已发起 
 
 | 字段 | 说明 |
 |------|------|
-| `skill` | 是哪个 Skill 的（如 `change-archive`）。没这字段不能新写 |
+| `skill` | 是哪个 Skill 的（如 `change-flow`）。没这字段不能新写 |
 | `pending_id` | 脚本生成 |
 | `status` | `open` / `confirmed` / `cancelled` |
 | `reason` | 待确认原因码 |
@@ -110,7 +111,7 @@ RFP 发出 → 技术方案已确认 → 商务报价已确认 → PO 已发起 
 
 ## card-data.json（每包）
 
-与 HTML 卡片对应，供 **fulfillment-card** `render_card.py` 增量合并。**HTML 必须由 fulfillment-card 从 `assets/fulfillment-card.html` 渲染**；格式规则见 `fulfillment-card/references/card-template.md`。
+与 HTML 卡片对应，供 **vendor-card** `render_card.py` 增量合并。**HTML 必须由 vendor-card 从 `assets/vendor-card.html` 渲染**；格式规则见 `vendor-card/references/card-template.md`。
 
 必填展示字段（写入 JSON，由模板映射到 HTML）：
 

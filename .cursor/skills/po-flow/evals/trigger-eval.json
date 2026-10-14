@@ -1,0 +1,22 @@
+[
+  {"query": "帮我在 Desktop/Test Project 1 处理这封 RFP 转发邮件，初始化 BMS 采购包，供应商 BOSCH，邮件里有 tech spec 附件", "should_trigger": true},
+  {"query": "项目 SAMPLE 专用邮箱收到 Raise PO 邮件了，金额 ¥128万含税，帮我更新 tracker 和履约卡片", "should_trigger": true},
+  {"query": "刚转发了一封付款指示到 AI 邮箱，预付款30%到货60%尾款10%，写入卡片付款节点", "should_trigger": true},
+  {"query": "请对 /Users/me/projects/LabRefresh 跑 run_mailbox_worker --once，处理新邮件", "should_trigger": true},
+  {"query": "阶段0：初始化 Sample Project，编号 SAMPLE，实验室项目，地址在浦东", "should_trigger": true},
+  {"query": "这份合同 PDF 里付款条款帮我提取进履约卡片，走 read-pdf", "should_trigger": true},
+  {"query": "tracker 里 BMS 包对接人邮箱要把 Cc 里的供应商地址也写进去", "should_trigger": true},
+  {"query": "PO 邮件附件是 xlsx 报价单，Amount before VAT 和 Include VAT 两列要进 tracker", "should_trigger": true},
+  {"query": "WorkBuddy 每日两轮拉邮箱后 pending.json 里有待确认项，帮我整理确认清单", "should_trigger": true},
+  {"query": "顾问确认了 IT cabling 技术文件，更新里程碑到技术方案已确认", "should_trigger": true},
+  {"query": "帮我把这份 Word 周报润色一下，语气专业一点", "should_trigger": false},
+  {"query": "用 React 写一个 todo list 组件", "should_trigger": false},
+  {"query": "PDF 合并成一个文件，只要 pdf skill 就行", "should_trigger": false},
+  {"query": "供应商填完工确认单 PDF，识别字段生成表单", "should_trigger": false},
+  {"query": "git rebase main 有冲突怎么解", "should_trigger": false},
+  {"query": "读一下这份扫描合同 PDF 做 OCR（不是履约结构化）", "should_trigger": false},
+  {"query": "帮我写一封 RFP 邮件发给石材供应商询价", "should_trigger": false},
+  {"query": "Excel 透视表怎么做", "should_trigger": false},
+  {"query": "项目邮箱 IMAP 授权码怎么配——只要 mailbox-setup 文档不要跑全流程", "should_trigger": false},
+  {"query": "请款单核验金额对不对，Skill2 变更分析", "should_trigger": false}
+]
